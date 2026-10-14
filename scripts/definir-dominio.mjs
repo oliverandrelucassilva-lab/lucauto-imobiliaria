@@ -7,7 +7,7 @@ if (!dominio) {
   console.error('Informe o domínio. Ex.: node scripts/definir-dominio.mjs www.seudominio.com.br');
   process.exit(1);
 }
-for (const arquivo of ['index.html', 'sitemap.xml', 'robots.txt']) {
+for (const arquivo of ['index.html', 'lucauto-v2.html', 'sitemap.xml', 'robots.txt']) {
   const texto = readFileSync(arquivo, 'utf8');
   writeFileSync(arquivo, texto.replaceAll('DOMINIO-A-DEFINIR', dominio));
   console.log('Atualizado:', arquivo);
