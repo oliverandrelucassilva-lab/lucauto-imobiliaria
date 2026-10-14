@@ -61,3 +61,15 @@ O site só mostra o que for real. Para deixar a página mais completa, mande:
 - Depoimentos de clientes que autorizem a publicação.
 - Números verdadeiros (anos de atuação, imóveis atendidos), se quiserem usar.
 - Horário de atendimento e e-mail.
+
+## Imagens extras (seletor "O que você procura?" e passo a passo)
+
+Formato 4:3 para o seletor (1200 x 900) e 4:5 para os passos (1200 x 1500). Sem pessoas e sem texto. Use `CONFIG.fotos` no script.
+
+- **Alugar:** `Warm cozy modern apartment living room at golden hour, soft light through large windows, navy and gold accents, minimal, photorealistic interior photography, no people, no text.`
+- **Comprar:** `Modern house facade at dusk with warm window lights, deep blue sky, clean landscaping, photorealistic real estate photography, no people, no text.`
+- **Vender:** `Close-up of a golden house key resting on a dark navy surface, shallow depth of field, soft warm light, premium minimal product photography, no text.`
+- **Avaliar:** `Architectural blueprint and a small model house on a desk, warm lamp light, navy and gold tones, shallow depth of field, no people, no text.`
+- **Passos 1, 2 e 3:** use três variações da mesma atmosfera de entardecer (fachada, interior e chaves), em formato vertical 4:5.
+
+Lembrete: essas imagens são só ambientação. Imóveis reais anunciados precisam de foto real.

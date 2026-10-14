@@ -328,7 +328,9 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 .progress span{display:block;height:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--gold-dark),var(--gold-light))}
 .hero{position:relative}
 .hero .hero__bg{position:absolute;inset:0;overflow:hidden;z-index:0}
-.hero .wrap{position:relative;z-index:2}
+.hero .wrap{position:static}
+.hero .hero__in{position:relative;z-index:2}
+.hero .hero__bottom{z-index:2}
 .hero__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.4s var(--ease)}
 .hero__media.on{opacity:.55}
 .hero__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,20,42,.92) 0%,rgba(7,20,42,.7) 45%,rgba(7,20,42,.25) 100%),linear-gradient(180deg,transparent 70%,var(--navy-deep))}
@@ -398,6 +400,79 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .hero h1 .wd>i{transform:none;animation:none}
   .title-line{transform:scaleX(1)}
 }
+
+/* ---------- Versão 2.2: cena de entardecer, cartão em destaque, seletor, capítulos ---------- */
+.hero{background:linear-gradient(180deg,#07142A 0%,#0B1F3A 52%,#172c50 76%,#3b3a4a 92%,#6a5538 100%)}
+.horizon{position:absolute;left:0;right:0;bottom:0;height:62%;background:radial-gradient(60% 70% at 72% 100%,rgba(224,190,106,.55),rgba(201,162,74,.22) 40%,transparent 72%)}
+.skyline .o{fill:#08162d}
+.hero__bottom{position:absolute;left:var(--pad-x);right:var(--pad-x);bottom:var(--s5);display:none;align-items:flex-end;justify-content:space-between;gap:var(--s4);max-width:1056px;margin-inline:auto}
+.hero__feats{display:flex;gap:var(--s4)}
+.hero__feats li{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--text)}
+.hero__feats svg{width:34px;height:34px;padding:7px;border-radius:50%;border:1px solid rgba(201,162,74,.5);fill:none;stroke:var(--gold);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.hero__card{display:flex;align-items:center;gap:var(--s2);width:340px;padding:10px 18px 10px 10px;border-radius:var(--r-lg);background:rgba(7,20,42,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--border);text-decoration:none;box-shadow:var(--shadow-prop);transition:transform .35s var(--ease),border-color .3s}
+.hero__card:hover{transform:translateY(-4px);border-color:rgba(201,162,74,.6)}
+.hero__card img{width:112px;height:84px;object-fit:cover;border-radius:var(--r-md);flex:none}
+.hero__card small{display:block;font-size:11px;letter-spacing:.16em;color:var(--gold);font-weight:600}
+.hero__card b{display:block;font-family:var(--font-accent);font-style:italic;font-weight:500;font-size:19px;line-height:1.2;margin:4px 0}
+.hero__card em{font-style:normal;font-size:13px;color:var(--text-muted)}
+.hero__card .go{margin-left:auto;color:var(--gold);font-size:20px}
+.scroll-cue{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;display:flex;align-items:center;gap:12px;min-height:48px;font-size:11px;letter-spacing:.18em;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap}
+.scroll-cue .ring{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.3);display:grid;place-items:center;animation:bob 2.2s ease-in-out infinite}
+.scroll-cue svg{width:16px;height:16px;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.scroll-cue:hover{color:var(--gold-light)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* seletor */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s4)}
+.choice{display:flex;flex-direction:column;height:100%;border-radius:var(--r-lg);overflow:hidden;text-decoration:none;border:1px solid var(--border);background:var(--navy-card);transition:transform .4s var(--ease),border-color .3s,box-shadow .4s}
+.choice:hover{transform:translateY(-6px);border-color:rgba(201,162,74,.6);box-shadow:var(--shadow-card)}
+.choice__art{position:relative;aspect-ratio:4/3;display:grid;place-items:center;background:radial-gradient(80% 90% at 70% 100%,rgba(201,162,74,.35),transparent 70%),linear-gradient(160deg,#16335d,#0B1F3A);overflow:hidden}
+.choice__art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.choice:hover .choice__art img{transform:scale(1.07)}
+.choice__art svg{position:relative;width:44px;height:44px;fill:none;stroke:var(--gold-light);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .5s var(--ease)}
+.choice:hover .choice__art svg{transform:scale(1.15) rotate(-4deg)}
+.choice__txt{display:flex;flex-direction:column;gap:4px;padding:var(--s2)}
+.choice__txt strong{font-size:18px;line-height:1.25}
+.choice__txt span{font-size:14px;color:var(--gold);font-weight:600}
+.choice__txt i{font-style:normal;display:inline-block;transition:transform .3s var(--ease)}
+.choice:hover .choice__txt i{transform:translateX(5px)}
+
+/* capítulos */
+.chapters__visual{display:none}
+.cv{position:relative;aspect-ratio:4/5;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border);background:radial-gradient(90% 70% at 70% 100%,rgba(201,162,74,.4),transparent 70%),linear-gradient(170deg,#16335d,#07142A);box-shadow:var(--shadow-card)}
+.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s}
+.cv__label{position:absolute;left:var(--s3);top:var(--s3);font-size:12px;letter-spacing:.2em;font-weight:600;color:var(--gold)}
+.cv__n{position:absolute;left:var(--s3);bottom:var(--s2);font-family:var(--font-accent);font-style:italic;font-size:160px;line-height:1;color:var(--gold);text-shadow:0 8px 40px rgba(0,0,0,.5);transition:opacity .3s,transform .5s var(--ease)}
+.cv__n.swap{opacity:0;transform:translateY(16px)}
+.step.active{border-color:rgba(201,162,74,.7)}
+
+/* menu em pílula (desktop) */
+@media (min-width:768px){
+  .hero__bottom{display:flex}
+  .hero{padding-bottom:200px}
+  .choices{grid-template-columns:repeat(4,1fr);gap:var(--s3)}
+  .hero__feats{gap:var(--s3)}
+}
+@media (max-width:1023px){
+  .hero__feats{display:none}
+  .hero__bottom{justify-content:flex-end}
+}
+@media (max-width:767px){
+  .hero{padding-bottom:var(--s7)}
+  .scroll-cue{bottom:12px}
+}
+@media (min-width:1024px){
+  .header{transition:top .35s var(--ease),width .35s var(--ease),border-radius .35s var(--ease),background .3s,border-color .3s,height .3s}
+  .header.stuck{top:12px;left:50%;right:auto;inset-inline-end:auto;width:min(1120px,calc(100% - 48px));height:64px;transform:translateX(-50%);border:1px solid var(--border);border-radius:var(--r-pill);background:rgba(7,20,42,.82);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+  .header.stuck .wrap{padding-inline:24px}
+  .header.stuck .brand img{height:32px}
+  .chapters{display:grid;grid-template-columns:.85fr 1.15fr;gap:var(--s7);align-items:start;margin-top:var(--s5)}
+  .chapters__visual{display:block;position:sticky;top:120px}
+  .chapters .steps{grid-template-columns:1fr;gap:var(--s3);margin-top:0}
+  .chapters .step{padding:var(--s5) var(--s4);min-height:220px}
+  .hero__bottom{bottom:calc(var(--s6) + 44px)}
+}
+@media (prefers-reduced-motion:reduce){.scroll-cue .ring{animation:none}}
 </style>
 </head>
 <body>
@@ -431,6 +506,7 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
       <img class="hero__media" id="capa-img" alt="" width="1920" height="1080" decoding="async">
       <div class="hero__shade"></div>
       <div class="grid-bg"></div>
+      <div class="horizon"></div>
       <div class="orb orb--a"></div><div class="orb orb--b"></div>
       <canvas id="net"></canvas>
       <svg class="skyline" id="skyline" viewBox="0 0 640 520" preserveAspectRatio="xMaxYMax meet" focusable="false"></svg>
@@ -446,7 +522,17 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
           <p class="micro" data-horario hidden>Atendimento de <span data-horario-txt></span></p>
         </div>
       </div>
+      <div class="hero__bottom">
+        <ul class="hero__feats" aria-label="Serviços">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.500 12 4l9 7.500M5.500 10v10h13V10M10 20v-5h4v5"/></svg><span>ALUGUEL</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.500" cy="8.500" r="1.200"/></svg><span>VENDA</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.500"/><path d="M20 20l-4.200-4.200M8.500 11.500l1.800 1.800 3.200-3.600"/></svg><span>AVALIAÇÃO</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7zM14 3v5h5M10 13h6M10 17h6"/></svg><span>DESPACHANTE</span></li>
+        </ul>
+        <a class="hero__card" id="hero-card" href="#" target="_blank" rel="noopener" hidden></a>
+      </div>
     </div>
+    <a class="scroll-cue" href="#servicos"><span class="ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>ROLE PARA DESCOBRIR</a>
   </section>
 
   <!-- CONFIANÇA -->
@@ -505,6 +591,19 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
     </div>
   </section>
 
+  <!-- O QUE VOCÊ PROCURA -->
+  <section class="sec sec--navy glow" id="procura" aria-labelledby="h-procura">
+    <div class="wrap">
+      <h2 id="h-procura" class="rv">O que você <span class="accent">procura?</span></h2>
+      <ul class="choices">
+        <li class="rv"><a class="choice spot" data-choice="alugar" href="#" target="_blank" rel="noopener"><span class="choice__art"><img alt="" hidden width="800" height="600" loading="lazy" decoding="async"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.500 12 4l9 7.500M5.500 10v10h13V10M10 20v-5h4v5"/></svg></span><span class="choice__txt"><strong>Alugar</strong><span>Falar no WhatsApp <i aria-hidden="true">→</i></span></span></a></li>
+        <li class="rv" style="--d:.07s"><a class="choice spot" data-choice="comprar" href="#" target="_blank" rel="noopener"><span class="choice__art"><img alt="" hidden width="800" height="600" loading="lazy" decoding="async"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.500" cy="8.500" r="1.200"/></svg></span><span class="choice__txt"><strong>Comprar</strong><span>Falar no WhatsApp <i aria-hidden="true">→</i></span></span></a></li>
+        <li class="rv" style="--d:.14s"><a class="choice spot" data-choice="vender" href="#" target="_blank" rel="noopener"><span class="choice__art"><img alt="" hidden width="800" height="600" loading="lazy" decoding="async"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10l8-6 8 6v10zM9 20v-6h6v6"/></svg></span><span class="choice__txt"><strong>Vender</strong><span>Falar no WhatsApp <i aria-hidden="true">→</i></span></span></a></li>
+        <li class="rv" style="--d:.21s"><a class="choice spot" data-choice="avaliar" href="#" target="_blank" rel="noopener"><span class="choice__art"><img alt="" hidden width="800" height="600" loading="lazy" decoding="async"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.500"/><path d="M20 20l-4.200-4.200M8.500 11.500l1.800 1.800 3.200-3.600"/></svg></span><span class="choice__txt"><strong>Avaliar meu imóvel</strong><span>Falar no WhatsApp <i aria-hidden="true">→</i></span></span></a></li>
+      </ul>
+    </div>
+  </section>
+
   <!-- 5. IMÓVEIS EM DESTAQUE -->
   <section class="sec sec--light" id="imoveis" aria-labelledby="h-imoveis">
     <div class="wrap">
@@ -541,11 +640,14 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
     <div class="wrap">
       <p class="eyebrow rv">PASSO A PASSO</p>
       <h2 id="h-como" class="rv" style="--d:.05s">Simples do começo ao <span class="accent">fim.</span></h2>
+      <div class="chapters">
+      <div class="chapters__visual" aria-hidden="true"><div class="cv"><img id="cv-img" alt="" hidden width="900" height="1100" loading="lazy" decoding="async"><span class="cv__label">PASSO</span><span class="cv__n" id="cv-n">1</span></div></div>
       <ol class="steps">
         <li class="step rv"><span class="step__n" aria-hidden="true">1</span><h3>Você chama no WhatsApp.</h3><p>Conte o que procura: tipo de imóvel, bairro e faixa de valor.</p></li>
         <li class="step rv" style="--d:.08s"><span class="step__n" aria-hidden="true">2</span><h3>Você escolhe e visita.</h3><p>Mostramos as opções e agendamos a visita no melhor horário para você.</p></li>
         <li class="step rv" style="--d:.16s"><span class="step__n" aria-hidden="true">3</span><h3>Contrato e documentação.</h3><p>Acompanhamos a negociação e a papelada com o despachante imobiliário.</p></li>
       </ol>
+      </div>
       <ul class="steps-foot rv">
         <li>Atendimento claro e sem pressão</li>
         <li>Você decide no seu tempo</li>
@@ -671,7 +773,8 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
     mensagem: 'Olá! Vim pelo site da Lucauto e gostaria de saber mais sobre imóveis.',
     capaImagem: '',   // Ex.: 'assets/img/capa.webp' (imagem de fundo da capa; vazio mantém a animação)
     capaVideo: '',    // Ex.: 'assets/video/capa.mp4' (vídeo curto, sem áudio; opcional)
-    fotoPredio: '',   // Ex.: 'assets/img/predio.webp' (foto real da fachada, aparece em Localização)
+    fotoPredio: '',
+    fotos: { alugar:'', comprar:'', vender:'', avaliar:'', etapas:['','',''] },   // imagens opcionais do seletor e dos passos   // Ex.: 'assets/img/predio.webp' (foto real da fachada, aparece em Localização)
     horario: ''   // Ex.: 'segunda a sexta, das 8h às 18h'. Vazio: o microtexto e a pergunta de horário ficam ocultos.
   };
 
@@ -837,6 +940,46 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
     var l = document.createElement('span'); l.className = 'title-line'; l.setAttribute('aria-hidden','true');
     h.appendChild(l);
   });
+
+
+  // Cartão em destaque na capa (primeiro imóvel da lista)
+  var hc = document.getElementById('hero-card'), p0 = IMOVEIS[0];
+  if (hc && p0) {
+    var t0 = p0.tipo + ' em ' + p0.bairro;
+    hc.href = wa('Olá! Tenho interesse no imóvel: ' + t0 + '. Pode me passar mais informações?');
+    hc.setAttribute('aria-label', 'Imóvel em destaque: ' + t0 + '. Quero saber mais');
+    var hi = el('img'); hi.src = p0.foto || FOTO_PROVISORIA; hi.alt = ''; hi.width = 112; hi.height = 84; hi.decoding = 'async';
+    var ht = el('div'); ht.appendChild(el('small','','EM DESTAQUE')); ht.appendChild(el('b','',t0)); ht.appendChild(el('em','',p0.valor || 'Consulte'));
+    hc.appendChild(hi); hc.appendChild(ht); hc.appendChild(el('span','go','→')).setAttribute('aria-hidden','true');
+    hc.hidden = false;
+  }
+
+  // Seletor "O que você procura?" e imagens opcionais
+  var MSG = { alugar:'Olá! Tenho interesse em alugar um imóvel.', comprar:'Olá! Tenho interesse em comprar um imóvel.', vender:'Olá! Gostaria de vender um imóvel.', avaliar:'Olá! Gostaria de avaliar o meu imóvel.' };
+  document.querySelectorAll('[data-choice]').forEach(function(a){
+    var k = a.getAttribute('data-choice');
+    a.href = wa(MSG[k]);
+    var img = a.querySelector('img'), f = (CONFIG.fotos || {})[k];
+    if (f) { img.src = f; img.hidden = false; }
+  });
+
+  // Capítulos do passo a passo: número muda com o passo em foco
+  var cvN = document.getElementById('cv-n'), cvImg = document.getElementById('cv-img');
+  var passos = [].slice.call(document.querySelectorAll('.chapters .step'));
+  function irPasso(i){
+    if (cvN.textContent === String(i + 1)) return;
+    cvN.classList.add('swap');
+    setTimeout(function(){ cvN.textContent = String(i + 1); cvN.classList.remove('swap'); }, 220);
+    var f = (CONFIG.fotos && CONFIG.fotos.etapas || [])[i];
+    if (f) { cvImg.src = f; cvImg.hidden = false; } else { cvImg.hidden = true; }
+    passos.forEach(function(x, j){ x.classList.toggle('active', j === i); });
+  }
+  if ('IntersectionObserver' in window && passos.length) {
+    var po = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) irPasso(passos.indexOf(e.target)); });
+    }, {rootMargin:'-45% 0px -45% 0px'});
+    passos.forEach(function(x){ po.observe(x); });
+  }
 
   // Barra de progresso de leitura
   var barra = document.getElementById('progress'), tick = false;
