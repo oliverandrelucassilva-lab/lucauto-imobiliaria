@@ -160,8 +160,6 @@ h3{font-size:20px;line-height:1.3;font-weight:600}
 .feature__foot a{font-weight:700;color:var(--text-dark);text-underline-offset:3px}
 
 /* ---------- 4. Pilares ---------- */
-.pillars{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--border)}
-.pillar{padding:var(--s3) 0;border-bottom:1px solid var(--border)}
 .pillar strong{display:block;font-size:24px;line-height:1.2;font-weight:700;color:var(--gold)}
 .pillar span{display:block;margin-top:6px;color:var(--text-muted)}
 
@@ -279,8 +277,6 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   h2{font-size:36px}
   .eyebrow{font-size:13px}
   .hero .btn,.cta .btn,.loc .btn{width:auto}
-  .pillars{grid-template-columns:1fr 1fr;border-top:0;gap:var(--s3) var(--s4)}
-  .pillar{border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s3)}
   .prop{flex-basis:calc(50% - 8px)}
   .why ul{grid-template-columns:repeat(3,1fr)}
   .steps{grid-template-columns:repeat(3,1fr)}
@@ -311,7 +307,6 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .intro{grid-template-columns:1.05fr .95fr;gap:var(--s7)}
   .feature{padding:var(--s5) var(--s5)}
   .feature h2{font-size:36px}
-  .pillars{grid-template-columns:repeat(4,1fr);gap:var(--s3)}
   .prop{flex-basis:calc(33.333% - 11px)}
   .loc{grid-template-columns:1fr 1.15fr;gap:var(--s6);align-items:center}
   .map,.map iframe{min-height:440px}
@@ -327,9 +322,86 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .marquee__track{animation:none}
   .js .rv{opacity:1;transform:none}
 }
+
+/* ---------- Versão 2.1: capa viva, confiança, animações ---------- */
+.progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:150;pointer-events:none}
+.progress span{display:block;height:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--gold-dark),var(--gold-light))}
+.hero{position:relative}
+.hero .hero__bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.hero .wrap{position:relative;z-index:2}
+.hero__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.4s var(--ease)}
+.hero__media.on{opacity:.55}
+.hero__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,20,42,.92) 0%,rgba(7,20,42,.7) 45%,rgba(7,20,42,.25) 100%),linear-gradient(180deg,transparent 70%,var(--navy-deep))}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(70% 70% at 70% 40%,#000,transparent 75%);mask-image:radial-gradient(70% 70% at 70% 40%,#000,transparent 75%)}
+.orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.55;will-change:transform}
+.orb--a{width:420px;height:420px;right:-120px;top:-80px;background:radial-gradient(circle,rgba(201,162,74,.28),transparent 65%);animation:drift 16s ease-in-out infinite}
+.orb--b{width:520px;height:520px;left:-200px;bottom:-160px;background:radial-gradient(circle,rgba(18,41,74,.9),transparent 65%);animation:drift 20s ease-in-out infinite reverse}
+@keyframes drift{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-30px,24px,0)}}
+#net{position:absolute;inset:0;width:100%;height:100%;opacity:.8}
+.skyline{position:absolute;right:0;bottom:0;width:min(100%,780px);height:46%;opacity:.5;pointer-events:none;transform:translate3d(var(--px,0),var(--py,0),0);transition:transform .5s var(--ease)}
+.skyline .o{fill:none;stroke:var(--gold);stroke-width:1.4;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.8s var(--ease) forwards;animation-delay:var(--t,0s)}
+.skyline .f{stroke:var(--gold);stroke-opacity:.35;stroke-width:.8;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.2s var(--ease) forwards;animation-delay:var(--t,0s)}
+.skyline .w{fill:var(--gold-light);opacity:0;animation:lit 5s ease-in-out infinite;animation-delay:var(--t,0s)}
+.skyline .g{stroke:var(--gold);stroke-opacity:.5;stroke-width:1}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes lit{0%,100%{opacity:0}20%,70%{opacity:.85}45%{opacity:.25}}
+.hero.has-img .skyline{opacity:.25}
+.hero__spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(480px circle at var(--mx,70%) var(--my,35%),rgba(201,162,74,.13),transparent 62%)}
+.split{display:block}
+.hero h1 .wd{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
+.hero h1 .wd>i{display:inline-block;font-style:inherit;transform:translateY(110%);animation:up .9s var(--ease) forwards;animation-delay:calc(.15s + var(--i,0)*.07s)}
+@keyframes up{to{transform:none}}
+
+/* confiança */
+.trust{background:var(--navy-deep);border-bottom:1px solid var(--border);padding:var(--s3) 0}
+.trust ul{display:grid;gap:var(--s2)}
+.trust li{display:flex;align-items:center;gap:14px;min-height:56px}
+.trust .ic{flex:none;width:48px;height:48px;border-radius:var(--r-md);display:grid;place-items:center;border:1px solid rgba(201,162,74,.35);background:rgba(201,162,74,.08);transition:transform .4s var(--ease),background .3s}
+.trust li:hover .ic{transform:rotate(-6deg) scale(1.06);background:rgba(201,162,74,.18)}
+.trust svg{width:24px;height:24px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.trust strong{display:block;font-size:16px;line-height:1.3}
+.trust span:not(.ic){display:block;font-size:14px;color:var(--text-muted);line-height:1.4}
+
+/* spotlight e cartões */
+.spot{position:relative;isolation:isolate}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;opacity:0;transition:opacity .35s;background:radial-gradient(320px circle at var(--x,50%) var(--y,50%),rgba(201,162,74,.16),transparent 65%)}
+.spot:hover::before{opacity:1}
+.pillars{display:grid;grid-template-columns:1fr;gap:var(--s2);border-top:0}
+.pillar{padding:var(--s3);border:1px solid var(--border);border-radius:var(--r-lg);background:linear-gradient(160deg,rgba(18,41,74,.6),rgba(11,31,58,.3));transition:transform .4s var(--ease),border-color .3s,box-shadow .4s}
+.pillar:hover{transform:translateY(-6px);border-color:rgba(201,162,74,.55);box-shadow:var(--shadow-prop)}
+.pillar .pic{width:44px;height:44px;padding:10px;margin-bottom:var(--s2);border-radius:var(--r-md);background:rgba(201,162,74,.1);border:1px solid rgba(201,162,74,.3);fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .5s var(--ease)}
+.pillar:hover .pic{transform:rotate(-8deg) scale(1.1)}
+.pillar{border-bottom:1px solid var(--border)}
+.prop,.step,.feature{will-change:transform}
+.title-line{display:block;width:56px;height:2px;margin-top:var(--s2);background:var(--gold);transform-origin:0 50%;transform:scaleX(0);transition:transform .9s var(--ease) .25s}
+.rv.in .title-line,.in>.title-line{transform:scaleX(1)}
+.steps{position:relative}
+.step__n{transition:background .4s,color .4s,box-shadow .4s}
+.step.in .step__n{background:var(--gold);color:var(--text-dark);box-shadow:0 0 0 8px rgba(201,162,74,.12)}
+.marquee--r .marquee__track{animation-direction:reverse;animation-duration:55s}
+.building{margin-bottom:var(--s2);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-prop)}
+.building img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.loc__right{min-width:0}
+@media (min-width:768px){
+  .trust ul{grid-template-columns:repeat(3,1fr);gap:var(--s3)}
+  .pillars{grid-template-columns:1fr 1fr}
+  .skyline{height:78%;opacity:.65}
+}
+@media (min-width:1024px){
+  .pillars{grid-template-columns:repeat(4,1fr)}
+  .skyline{height:78%;width:min(56%,700px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .skyline .o,.skyline .f{stroke-dashoffset:0;animation:none}
+  .skyline .w{opacity:.5;animation:none}
+  .orb{animation:none}
+  .hero h1 .wd>i{transform:none;animation:none}
+  .title-line{transform:scaleX(1)}
+}
 </style>
 </head>
 <body>
+<div class="progress" aria-hidden="true"><span id="progress"></span></div>
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
 
 <header class="header" id="topo">
@@ -354,6 +426,16 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 
   <!-- 1. HERO -->
   <section class="hero glow" id="inicio" aria-labelledby="h-hero">
+    <div class="hero__bg" id="hero-bg" aria-hidden="true">
+      <video class="hero__media" id="capa-video" muted loop playsinline preload="none" tabindex="-1"></video>
+      <img class="hero__media" id="capa-img" alt="" width="1920" height="1080" decoding="async">
+      <div class="hero__shade"></div>
+      <div class="grid-bg"></div>
+      <div class="orb orb--a"></div><div class="orb orb--b"></div>
+      <canvas id="net"></canvas>
+      <svg class="skyline" id="skyline" viewBox="0 0 640 520" preserveAspectRatio="xMaxYMax meet" focusable="false"></svg>
+      <div class="hero__spot" id="hero-spot"></div>
+    </div>
     <div class="wrap">
       <div class="hero__in">
         <p class="eyebrow rv">LUCAUTO EMPREENDIMENTOS IMOBILIÁRIOS · EUCLIDES DA CUNHA, BA</p>
@@ -364,6 +446,17 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
           <p class="micro" data-horario hidden>Atendimento de <span data-horario-txt></span></p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- CONFIANÇA -->
+  <section class="trust" aria-label="Informações da Lucauto">
+    <div class="wrap">
+      <ul>
+        <li class="rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.500-3 8.200-7 10-4-1.800-7-5.500-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><strong>CRECI BA 19.698-F</strong><span>Registro profissional</span></div></li>
+        <li class="rv" style="--d:.08s"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.100 7-11.500a7 7 0 1 0-14 0C5 14.900 12 21 12 21Z"/><circle cx="12" cy="9.500" r="2.500"/></svg></span><div><strong>Centro de Euclides da Cunha</strong><span>R. Elson Torres de Aquino, 232</span></div></li>
+        <li class="rv" style="--d:.16s"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.500 8.500 0 0 1-12.600 7.400L3 21l1.600-5.200A8.500 8.500 0 1 1 21 12Z"/></svg></span><div><strong>(75) 99942-1482</strong><span>Atendimento direto pelo WhatsApp</span></div></li>
+      </ul>
     </div>
   </section>
 
@@ -404,10 +497,10 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   <section class="sec sec--deep" style="padding-block:var(--s6)" aria-label="Nossos pilares">
     <div class="wrap">
       <ul class="pillars">
-        <li class="pillar rv"><strong>Aluguel</strong><span>para morar ou investir</span></li>
-        <li class="pillar rv" style="--d:.06s"><strong>Venda</strong><span>casas, terrenos e mais</span></li>
-        <li class="pillar rv" style="--d:.12s"><strong>Avaliação</strong><span>para vender ou alugar com segurança</span></li>
-        <li class="pillar rv" style="--d:.18s"><strong>Despachante</strong><span>documentação sem dor de cabeça</span></li>
+        <li class="pillar spot rv"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.500 12 4l9 7.500M5.500 10v10h13V10M10 20v-5h4v5"/></svg><strong>Aluguel</strong><span>para morar ou investir</span></li>
+        <li class="pillar spot rv" style="--d:.06s"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.500" cy="8.500" r="1.200"/></svg><strong>Venda</strong><span>casas, terrenos e mais</span></li>
+        <li class="pillar spot rv" style="--d:.12s"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.500"/><path d="M20 20l-4.200-4.200M8.500 11.500l1.800 1.800 3.200-3.600"/></svg><strong>Avaliação</strong><span>para vender ou alugar com segurança</span></li>
+        <li class="pillar spot rv" style="--d:.18s"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7zM14 3v5h5M10 13h6M10 17h6"/></svg><strong>Despachante</strong><span>documentação sem dor de cabeça</span></li>
       </ul>
     </div>
   </section>
@@ -475,8 +568,11 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
         </ul>
         <a class="btn rv" style="--d:.14s" href="https://www.google.com/maps/dir/?api=1&amp;destination=R.+Elson+Torres+de+Aquino,+232,+Euclides+da+Cunha,+BA" target="_blank" rel="noopener">Como chegar</a>
       </div>
+      <div class="loc__right">
+      <figure class="building rv" id="foto-predio" hidden><img id="foto-predio-img" alt="Fachada do Edifício Empresarial Limeira, onde fica a Lucauto, no Centro de Euclides da Cunha" width="1200" height="800" loading="lazy" decoding="async"></figure>
       <div class="map rv" style="--d:.1s">
         <iframe title="Mapa com o endereço da Lucauto, R. Elson Torres de Aquino, 232, Euclides da Cunha, BA" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=R.+Elson+Torres+de+Aquino,+232,+Euclides+da+Cunha,+BA&amp;output=embed"></iframe>
+      </div>
       </div>
     </div>
   </section>
@@ -573,6 +669,9 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   var CONFIG = {
     whatsapp: '5575999421482',
     mensagem: 'Olá! Vim pelo site da Lucauto e gostaria de saber mais sobre imóveis.',
+    capaImagem: '',   // Ex.: 'assets/img/capa.webp' (imagem de fundo da capa; vazio mantém a animação)
+    capaVideo: '',    // Ex.: 'assets/video/capa.mp4' (vídeo curto, sem áudio; opcional)
+    fotoPredio: '',   // Ex.: 'assets/img/predio.webp' (foto real da fachada, aparece em Localização)
     horario: ''   // Ex.: 'segunda a sexta, das 8h às 18h'. Vazio: o microtexto e a pergunta de horário ficam ocultos.
   };
 
@@ -689,6 +788,143 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   });
   document.querySelectorAll('dialog [data-close]').forEach(function(b){ b.addEventListener('click', function(){ b.closest('dialog').close(); }); });
   document.querySelectorAll('dialog').forEach(function(d){ d.addEventListener('click', function(e){ if (e.target === d) d.close(); }); });
+
+
+  // Capa: imagem ou vídeo opcionais
+  var hero = document.getElementById('inicio');
+  var capaImg = document.getElementById('capa-img'), capaVid = document.getElementById('capa-video');
+  if (CONFIG.capaImagem) {
+    capaImg.src = CONFIG.capaImagem;
+    capaImg.addEventListener('load', function(){ capaImg.classList.add('on'); hero.classList.add('has-img'); });
+  }
+  if (CONFIG.capaVideo && !reduz) {
+    capaVid.src = CONFIG.capaVideo;
+    if (CONFIG.capaImagem) capaVid.poster = CONFIG.capaImagem;
+    capaVid.addEventListener('canplay', function(){ capaVid.classList.add('on'); hero.classList.add('has-img'); capaVid.play().catch(function(){}); }, {once:true});
+    capaVid.load();
+  }
+  // Foto do prédio (Localização)
+  if (CONFIG.fotoPredio) {
+    document.getElementById('foto-predio-img').src = CONFIG.fotoPredio;
+    document.getElementById('foto-predio').hidden = false;
+  }
+
+  // Título da capa palavra por palavra
+  var h1 = document.getElementById('h-hero');
+  if (h1 && !reduz) {
+    var i = 0;
+    (function dividir(no){
+      [].slice.call(no.childNodes).forEach(function(n){
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function(t){
+            if (!t) return;
+            if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var w = document.createElement('span'); w.className = 'wd';
+            var inner = document.createElement('i'); inner.textContent = t; inner.style.setProperty('--i', i++);
+            w.appendChild(inner); frag.appendChild(w);
+          });
+          no.replaceChild(frag, n);
+        } else if (n.nodeType === 1) { dividir(n); }
+      });
+    })(h1);
+    h1.classList.remove('rv');
+  }
+
+  // Linha dourada sob os títulos de seção
+  document.querySelectorAll('.sec h2:not(.fname)').forEach(function(h){
+    if (h.closest('.feature,.cta,.faq-head')) return;
+    var l = document.createElement('span'); l.className = 'title-line'; l.setAttribute('aria-hidden','true');
+    h.appendChild(l);
+  });
+
+  // Barra de progresso de leitura
+  var barra = document.getElementById('progress'), tick = false;
+  function prog(){
+    var max = doc.scrollHeight - window.innerHeight;
+    barra.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ')';
+    tick = false;
+  }
+  window.addEventListener('scroll', function(){ if (!tick) { tick = true; requestAnimationFrame(prog); } }, {passive:true});
+  prog();
+
+  // Prédio em linhas douradas (SVG)
+  var sky = document.getElementById('skyline');
+  (function(){
+    var NS = 'http://www.w3.org/2000/svg', base = 500, seed = 7;
+    function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    function s(tag, attrs){ var n = document.createElementNS(NS, tag); for (var k in attrs) n.setAttribute(k, attrs[k]); sky.appendChild(n); return n; }
+    [[40,70,150,.2],[118,64,220,.5],[210,120,340,.9],[350,80,190,.6],[440,70,260,.35],[520,80,140,.15]].forEach(function(b, bi){
+      var x=b[0], w=b[1], h=b[2], t=b[3], top=base-h, main=bi===2;
+      var d = 'M'+x+' '+base+'V'+top+(main ? 'H'+(x+18)+'V'+(top-26)+'H'+(x+w-18)+'V'+top : '')+'H'+(x+w)+'V'+base;
+      s('path',{d:d,pathLength:1,'class':'o'}).style.setProperty('--t',t+'s');
+      if (main) {
+        s('path',{d:'M'+(x+w/2)+' '+(top-26)+'V'+(top-80),pathLength:1,'class':'o'}).style.setProperty('--t','2s');
+        s('circle',{cx:x+w/2,cy:top-84,r:3,'class':'w'}).style.setProperty('--t','3s');
+      }
+      for (var y = top+22; y < base-10; y += 22) s('path',{d:'M'+x+' '+y+'H'+(x+w),pathLength:1,'class':'f'}).style.setProperty('--t',(t+.6+(base-y)/500)+'s');
+      for (var yy = top+8; yy < base-20; yy += 22) for (var xx = x+10; xx < x+w-8; xx += 16) if (rnd() < .34) s('rect',{x:xx,y:yy,width:5,height:7,rx:1,'class':'w'}).style.setProperty('--t',(2.4+rnd()*5)+'s');
+    });
+    s('path',{d:'M0 '+base+'H640','class':'g'});
+  })();
+
+  // Brilho do mouse e parallax do prédio
+  var spot = document.getElementById('hero-spot'), pos = {x:-9999,y:-9999,on:false};
+  if (!reduz && window.matchMedia('(hover:hover)').matches) {
+    hero.addEventListener('pointermove', function(e){
+      var r = hero.getBoundingClientRect();
+      pos.x = e.clientX - r.left; pos.y = e.clientY - r.top; pos.on = true;
+      spot.style.setProperty('--mx', pos.x + 'px'); spot.style.setProperty('--my', pos.y + 'px');
+      sky.style.setProperty('--px', ((e.clientX / r.width - .5) * -24) + 'px');
+      sky.style.setProperty('--py', ((e.clientY / r.height - .5) * -12) + 'px');
+    });
+    hero.addEventListener('pointerleave', function(){ pos.on = false; });
+  }
+
+  // Rede de pontos (canvas), pausa fora da tela
+  var cv = document.getElementById('net');
+  if (cv.getContext && !reduz) {
+    var cx = cv.getContext('2d'), W = 0, H = 0, pts = [], vis = true, raf = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var medir = function(){
+      var r = hero.getBoundingClientRect(); W = r.width; H = r.height;
+      cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr,0,0,dpr,0,0);
+      var n = Math.round(Math.min(64, Math.max(24, W * H / 18000))); pts = [];
+      for (var i = 0; i < n; i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.3+.6});
+    };
+    var frame = function(){
+      cx.clearRect(0,0,W,H);
+      for (var i = 0; i < pts.length; i++) {
+        var a = pts[i]; a.x += a.vx; a.y += a.vy;
+        if (a.x < 0 || a.x > W) a.vx *= -1; if (a.y < 0 || a.y > H) a.vy *= -1;
+        if (pos.on) { var mx = pos.x-a.x, my = pos.y-a.y; if (mx*mx+my*my < 22000) { a.x += mx*.004; a.y += my*.004; } }
+        cx.fillStyle = 'rgba(224,190,106,.7)'; cx.beginPath(); cx.arc(a.x,a.y,a.r,0,6.2832); cx.fill();
+        for (var j = i+1; j < pts.length; j++) {
+          var b = pts[j], dx = a.x-b.x, dy = a.y-b.y, d2 = dx*dx+dy*dy;
+          if (d2 < 11000) { cx.strokeStyle = 'rgba(201,162,74,'+(.2*(1-d2/11000))+')'; cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(b.x,b.y); cx.stroke(); }
+        }
+      }
+      raf = vis ? requestAnimationFrame(frame) : 0;
+    };
+    medir();
+    var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(medir, 200); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ vis = es[0].isIntersecting; if (vis && !raf) raf = requestAnimationFrame(frame); }).observe(hero);
+    raf = requestAnimationFrame(frame);
+  }
+
+  // Spotlight dos cartões e inclinação leve nos imóveis
+  if (!reduz && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    document.addEventListener('pointermove', function(e){
+      var c = e.target.closest && e.target.closest('.spot'); if (!c) return;
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--x', (e.clientX - r.left) + 'px'); c.style.setProperty('--y', (e.clientY - r.top) + 'px');
+    });
+    track.addEventListener('pointermove', function(e){
+      var c = e.target.closest('.prop'); if (!c) return;
+      var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.style.transform = 'perspective(900px) rotateX('+(y*-4)+'deg) rotateY('+(x*5)+'deg) translateY(-4px)';
+    });
+    track.addEventListener('pointerout', function(e){ var c = e.target.closest('.prop'); if (c && !c.contains(e.relatedTarget)) c.style.transform = ''; });
+  }
 
   document.getElementById('ano').textContent = new Date().getFullYear();
 })();
