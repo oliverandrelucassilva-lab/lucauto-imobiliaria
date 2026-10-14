@@ -48,7 +48,7 @@
 :root{
   --navy:#0B1F3A; --navy-deep:#07142A; --navy-card:#12294A;
   --gold:#C9A24A; --gold-light:#E0BE6A; --gold-dark:#A47F38;
-  --light:#EEF0F3; --white:#FFFFFF;
+  --light:#F4EFE6; --amber:#B9772F; --charcoal:#12100E; --white:#FFFFFF;
   --text:#F4F6FA; --text-muted:#B8C2D1; --text-dark:#0B1F3A;
   --text-dark-muted:rgba(11,31,58,.8);
   --border:rgba(255,255,255,.12); --whatsapp:#25D366;
@@ -473,6 +473,36 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .hero__bottom{bottom:calc(var(--s6) + 44px)}
 }
 @media (prefers-reduced-motion:reduce){.scroll-cue .ring{animation:none}}
+
+/* ---------- Versão 2.3: menos azul, mais calor e contraste ---------- */
+.hero{background:linear-gradient(180deg,#07142A 0%,#0B1F3A 38%,#2a2a3e 66%,#6b4a30 88%,#a86a2c 100%)}
+.horizon{height:70%;background:radial-gradient(65% 75% at 70% 100%,rgba(240,170,70,.7),rgba(201,130,50,.3) 42%,transparent 74%)}
+.hero.has-img{background:var(--charcoal)}
+.hero.has-img .horizon,.hero.has-img .grid-bg,.hero.has-img .orb{display:none}
+.hero__media.on{opacity:1}
+.hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.88) 0%,rgba(10,9,8,.55) 42%,rgba(10,9,8,.05) 78%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
+.marquee{background:var(--gold);border-color:var(--gold-dark)}
+.marquee__group span{color:var(--text-dark);font-weight:700}
+.trust{background:var(--charcoal)}
+/* seção clara: textos escuros */
+.sec--light .intro>div>div p{color:var(--text-dark-muted)}
+.sec--light .intro h2{color:var(--text-dark)}
+.sec--light .feature{background:linear-gradient(160deg,#0B1F3A,#07142A);color:var(--text)}
+.sec--light .feature .eyebrow{color:var(--gold)}
+.sec--light .feature .accent{color:var(--gold)}
+.sec--light .feature .checks svg{stroke:var(--gold)}
+.sec--light .feature__foot{border-top-color:var(--border);color:var(--text-muted)}
+.sec--light .feature__foot a{color:var(--text)}
+.sec--light .chip{border-color:rgba(11,31,58,.22);color:var(--text-dark)}
+.sec--light .chip svg{stroke:var(--gold-dark)}
+.sec--light .map{border-color:rgba(11,31,58,.18)}
+.sec--light .building{border-color:rgba(11,31,58,.18)}
+.sec--light h2{color:var(--text-dark)}
+.sec--light .title-line{background:var(--gold-dark)}
+.sec--light .feature h2{color:var(--text)}
+.pillar .pic{stroke:var(--gold-light)}
+.footer{background:var(--charcoal)}
+.cta{background:linear-gradient(180deg,#0B1F3A,#12100E)}
 </style>
 </head>
 <body>
@@ -555,7 +585,7 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   </div>
 
   <!-- 2 e 3. INTRO + CARTÃO DE DESTAQUE -->
-  <section class="sec sec--navy glow" id="servicos" aria-labelledby="h-intro">
+  <section class="sec sec--light" id="servicos" aria-labelledby="h-intro">
     <div class="wrap intro">
       <div>
         <h2 id="h-intro" class="rv">Um atendimento de <span class="accent">perto.</span></h2>
@@ -657,7 +687,7 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   </section>
 
   <!-- 7. LOCALIZAÇÃO -->
-  <section class="sec sec--deep" id="localizacao" aria-labelledby="h-loc">
+  <section class="sec sec--light" id="localizacao" aria-labelledby="h-loc">
     <div class="wrap loc">
       <div>
         <p class="eyebrow rv">ONDE ESTAMOS</p>

@@ -1,4 +1,51 @@
-# Prompts de imagem e vídeo para a capa da Lucauto
+# Prompt para o ChatGPT gerar a imagem da capa
+
+Estilo da referência: foto cinematográfica de casa de alto padrão ao entardecer, luz quente dourada, espaço escuro e limpo à esquerda para o título.
+
+## Capa, computador (peça formato paisagem)
+
+```
+Crie uma imagem fotorrealista, em formato paisagem (proporção 3:2), para a capa de um site de imobiliária de alto padrão.
+
+Cena: uma casa contemporânea de luxo ao pôr do sol, com grandes vãos de vidro, varanda ampla com forro de madeira, piscina de borda infinita refletindo o céu e móveis de lounge elegantes. Interior aceso com luz quente dourada. Ao fundo, colinas suaves e horizonte aberto, sem mar e sem prédios altos. Céu em degradê de azul-marinho profundo no topo para laranja e dourado perto do horizonte, com algumas nuvens finas iluminadas.
+
+Composição: a casa e a piscina ocupam o lado direito (cerca de 55% da imagem). O lado esquerdo (cerca de 45%) deve ficar mais escuro e limpo, com céu e sombra suave, sem objetos, para receber um título em texto por cima.
+
+Estilo: fotografia de arquitetura de revista, lente 24 mm, alto contraste suave, cores quentes (dourado e âmbar) contra azul-marinho, nitidez alta, reflexos realistas na água, sensação de luxo e tranquilidade.
+
+Regras: sem pessoas, sem carros, sem texto, sem logotipos, sem marca d'água, sem molduras.
+```
+
+Depois de gerar, se precisar ajustar, peça no mesmo chat:
+- "Escureça e esvazie o lado esquerdo, para eu colocar texto."
+- "Deixe o céu mais azul-marinho no topo e mais dourado no horizonte."
+- "Remova qualquer texto, logotipo ou marca d'água."
+
+## Capa, celular (peça formato retrato)
+
+```
+Mesma cena e mesmo estilo, agora em formato retrato (proporção 2:3). A casa com a piscina ocupa a metade de baixo. A metade de cima é céu em degradê de azul-marinho para dourado, limpo, sem objetos, para receber um título. Sem pessoas, sem texto, sem logotipos, sem marca d'água.
+```
+
+## Imagem de interior (opcional, formato paisagem)
+
+```
+Sala de estar contemporânea de alto padrão ao entardecer, grandes janelas de vidro, luz dourada quente, madeira e pedra, decoração minimalista, fotografia de arquitetura fotorrealista, sem pessoas, sem texto, sem logotipos.
+```
+
+## Atenção
+
+- A cena da referência tem mar e cidade litorânea. Como a Lucauto atende em **Euclides da Cunha, BA** (interior), pedi colinas e horizonte aberto, para a imagem não sugerir um lugar que a imobiliária não atende.
+- Essas imagens são **ambientação**. Não use imagem de IA como foto de um imóvel real anunciado.
+- O rodapé do site já diz "Imagens ilustrativas".
+
+## Como colocar no site
+
+Gere a imagem, baixe e me mande aqui. Eu otimizo (WebP) e coloco na capa. Se preferir fazer sozinho: salve em `assets/img/capa.webp` e preencha `capaImagem` no `CONFIG` do `fonte/lucauto-v2.template.html`, depois rode `node scripts/montar-v2.mjs`.
+
+---
+
+# Outros prompts (Higgsfield ou outros geradores)
 
 Use em qualquer gerador (Higgsfield, Midjourney, Flux, GPT Image etc.). Os prompts estão em inglês porque os modelos costumam acertar mais, com a explicação em português.
 
