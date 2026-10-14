@@ -11,6 +11,7 @@
     foto        Caminho da foto, ex.: "assets/img/imoveis/casa-centro.webp"
                 (coloque a foto na pasta assets/img/imoveis, de preferência em .webp, até 1200 px de largura)
     alt         Descrição da foto, para acessibilidade e Google
+    quartos, banheiros, vagas, area   Opcionais (números). Só aparecem se preenchidos. area em m².
     preco       Opcional. Só preencha quando o cliente informar, ex.: "R$ 250.000".
                 Deixe vazio ("") para não mostrar preço.
     provisorio  true para marcar como exemplo provisório. Remova a linha (ou use false) nos imóveis reais.
@@ -24,6 +25,7 @@ window.IMOVEIS = [
     tipo: "Casa",
     finalidade: "Venda",
     local: "Euclides da Cunha, BA",
+    quartos: 3, banheiros: 2, vagas: 1, area: 120,
     foto: "assets/img/imovel-provisorio.webp",
     alt: "Imagem ilustrativa provisória, silhuetas de prédios em linhas douradas sobre fundo azul marinho",
     preco: "",
