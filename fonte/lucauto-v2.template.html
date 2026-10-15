@@ -500,7 +500,7 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 .cta{background:linear-gradient(180deg,#0B1F3A,#12100E)}
 /* ---------- Capa com foto ---------- */
 .hero__media#capa-img{object-position:62% 50%}
-.hero.has-img .skyline{display:block;opacity:.32;mix-blend-mode:screen}
+.hero.has-img .skyline{display:none}
 .hero.has-img #net{opacity:.85}
 .hero.has-img .hero.has-img .accent{color:var(--gold-light)}
 .hero.has-img .eyebrow{color:var(--gold-light)}
@@ -1404,6 +1404,14 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     });
   }
 
+  // Ponteiro: os pontos se aproximam e se ligam ao mouse (sem brilho nem bola)
+  if (!reduz && window.matchMedia('(hover:hover)').matches) {
+    hero.addEventListener('pointermove', function(e){
+      var r = hero.getBoundingClientRect(); pos.x = e.clientX - r.left; pos.y = e.clientY - r.top; pos.on = true;
+    });
+    hero.addEventListener('pointerleave', function(){ pos.on = false; });
+  }
+
   // Rede de pontos (canvas), pausa fora da tela
   var cv = document.getElementById('net');
   if (cv.getContext && !reduz) {
@@ -1419,10 +1427,15 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       for (var i = 0; i < pts.length; i++) {
         var a = pts[i]; a.x += a.vx; a.y += a.vy;
         if (a.x < 0 || a.x > W) a.vx *= -1; if (a.y < 0 || a.y > H) a.vy *= -1;
+        if (pos.on) { var mx = pos.x - a.x, my = pos.y - a.y; if (mx*mx + my*my < 48000) { a.x += mx * .006; a.y += my * .006; } }
         cx.fillStyle = 'rgba(224,190,106,.7)'; cx.beginPath(); cx.arc(a.x,a.y,a.r,0,6.2832); cx.fill();
         for (var j = i+1; j < pts.length; j++) {
           var b = pts[j], dx = a.x-b.x, dy = a.y-b.y, d2 = dx*dx+dy*dy;
           if (d2 < 11000) { cx.strokeStyle = 'rgba(201,162,74,'+(.2*(1-d2/11000))+')'; cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(b.x,b.y); cx.stroke(); }
+        }
+        if (pos.on) {
+          var px = pos.x - a.x, py = pos.y - a.y, pd = px*px + py*py;
+          if (pd < 48000) { cx.strokeStyle = 'rgba(224,190,106,'+(.55*(1-pd/48000))+')'; cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(pos.x,pos.y); cx.stroke(); }
         }
       }
       raf = vis ? requestAnimationFrame(frame) : 0;
