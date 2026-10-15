@@ -349,10 +349,6 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 @keyframes lit{0%,100%{opacity:0}20%,70%{opacity:.85}45%{opacity:.25}}
 .hero.has-img .skyline{opacity:.25}
 .hero__spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(480px circle at var(--mx,70%) var(--my,35%),rgba(201,162,74,.13),transparent 62%)}
-.split{display:block}
-.hero h1 .wd{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
-.hero h1 .wd>i{display:inline-block;font-style:inherit;transform:translateY(110%);animation:up .9s var(--ease) forwards;animation-delay:calc(.15s + var(--i,0)*.07s)}
-@keyframes up{to{transform:none}}
 
 /* confiança */
 .trust{background:var(--navy-deep);border-bottom:1px solid var(--border);padding:var(--s3) 0}
@@ -397,7 +393,6 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .skyline .o,.skyline .f{stroke-dashoffset:0;animation:none}
   .skyline .w{opacity:.5;animation:none}
   .orb{animation:none}
-  .hero h1 .wd>i{transform:none;animation:none}
   .title-line{transform:scaleX(1)}
 }
 
@@ -571,6 +566,12 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
   .gal__side h2{font-size:34px}
 }
 @media (prefers-reduced-motion:reduce){dialog.gal[open]::backdrop{animation:none}}
+
+/* ---------- BlurText ---------- */
+.bt{display:inline-block;opacity:0;will-change:transform,filter,opacity}
+.bt.pronto{will-change:auto}
+.blur-on.rv{opacity:1;transform:none;transition:none}
+@media (prefers-reduced-motion:reduce){.bt{opacity:1}}
 </style>
 </head>
 <body>
@@ -1170,27 +1171,53 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
     document.getElementById('foto-predio').hidden = false;
   }
 
-  // Título da capa palavra por palavra
-  var h1 = document.getElementById('h-hero');
-  if (h1 && !reduz) {
-    var i = 0;
-    (function dividir(no){
-      [].slice.call(no.childNodes).forEach(function(n){
-        if (n.nodeType === 3) {
+  // Efeito BlurText (recriado em JS puro, inspirado no componente do React Bits):
+  // cada palavra entra desfocada, de cima para baixo, em sequência, quando o título aparece na tela.
+  function blurText(no, o){
+    o = o || {};
+    var delay = o.delay != null ? o.delay : 200, step = o.stepDuration || .35, dir = o.direction === 'bottom' ? 1 : -1;
+    var from = o.from || {blur:10, y:50}, mid = o.mid || {blur:5, y:5};
+    if (reduz || !no.animate) return;
+    no.setAttribute('aria-label', no.textContent.replace(/\s+/g, ' ').trim());
+    var palavras = [], n = 0;
+    (function dividir(el){
+      [].slice.call(el.childNodes).forEach(function(c){
+        if (c.nodeType === 3) {
           var frag = document.createDocumentFragment();
-          n.textContent.split(/(\s+)/).forEach(function(t){
+          c.textContent.split(/(\s+)/).forEach(function(t){
             if (!t) return;
             if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(' ')); return; }
-            var w = document.createElement('span'); w.className = 'wd';
-            var inner = document.createElement('i'); inner.textContent = t; inner.style.setProperty('--i', i++);
-            w.appendChild(inner); frag.appendChild(w);
+            var w = document.createElement('span'); w.className = 'bt'; w.setAttribute('aria-hidden','true'); w.textContent = t;
+            palavras.push(w); frag.appendChild(w);
           });
-          no.replaceChild(frag, n);
-        } else if (n.nodeType === 1) { dividir(n); }
+          el.replaceChild(frag, c);
+        } else if (c.nodeType === 1) { dividir(c); }
       });
-    })(h1);
-    h1.classList.remove('rv');
+    })(no);
+    function rodar(){
+      palavras.forEach(function(w, i){
+        var an = w.animate([
+          {filter:'blur('+from.blur+'px)', opacity:0,  transform:'translateY('+(dir * from.y)+'px)'},
+          {filter:'blur('+mid.blur+'px)',  opacity:.5, transform:'translateY('+(-dir * mid.y)+'px)', offset:.5},
+          {filter:'blur(0px)',             opacity:1,  transform:'translateY(0)'}
+        ], {duration:step * 2000, delay:i * delay, easing:'ease-out', fill:'both'});
+        an.onfinish = function(){
+          w.classList.add('pronto');
+          if (i === palavras.length - 1 && o.onComplete) o.onComplete();
+        };
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      var io2 = new IntersectionObserver(function(es){ if (es[0].isIntersecting) { io2.disconnect(); rodar(); } }, {threshold:o.threshold != null ? o.threshold : .1, rootMargin:o.rootMargin || '0px'});
+      io2.observe(no);
+    } else { rodar(); }
   }
+  var h1 = document.getElementById('h-hero');
+  if (h1) { blurText(h1, {delay:140}); h1.classList.remove('rv'); }
+  ['h-intro','h-imoveis','h-procura','h-como','h-loc','h-cta'].forEach(function(id){
+    var t = document.getElementById(id);
+    if (t) { blurText(t, {delay:110}); t.classList.add('blur-on'); }
+  });
 
   // Linha dourada sob os títulos de seção
   document.querySelectorAll('.sec h2:not(.fname)').forEach(function(h){
