@@ -662,6 +662,12 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .gal__morecard-t{font-size:17px}
   .gal__morecard-s{font-size:14px;margin-bottom:var(--s2)}
 }
+/* imagem dentro do passo (celular e tablet) */
+.step__img{display:block;width:calc(100% + 2 * var(--s3));max-width:none;margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) var(--s2);aspect-ratio:16/10;object-fit:cover;border-radius:var(--r-lg) var(--r-lg) 0 0}
+.step__img+.step__n{margin-top:0}
+.cv__n[hidden]{display:none}
+.cv__label{z-index:1;text-shadow:0 1px 10px rgba(0,0,0,.7)}
+@media (min-width:1024px){.step__img{display:none}}
 </style>
 </head>
 <body>
@@ -989,6 +995,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     plantaAlt: 'Ilustração da casa saindo da planta até a fachada pronta',
     efeitoTitulos: 'blur',   // animação dos títulos: 'blur' (desfoque) ou 'fold' (dobra 3D). Para testar: adicione ?efeito=fold no endereço
     fotoPredio: '',
+    fotosAlt: ['Ilustração de uma pessoa conversando pelo celular sobre um imóvel','Ilustração de uma pessoa escolhendo uma casa numa maquete','Ilustração de uma pessoa assinando o contrato e recebendo as chaves'],   // descrição das 3 imagens dos passos
     fotos: { alugar:'', comprar:'', vender:'', avaliar:'', etapas:['','',''] },   // imagens opcionais do seletor e dos passos   // Ex.: 'assets/img/predio.webp' (foto real da fachada, aparece em Localização)
     horario: ''   // Ex.: 'segunda a sexta, das 8h às 18h'. Vazio: o microtexto e a pergunta de horário ficam ocultos.
   };
@@ -1393,6 +1400,12 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   });
 
   // Capítulos do passo a passo: número muda com o passo em foco
+  // imagem de cada passo (celular/tablet); no computador quem mostra é o painel grande
+  (CONFIG.fotos && CONFIG.fotos.etapas || []).forEach(function(src, i){
+    var st = document.querySelectorAll('.chapters .step')[i]; if (!src || !st) return;
+    var im = el('img','step__img'); im.src = src; im.alt = (CONFIG.fotosAlt && CONFIG.fotosAlt[i]) || ''; im.width = 900; im.height = 560; im.loading = 'lazy'; im.decoding = 'async';
+    st.insertBefore(im, st.firstChild);
+  });
   var cvN = document.getElementById('cv-n'), cvImg = document.getElementById('cv-img');
   var passos = [].slice.call(document.querySelectorAll('.chapters .step'));
   function irPasso(i){
@@ -1400,7 +1413,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     cvN.classList.add('swap');
     setTimeout(function(){ cvN.textContent = String(i + 1); cvN.classList.remove('swap'); }, 220);
     var f = (CONFIG.fotos && CONFIG.fotos.etapas || [])[i];
-    if (f) { cvImg.src = f; cvImg.hidden = false; } else { cvImg.hidden = true; }
+    if (f) { cvImg.src = f; cvImg.alt = (CONFIG.fotosAlt && CONFIG.fotosAlt[i]) || ''; cvImg.hidden = false; cvN.hidden = true; } else { cvImg.hidden = true; cvN.hidden = false; }
     passos.forEach(function(x, j){ x.classList.toggle('active', j === i); });
   }
   if ('IntersectionObserver' in window && passos.length) {

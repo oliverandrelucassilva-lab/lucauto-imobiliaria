@@ -45,6 +45,47 @@ Gere a imagem, baixe e me mande aqui. Eu otimizo (WebP) e coloco na capa. Se pre
 
 ---
 
+# Imagens do "Passo a passo" (3 ilustrações com pessoas)
+
+São 3 imagens, uma por passo, no mesmo estilo, em formato **retrato 4:5** (ex.: 1200 x 1500). O site corta no centro para o celular (16:10), então deixe o assunto principal no meio da imagem.
+
+**Recomendo estilo ilustração (não foto):** fica claramente "ilustrativo", combina com o azul e o dourado do site e evita rostos de IA que parecem pessoas reais. Se preferir foto realista, use o estilo B.
+
+**Cole este texto antes de cada pedido, para as 3 saírem iguais:**
+```
+Estilo A (recomendado): ilustração digital moderna e elegante, traço limpo, cores em azul marinho (#0B1F3A), dourado (#C9A24A) e tons de creme, luz quente de entardecer, personagens estilizados e simpáticos (rostos simples, sem detalhes realistas), fundo com pouco detalhe. Formato retrato 4:5. Sem texto, sem letras, sem logotipos, sem marca d'água.
+```
+```
+Estilo B (alternativa): fotografia realista de estilo editorial, luz quente de entardecer, tons de azul marinho e dourado, pessoas brasileiras de costas ou de perfil (sem rosto em destaque), fundo desfocado. Formato retrato 4:5. Sem texto, sem logotipos, sem marca d'água.
+```
+
+**Passo 1, "Você chama no WhatsApp"**
+```
+Uma pessoa sentada confortavelmente em casa, ao entardecer, conversando pelo celular, sorrindo. Acima do celular, balões de conversa vazios (sem texto) e pequenos ícones de casa e chave. Clima acolhedor e simples. Sem logotipo do WhatsApp.
+```
+
+**Passo 2, "Você escolhe e visita"**
+```
+Um casal e um corretor (todos vestidos de forma simples e profissional) em volta de uma maquete de casa com telhado de cerâmica, apontando e conversando. A casa da maquete tem varanda e jardim. Mesa com algumas pastas. Clima de escolha e confiança.
+```
+
+**Passo 3, "Contrato e documentação"**
+```
+Uma pessoa assinando um documento sobre uma mesa, enquanto o corretor entrega um chaveiro com uma chave dourada. Uma casa pequena de telhado de cerâmica aparece desfocada ao fundo, pela janela. Clima de conquista e alegria, sem exagero.
+```
+
+**Como colocar no site**
+1. Salve como `assets/img/passo-1.webp`, `passo-2.webp` e `passo-3.webp` (WebP, qualidade 85, 1200 px de largura).
+2. No `CONFIG` do `fonte/lucauto-v2.template.html`: `fotos: { ..., etapas: ['assets/img/passo-1.webp','assets/img/passo-2.webp','assets/img/passo-3.webp'] }`.
+3. Rode `node scripts/montar-v2.mjs`. Ou me mande as 3 imagens aqui que eu faço.
+
+**Cuidados**
+- São pessoas **geradas por IA**, só para ilustrar. Não use como se fossem a equipe da Lucauto, nem clientes reais ou depoimentos. A legenda "Imagem ilustrativa" já fica no rodapé do site.
+- Confira as mãos, os dedos e os rostos antes de usar. Se algo estiver estranho, peça de novo.
+- Quando a Lucauto tiver fotos reais da equipe ou de atendimento, essas devem substituir as ilustrações.
+
+---
+
 # Galeria de fachadas (efeito de expandir ao rolar)
 
 A galeria usa uma imagem por bloco, que ocupa a tela inteira no fim da rolagem. Por isso:
