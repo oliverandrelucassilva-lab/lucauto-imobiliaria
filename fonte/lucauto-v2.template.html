@@ -629,6 +629,12 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .build.static .build__stage{position:relative;height:auto!important;padding:var(--sec) 0}
 .hero.has-img .accent{text-shadow:0 2px 20px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.7)}
 .hero.has-img .sub{text-shadow:0 2px 22px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.6)}
+/* mídia realista da seção da planta */
+.nw{white-space:nowrap;font-weight:700;color:var(--text-dark)}
+.build__vis.real{aspect-ratio:16/10;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);background:#0a1426}
+.build__vis.real video,.build__vis.real .real__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform,opacity}
+.real__legenda{position:absolute;left:14px;bottom:12px;z-index:2;font-size:12px;font-weight:600;letter-spacing:.08em;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.build.static .build__vis.real{aspect-ratio:16/10}
 </style>
 </head>
 <body>
@@ -717,7 +723,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       <div>
         <h2 id="h-intro" class="rv">Um atendimento de <span class="accent">perto.</span></h2>
         <div class="rv" style="--d:.08s;margin-top:var(--s3)">
-          <p>Alugar, comprar ou vender um imóvel é uma decisão grande, e você merece alguém que explique cada passo com clareza. Na Lucauto, você conversa direto com a equipe, tira suas dúvidas e acompanha tudo até a chave na mão.</p>
+          <p>Alugar, comprar ou vender um imóvel é uma decisão grande, e você merece alguém que explique cada passo com clareza. <strong class="nw">Na Lucauto</strong>, você conversa direto com a equipe, tira suas dúvidas e acompanha tudo até a chave na mão.</p>
           <p>Aqui o atendimento começa pelo WhatsApp, sem formulário longo e sem enrolação. Você diz o que procura e a gente cuida do resto.</p>
         </div>
       </div>
@@ -975,6 +981,10 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     mensagem: 'Olá! Vim pelo site da Lucauto e gostaria de saber mais sobre imóveis.',
     capaImagem: '',   // Ex.: 'assets/img/capa.webp' (imagem de fundo da capa; vazio mantém a animação)
     capaVideo: '',    // Ex.: 'assets/video/capa.mp4' (vídeo curto, sem áudio; opcional)
+    // Animação realista da seção "Da planta à chave na mão" (opcional). Sem isso, usa a casa desenhada.
+    plantaVideo: '',        // vídeo curto que acompanha a rolagem. Ex.: 'assets/video/planta.mp4' (veja docs/animacao-realista.md)
+    plantaImagens: [],      // OU 2 a 5 imagens em sequência (planta, maquete, fachada). Ex.: ['assets/img/planta-1.webp','assets/img/planta-2.webp','assets/img/planta-3.webp']
+    plantaAlt: 'Ilustração da casa saindo da planta até a fachada pronta',
     efeitoTitulos: 'blur',   // animação dos títulos: 'blur' (desfoque) ou 'fold' (dobra 3D). Para testar: adicione ?efeito=fold no endereço
     fotoPredio: '',
     fotos: { alugar:'', comprar:'', vender:'', avaliar:'', etapas:['','',''] },   // imagens opcionais do seletor e dos passos   // Ex.: 'assets/img/predio.webp' (foto real da fachada, aparece em Localização)
@@ -1407,6 +1417,41 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   (function(){
     var secao = document.getElementById('planta'), track = document.getElementById('build-track'), stage = document.getElementById('build-stage'), svg = document.getElementById('build-svg');
     if (!svg) return;
+
+    // ---- Versão realista: vídeo ou imagens em sequência controlados pela rolagem ----
+    var midiaVideo = CONFIG.plantaVideo, midiaImgs = (CONFIG.plantaImagens || []).filter(Boolean);
+    if (midiaVideo || midiaImgs.length) {
+      var vis = svg.parentNode, pass0 = [].slice.call(document.querySelectorAll('#build-steps li')), fase0 = -1, cam = [], vid = null;
+      svg.style.display = 'none'; vis.classList.add('real'); vis.setAttribute('role','img'); vis.setAttribute('aria-label', CONFIG.plantaAlt || '');
+      if (midiaVideo) {
+        vid = document.createElement('video'); vid.src = midiaVideo; vid.muted = true; vid.playsInline = true; vid.preload = 'auto'; vid.setAttribute('aria-hidden','true'); vis.appendChild(vid);
+        var destrava = function(){ vid.play().then(function(){ vid.pause(); }).catch(function(){}); window.removeEventListener('pointerdown', destrava); window.removeEventListener('touchstart', destrava); };
+        window.addEventListener('pointerdown', destrava, {once:true}); window.addEventListener('touchstart', destrava, {once:true, passive:true});
+      } else {
+        midiaImgs.forEach(function(src, i){ var im = document.createElement('img'); im.src = src; im.alt = ''; im.setAttribute('aria-hidden','true'); im.decoding = 'async'; if (i) im.loading = 'lazy'; im.className = 'real__img'; vis.appendChild(im); cam.push(im); });
+      }
+      var legenda = document.createElement('span'); legenda.className = 'real__legenda'; legenda.textContent = 'Imagem ilustrativa'; vis.appendChild(legenda);
+      var desenhar = function(p){
+        if (vid) {
+          if (vid.duration && isFinite(vid.duration)) { var alvo = clamp(p, 0, 1) * (vid.duration - .05); if (Math.abs(vid.currentTime - alvo) > .02) vid.currentTime = alvo; }
+        } else {
+          var n = cam.length, pos = p * (n - 1);
+          cam.forEach(function(im, k){
+            var op = k === 0 ? 1 : suave(k - 1 + .15, k - .15, pos);
+            im.style.opacity = op.toFixed(3);
+            im.style.transform = 'scale(' + (1 + .06 * clamp(pos - k + 1, 0, 2) / 2).toFixed(4) + ')';
+          });
+        }
+        var f = p < .26 ? 0 : p < .52 ? 1 : p < .76 ? 2 : 3;
+        if (f !== fase0) { fase0 = f; pass0.forEach(function(li, i){ li.classList.toggle('on', i === f); }); }
+      };
+      if (reduz) { secao.classList.add('static'); if (vid) vid.addEventListener('loadedmetadata', function(){ vid.currentTime = vid.duration - .05; }); desenhar(1); pass0.forEach(function(li){ li.classList.add('on'); }); return; }
+      var it0 = { cur:0, tgt:0, vh:0 };
+      it0.medir = function(){ it0.vh = window.innerHeight; stage.style.height = it0.vh + 'px'; track.style.height = (it0.vh * 4) + 'px'; };
+      it0.ler = function(){ var r = track.getBoundingClientRect(); return clamp(-r.top / (it0.vh * 3), 0, 1); };
+      it0.aplicar = desenhar; it0.track = track; it0.medir(); desenhar(0); animadores.push(it0);
+      return;
+    }
     var NS = 'http://www.w3.org/2000/svg', S = 50, CX = 385, CY = 170, W = 6, D = 4, H = 2.3, HR = H + 1.25, FY = D + 1.9;
     var iso = function(x, y, z){ return [CX + (x - y) * .866 * S, CY + (x + y) * .5 * S - z * S]; };
     var mk = function(tag, at, pai){ var n = document.createElementNS(NS, tag); for (var k in at) n.setAttribute(k, at[k]); (pai || svg).appendChild(n); return n; };
