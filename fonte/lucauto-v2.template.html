@@ -348,7 +348,6 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes lit{0%,100%{opacity:0}20%,70%{opacity:.85}45%{opacity:.25}}
 .hero.has-img .skyline{opacity:.25}
-.hero__spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(480px circle at var(--mx,70%) var(--my,35%),rgba(201,162,74,.13),transparent 62%)}
 
 /* confiança */
 .trust{background:var(--navy-deep);border-bottom:1px solid var(--border);padding:var(--s3) 0}
@@ -501,12 +500,11 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 /* ---------- Capa com foto ---------- */
 .hero__media#capa-img{object-position:62% 50%}
 .hero.has-img .skyline{display:none}
-.hero.has-img #net{opacity:.35}
-.hero.has-img .hero__spot{background:radial-gradient(520px circle at var(--mx,70%) var(--my,40%),rgba(255,190,90,.12),transparent 62%)}
-.hero.has-img .accent{color:var(--gold-light)}
+.hero.has-img #net{display:none}
+.hero.has-img .hero.has-img .accent{color:var(--gold-light)}
 .hero.has-img .eyebrow{color:var(--gold-light)}
-.hero.has-img .hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.93) 0%,rgba(10,9,8,.72) 42%,rgba(10,9,8,.08) 80%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
-.hero.has-img h1,.hero.has-img .sub{text-shadow:0 2px 24px rgba(0,0,0,.55)}
+.hero.has-img .hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.7) 0%,rgba(10,9,8,.5) 42%,rgba(10,9,8,.05) 80%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
+.hero.has-img h1,.hero.has-img .sub{text-shadow:0 2px 28px rgba(0,0,0,.7),0 1px 3px rgba(0,0,0,.45)}
 .hero.has-img .eyebrow{text-shadow:0 1px 12px rgba(0,0,0,.6)}
 @media (max-width:767px){
   .hero__media#capa-img{object-position:58% 50%}
@@ -572,6 +570,24 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
 .bt.pronto{will-change:auto}
 .blur-on.rv{opacity:1;transform:none;transition:none}
 @media (prefers-reduced-motion:reduce){.bt{opacity:1}}
+
+/* ---------- Alinhamento e ajustes ---------- */
+h1,h2{text-wrap:balance}
+body{hyphens:manual}
+.intro>div>div p,.step p,.faq .ans p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-wrap:pretty}
+.accent{display:inline-block;padding-right:.06em}
+h2 .accent,h1 .accent{margin-left:-.02em}
+.topicos{display:flex;flex-wrap:wrap;gap:6px 14px;margin:2px 0 6px}
+.topicos li{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:1.3;color:var(--text-dark-muted)}
+.topicos svg{width:16px;height:16px;flex:none;fill:none;stroke:var(--gold-dark);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.gal__meta .topicos{margin:0}
+.gal__meta .topicos li{color:var(--text-muted);font-size:14px}
+.gal__meta .topicos svg{stroke:var(--gold)}
+.prop__price{margin-bottom:0}
+.prop__body{gap:8px}
+
+.sec--light .intro>div>div p{font-size:17px;line-height:1.7}
+.hero.has-img .hero__in::before{content:"";position:absolute;z-index:-1;inset:-48px -90px -48px -70px;pointer-events:none;background:radial-gradient(70% 72% at 42% 50%,rgba(10,9,8,.55),transparent 78%)}
 </style>
 </head>
 <body>
@@ -609,7 +625,6 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
       <div class="orb orb--a"></div><div class="orb orb--b"></div>
       <canvas id="net"></canvas>
       <svg class="skyline" id="skyline" viewBox="0 0 640 520" preserveAspectRatio="xMaxYMax meet" focusable="false"></svg>
-      <div class="hero__spot" id="hero-spot"></div>
     </div>
     <div class="wrap">
       <div class="hero__in">
@@ -647,8 +662,10 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
 
   <!-- FAIXA ROLANTE -->
   <div class="marquee" role="region" aria-label="Serviços da Lucauto">
-    <div class="marquee__track">
+    <div class="marquee__track" id="marquee-track">
       <div class="marquee__group"><span>FALE COM A GENTE •</span><span>ALUGUEL •</span><span>VENDA •</span><span>AVALIAÇÃO •</span><span>DESPACHANTE IMOBILIÁRIO •</span></div>
+      <div class="marquee__group" aria-hidden="true"><span>FALE COM A GENTE •</span><span>ALUGUEL •</span><span>VENDA •</span><span>AVALIAÇÃO •</span><span>DESPACHANTE IMOBILIÁRIO •</span></div>
+      <div class="marquee__group" aria-hidden="true"><span>FALE COM A GENTE •</span><span>ALUGUEL •</span><span>VENDA •</span><span>AVALIAÇÃO •</span><span>DESPACHANTE IMOBILIÁRIO •</span></div>
       <div class="marquee__group" aria-hidden="true"><span>FALE COM A GENTE •</span><span>ALUGUEL •</span><span>VENDA •</span><span>AVALIAÇÃO •</span><span>DESPACHANTE IMOBILIÁRIO •</span></div>
     </div>
   </div>
@@ -675,18 +692,6 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
         </ul>
         <p class="feature__foot">Atendimento via WhatsApp: <a data-wa href="#" target="_blank" rel="noopener">(75) 99942-1482</a></p>
       </aside>
-    </div>
-  </section>
-
-  <!-- 4. PILARES -->
-  <section class="sec sec--deep" style="padding-block:var(--s6)" aria-label="Nossos pilares">
-    <div class="wrap">
-      <ul class="pillars">
-        <li class="pillar spot rv"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.500 12 4l9 7.500M5.500 10v10h13V10M10 20v-5h4v5"/></svg><strong>Aluguel</strong><span>para morar ou investir</span></li>
-        <li class="pillar spot rv" style="--d:.06s"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.500" cy="8.500" r="1.200"/></svg><strong>Venda</strong><span>casas, terrenos e mais</span></li>
-        <li class="pillar spot rv" style="--d:.12s"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.500"/><path d="M20 20l-4.200-4.200M8.500 11.500l1.800 1.800 3.200-3.600"/></svg><strong>Avaliação</strong><span>para vender ou alugar com segurança</span></li>
-        <li class="pillar spot rv" style="--d:.18s"><svg class="pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7zM14 3v5h5M10 13h6M10 17h6"/></svg><strong>Despachante</strong><span>documentação sem dor de cabeça</span></li>
-      </ul>
     </div>
   </section>
 
@@ -913,7 +918,7 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
      IMÓVEIS EM DESTAQUE (edite aqui)
      Cada imóvel é um bloco { ... }. Campos:
        tipo, bairro      obrigatórios (ex.: 'Casa', 'Centro')
-       quartos, vagas    opcionais (números)
+       quartos, banheiros, vagas, area   opcionais (números; area em m²). Aparecem como tópicos pequenos
        valor             opcional. Vazio mostra "Consulte"
        fotos             até 5 imagens (a 1ª é a capa do card). Caminhos como 'assets/img/imoveis/casa-1.webp'
                          ou deixe [] para usar as imagens provisórias. Passou de 5, o site ignora as extras.
@@ -929,9 +934,9 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
   ];
   var ALT_PROV = 'Imagem ilustrativa provisória, desenho em linhas douradas sobre fundo azul marinho';
   var IMOVEIS = [
-    { tipo:'Casa',        bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', fotos:[PROV[1],PROV[3],PROV[0],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
-    { tipo:'Apartamento', bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', fotos:[PROV[0],PROV[3],PROV[1],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
-    { tipo:'Terreno',     bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', fotos:[PROV[2],PROV[4],PROV[0],PROV[1],PROV[3]], alt:ALT_PROV, provisorio:true }
+    { tipo:'Casa',        bairro:'Euclides da Cunha', quartos:3, banheiros:2, vagas:1, area:null, valor:'', fotos:[PROV[1],PROV[3],PROV[0],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
+    { tipo:'Apartamento', bairro:'Euclides da Cunha', quartos:2, banheiros:1, vagas:1, area:null, valor:'', fotos:[PROV[0],PROV[3],PROV[1],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
+    { tipo:'Terreno',     bairro:'Euclides da Cunha', quartos:null, banheiros:null, vagas:null, area:300, valor:'', fotos:[PROV[2],PROV[4],PROV[0],PROV[1],PROV[3]], alt:ALT_PROV, provisorio:true }
   ];
   function fotosDe(i){ var f = (i.fotos && i.fotos.length ? i.fotos : [PROV[0]]).slice(0, MAX_FOTOS); return f; }
 
@@ -946,6 +951,28 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
   if (CONFIG.horario) {
     document.querySelectorAll('[data-horario]').forEach(function(el){ el.hidden = false; });
     document.querySelectorAll('[data-horario-txt]').forEach(function(el){ el.textContent = CONFIG.horario; });
+  }
+
+  // Tópicos pequenos (quartos, banheiros, vagas, área) com ícone
+  var ICONES = {
+    quartos:'<path d="M3 18V8M3 14h18v4M21 14v-3a3 3 0 0 0-3-3h-7v6M7 11.500h.01"/>',
+    banheiros:'<path d="M4 12h16v2a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4zM6 12V6a2 2 0 0 1 3.500-1.300M7 18l-1 2M17 18l1 2"/>',
+    vagas:'<path d="M5 16V11l2-4h10l2 4v5M3 16h18M7.500 13.500h.01M16.500 13.500h.01"/>',
+    area:'<path d="M4 4h16v16H4zM4 9h5M4 14h3M9 4v5M14 4v3"/>'
+  };
+  function topicos(i){
+    var itens = [];
+    if (i.quartos) itens.push(['quartos', i.quartos + (i.quartos > 1 ? ' quartos' : ' quarto')]);
+    if (i.banheiros) itens.push(['banheiros', i.banheiros + (i.banheiros > 1 ? ' banheiros' : ' banheiro')]);
+    if (i.vagas) itens.push(['vagas', i.vagas + (i.vagas > 1 ? ' vagas' : ' vaga')]);
+    if (i.area) itens.push(['area', i.area + ' m²']);
+    if (!itens.length) return null;
+    var ul = el('ul','topicos');
+    itens.forEach(function(t){
+      var li = el('li'); li.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONES[t[0]] + '</svg>';
+      li.appendChild(document.createTextNode(t[1])); ul.appendChild(li);
+    });
+    return ul;
   }
 
   // Cards de imóveis
@@ -965,15 +992,11 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
     hint.appendChild(el('b','',String(fotos.length)));
     open.appendChild(hint);
     media.appendChild(open);
-    media.appendChild(el('span','pill', i.tipo + ' · ' + i.bairro));
     if (i.provisorio) media.appendChild(el('span','pill pill--warn','Exemplo provisório'));
     var body = el('div','prop__body');
     body.appendChild(el('h3','',titulo));
-    var meta = [];
-    if (i.quartos) meta.push(i.quartos + (i.quartos > 1 ? ' quartos' : ' quarto'));
-    if (i.vagas) meta.push(i.vagas + (i.vagas > 1 ? ' vagas' : ' vaga'));
-    if (meta.length) body.appendChild(el('p','prop__meta', meta.join(' / ')));
     body.appendChild(el('p','prop__price', i.valor || 'Consulte'));
+    var tops = topicos(i); if (tops) body.appendChild(tops);
     var b = el('a','btn','Quero saber mais');
     b.href = wa('Olá! Tenho interesse no imóvel: ' + titulo + '. Pode me passar mais informações?');
     b.target = '_blank'; b.rel = 'noopener';
@@ -1019,10 +1042,7 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
     var titulo = item.tipo + ' em ' + item.bairro;
     document.getElementById('gal-eyebrow').textContent = (item.tipo + ' · ' + item.bairro).toUpperCase();
     document.getElementById('gal-title').textContent = titulo;
-    var meta = [];
-    if (item.quartos) meta.push(item.quartos + (item.quartos > 1 ? ' quartos' : ' quarto'));
-    if (item.vagas) meta.push(item.vagas + (item.vagas > 1 ? ' vagas' : ' vaga'));
-    var gm = document.getElementById('gal-meta'); gm.textContent = meta.join(' / '); gm.hidden = !meta.length;
+    var gm = document.getElementById('gal-meta'); gm.textContent = ''; var gt = topicos(item); if (gt) gm.appendChild(gt); gm.hidden = !gt;
     document.getElementById('gal-price').textContent = item.valor || 'Consulte';
     document.getElementById('gal-prov').hidden = !item.provisorio;
     var msgBase = 'Olá! Tenho interesse no imóvel: ' + titulo + '.';
@@ -1266,6 +1286,25 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
     passos.forEach(function(x){ po.observe(x); });
   }
 
+  // Faixa rolante em loop contínuo: repete o grupo até cobrir o dobro da largura da tela
+  (function(){
+    var trilha = document.getElementById('marquee-track'); if (!trilha) return;
+    var base = trilha.querySelector('.marquee__group');
+    function ajustar(){
+      var grupos = trilha.querySelectorAll('.marquee__group');
+      for (var k = grupos.length - 1; k >= 4; k--) trilha.removeChild(grupos[k]);
+      var g = base.getBoundingClientRect().width; if (!g) return;
+      var porMetade = Math.max(2, Math.ceil(window.innerWidth / g) + 1);   // grupos por metade da trilha
+      while (trilha.querySelectorAll('.marquee__group').length < porMetade * 2) {
+        var c = base.cloneNode(true); c.setAttribute('aria-hidden','true'); trilha.appendChild(c);
+      }
+      // se há mais grupos que o necessário (4 fixos), o deslocamento de 50% continua exato
+      trilha.style.animationDuration = Math.round(porMetade * g / 60) + 's';
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar); else ajustar();
+    window.addEventListener('resize', ajustar);
+  })();
+
   // Barra de progresso de leitura
   var barra = document.getElementById('progress'), tick = false;
   function prog(){
@@ -1296,22 +1335,19 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
     s('path',{d:'M0 '+base+'H640','class':'g'});
   })();
 
-  // Brilho do mouse e parallax do prédio
-  var spot = document.getElementById('hero-spot'), pos = {x:-9999,y:-9999,on:false};
-  if (!reduz && window.matchMedia('(hover:hover)').matches) {
+  // Parallax do prédio (só quando a capa não tem foto)
+  var pos = {x:-9999,y:-9999,on:false};
+  if (!reduz && window.matchMedia('(hover:hover)').matches && !capaImg.getAttribute('src')) {
     hero.addEventListener('pointermove', function(e){
       var r = hero.getBoundingClientRect();
-      pos.x = e.clientX - r.left; pos.y = e.clientY - r.top; pos.on = true;
-      spot.style.setProperty('--mx', pos.x + 'px'); spot.style.setProperty('--my', pos.y + 'px');
       sky.style.setProperty('--px', ((e.clientX / r.width - .5) * -24) + 'px');
       sky.style.setProperty('--py', ((e.clientY / r.height - .5) * -12) + 'px');
     });
-    hero.addEventListener('pointerleave', function(){ pos.on = false; });
   }
 
   // Rede de pontos (canvas), pausa fora da tela
   var cv = document.getElementById('net');
-  if (cv.getContext && !reduz) {
+  if (cv.getContext && !reduz && !capaImg.getAttribute('src')) {
     var cx = cv.getContext('2d'), W = 0, H = 0, pts = [], vis = true, raf = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
     var medir = function(){
       var r = hero.getBoundingClientRect(); W = r.width; H = r.height;
