@@ -616,11 +616,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .build__steps span{font-size:14px;color:var(--text-muted)}
 #build-svg{width:100%;max-height:52vh;overflow:visible;display:block}
 .build__vis{position:relative}
-.build__photo{position:absolute;inset:0;margin:0;border-radius:24px;overflow:hidden;clip-path:inset(50% 50% 50% 50% round 24px);box-shadow:0 30px 80px rgba(0,0,0,.5);visibility:hidden}
-.build__photo img{width:100%;height:100%;object-fit:cover;display:block}
-.build__photo figcaption{position:absolute;left:14px;bottom:12px;font-size:12px;font-weight:600;letter-spacing:.08em;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.8)}
-.build.static .build__photo{clip-path:inset(0 round 24px);visibility:visible}
-.build.static #build-svg{opacity:0}
+
 @media (min-width:1024px){
   .build__in{grid-template-columns:.8fr 1.2fr;gap:var(--s5)}
   .build__txt h2{font-size:44px}
@@ -803,10 +799,6 @@ h2 .accent,h1 .accent{margin-left:-.02em}
           </div>
           <div class="build__vis">
             <svg id="build-svg" viewBox="0 0 800 560" role="img" aria-label="Animação de uma casa saindo da planta: o desenho no papel ganha paredes, telhado e acabamento até ficar pronta."></svg>
-            <figure class="build__photo" id="build-photo">
-              <img src="{{b64:assets/img/fachada-1.webp}}" alt="Imagem ilustrativa da fachada de uma casa térrea com varanda e telhado de cerâmica ao entardecer" width="1672" height="941" loading="lazy" decoding="async">
-              <figcaption>Imagem ilustrativa</figcaption>
-            </figure>
           </div>
         </div>
       </div>
@@ -1411,105 +1403,177 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   var suave = function(a, b, x){ var t = clamp((x - a) / ((b - a) || 1e-6), 0, 1); return t * t * (3 - 2 * t); };
   var animadores = [];   // itens que dependem da rolagem
 
-  // ---------- Casa que sai da planta (escala com a rolagem) ----------
+  // ---------- Casa que sai da planta (monta com a rolagem, do papel até a chave) ----------
   (function(){
     var secao = document.getElementById('planta'), track = document.getElementById('build-track'), stage = document.getElementById('build-stage'), svg = document.getElementById('build-svg');
     if (!svg) return;
-    var NS = 'http://www.w3.org/2000/svg', S = 52, CX = 360, CY = 232, W = 6, D = 4, H = 2.4;
+    var NS = 'http://www.w3.org/2000/svg', S = 50, CX = 385, CY = 170, W = 6, D = 4, H = 2.3, HR = H + 1.25, FY = D + 1.9;
     var iso = function(x, y, z){ return [CX + (x - y) * .866 * S, CY + (x + y) * .5 * S - z * S]; };
     var mk = function(tag, at, pai){ var n = document.createElementNS(NS, tag); for (var k in at) n.setAttribute(k, at[k]); (pai || svg).appendChild(n); return n; };
     var pts = function(a){ return a.map(function(q){ return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' '); };
-    var cor = function(a, b, t){ var pa = [1,3,5].map(function(i){ return parseInt(a.substr(i,2),16); }), pb = [1,3,5].map(function(i){ return parseInt(b.substr(i,2),16); });
-      return 'rgb(' + pa.map(function(v, i){ return Math.round(v + (pb[i] - v) * t); }).join(',') + ')'; };
+    var rgb = function(h){ return [1,3,5].map(function(i){ return parseInt(h.substr(i,2),16); }); };
+    var cor = function(a, b, t){ var pa = rgb(a), pb = rgb(b); return 'rgb(' + pa.map(function(v, i){ return Math.round(v + (pb[i] - v) * t); }).join(',') + ')'; };
+    var P = function(poly, a, op, fill, stroke, sw){ poly.setAttribute('points', pts(a)); poly.setAttribute('opacity', op); if (fill) poly.setAttribute('fill', fill); if (stroke) poly.setAttribute('stroke', stroke); if (sw) poly.setAttribute('stroke-width', sw); };
+    var LN = function(l, a, b, op){ l.setAttribute('x1', a[0]); l.setAttribute('y1', a[1]); l.setAttribute('x2', b[0]); l.setAttribute('y2', b[1]); l.setAttribute('opacity', op); };
+    var desloca = function(a, dy){ return a.map(function(q){ return [q[0], q[1] + dy]; }); };
 
     var defs = mk('defs');
-    var fl = mk('filter', {id:'brilho', x:'-50%', y:'-50%', width:'200%', height:'200%'}, defs); mk('feGaussianBlur', {stdDeviation:7}, fl);
-    var gGrade = mk('g'), gChao = mk('g'), gSombra = mk('ellipse', {cx:CX + 45, cy:CY + 132, rx:260, ry:62, fill:'#000', opacity:0}), gParedes = mk('g'), gLaje1 = mk('g'), gAlto = mk('g'), gLaje2 = mk('g'), gJan = mk('g');
+    var fl = mk('filter', {id:'brilho', x:'-60%', y:'-60%', width:'220%', height:'220%'}, defs); mk('feGaussianBlur', {stdDeviation:7}, fl);
+    var fs = mk('filter', {id:'brilhoSol', x:'-100%', y:'-100%', width:'300%', height:'300%'}, defs); mk('feGaussianBlur', {stdDeviation:22}, fs);
+    var gFundo = mk('g'), gGrade = mk('g'), gPiso = mk('g'), gChao = mk('g'), gSombra = mk('ellipse', {cx:CX + 10, cy:CY + 175, rx:250, ry:62, fill:'#000', opacity:0}),
+        gParedes = mk('g'), gJan = mk('g'), gTelha = mk('g'), gCol = mk('g'), gCerca = mk('g'), gJardim = mk('g'), gChave = mk('g');
 
-    // grade e planta baixa (desenhadas à mão no papel)
+    // céu: morros e sol
+    var solBrilho = mk('circle', {cx:95, cy:300, r:70, fill:'#ffb04a', filter:'url(#brilhoSol)', opacity:0}, gFundo);
+    var sol = mk('circle', {cx:95, cy:300, r:26, fill:'#ffd98a', opacity:0}, gFundo);
+
+    // grade e planta baixa
     var linhas = [];
-    for (var gx = -2; gx <= 8; gx++) linhas.push([iso(gx, -2, 0), iso(gx, 6, 0)]);
-    for (var gy = -2; gy <= 6; gy++) linhas.push([iso(-2, gy, 0), iso(8, gy, 0)]);
+    for (var gx = -2; gx <= 8; gx++) linhas.push([iso(gx, -2, 0), iso(gx, 8, 0)]);
+    for (var gy = -2; gy <= 8; gy++) linhas.push([iso(-2, gy, 0), iso(8, gy, 0)]);
     var grade = linhas.map(function(l){ return mk('path', {d:'M' + l[0].join(' ') + 'L' + l[1].join(' '), stroke:'#C9A24A', 'stroke-width':.6, opacity:0}, gGrade); });
     var contorno = mk('path', {d:'M' + [iso(0,0,0), iso(W,0,0), iso(W,D,0), iso(0,D,0)].map(function(q){ return q.join(' '); }).join('L') + 'Z', fill:'none', stroke:'#E0BE6A', 'stroke-width':2, pathLength:1, 'stroke-dasharray':1, 'stroke-dashoffset':1, 'stroke-linejoin':'round'}, gChao);
     var interior = [[iso(2.2,0,0), iso(2.2,D,0)], [iso(2.2,2.2,0), iso(W,2.2,0)], [iso(4,2.2,0), iso(4,D,0)], [iso(0,2,0), iso(2.2,2,0)]].map(function(l){
       return mk('path', {d:'M' + l[0].join(' ') + 'L' + l[1].join(' '), fill:'none', stroke:'#C9A24A', 'stroke-width':1.4, pathLength:1, 'stroke-dasharray':1, 'stroke-dashoffset':1}, gChao); });
 
-    // faces: cada uma é um polígono atualizado a cada quadro
-    var face = function(g){ return mk('polygon', {points:'', stroke:'#C9A24A', 'stroke-width':1.3, 'stroke-linejoin':'round', opacity:0}, g); };
-    var f1 = face(gParedes), f2 = face(gParedes), ft = face(gParedes);
-    var l1a = face(gLaje1), l1b = face(gLaje1), l1t = face(gLaje1);
-    var ua = face(gAlto), ub = face(gAlto), ut = face(gAlto);
-    var l2a = face(gLaje2), l2b = face(gLaje2), l2t = face(gLaje2);
+    // piso do terreno e calçada
+    var pavimento = mk('polygon', {points:'', opacity:0}, gPiso), calcada = mk('polygon', {points:'', opacity:0}, gPiso);
+    var pedras = []; for (var i = 0; i < 9; i++) pedras.push(mk('line', {stroke:'#8d7556', 'stroke-width':1, opacity:0}, gPiso));
 
-    // janelas e porta (brilho + vidro)
-    var quadX = function(x, u0, u1, z0, z1){ return [iso(x,u0,z0), iso(x,u1,z0), iso(x,u1,z1), iso(x,u0,z1)]; };   // plano x = const
-    var quadY = function(y, u0, u1, z0, z1){ return [iso(u0,y,z0), iso(u1,y,z0), iso(u1,y,z1), iso(u0,y,z1)]; };   // plano y = const
-    var zb = H + .2, hu = 1.5;
-    var janelas = [
-      quadY(D, .7, 2.3, .7, 1.9), quadY(D, 2.9, 4.5, .7, 1.9), quadX(W, .8, 3.2, .7, 1.9),
-      quadY(3.2, 1.3, 4.1, zb + .3, zb + 1.2), quadX(4.4, 1.2, 2.8, zb + .3, zb + 1.2)
-    ];
-    var porta = quadY(D, 5, 5.65, 0, 1.7);
+    // paredes
+    var face = function(g){ return mk('polygon', {points:'', stroke:'#C9A24A', 'stroke-width':1.3, 'stroke-linejoin':'round', opacity:0}, g); };
+    var f1 = face(gParedes), f2 = face(gParedes), ft = face(gParedes), empena = face(gParedes);
+
+    // janelas e porta
+    var quadX = function(x, u0, u1, z0, z1){ return [iso(x,u0,z0), iso(x,u1,z0), iso(x,u1,z1), iso(x,u0,z1)]; };
+    var quadY = function(y, u0, u1, z0, z1){ return [iso(u0,y,z0), iso(u1,y,z0), iso(u1,y,z1), iso(u0,y,z1)]; };
+    var janelas = [quadY(D, .6, 1.9, .6, 1.7), quadY(D, 4.2, 5.5, .6, 1.7), quadX(W, 1, 3, .6, 1.7)];
+    var porta = quadY(D, 2.6, 3.5, 0, 1.85);
     var brilhos = janelas.map(function(q){ return mk('polygon', {points:pts(q), fill:'#FFC96B', filter:'url(#brilho)', opacity:0}, gJan); });
     var vidros = janelas.map(function(q){ return mk('polygon', {points:pts(q), fill:'#27456f', stroke:'#C9A24A', 'stroke-width':1, opacity:0}, gJan); });
     var pt = mk('polygon', {points:pts(porta), fill:'#5b3a1e', stroke:'#C9A24A', 'stroke-width':1, opacity:0}, gJan);
+    var ptRipas = [0,1,2,3].map(function(i){ var u = 2.6 + .9 * (i + 1) / 5; return mk('line', {x1:iso(u,D,.35)[0], y1:iso(u,D,.35)[1], x2:iso(u,D,1.7)[0], y2:iso(u,D,1.7)[1], stroke:'#2e1c0d', 'stroke-width':1.2, opacity:0}, gJan); });
 
-    var set = function(poly, a, op, fill, stroke, sw){ poly.setAttribute('points', pts(a)); poly.setAttribute('opacity', op); poly.setAttribute('fill', fill); poly.setAttribute('stroke', stroke); poly.setAttribute('stroke-width', sw); };
-    var desloca = function(a, dy){ return a.map(function(q){ return [q[0], q[1] + dy]; }); };
+    // telhado de cerâmica (duas águas) com beiral sobre a varanda
+    var X0 = -.5, X1 = W + .5, YE = D + .9, YB = -.5, ZE = H - .05;
+    var tTras = mk('polygon', {points:'', stroke:'#C9A24A', 'stroke-width':1.2, 'stroke-linejoin':'round', opacity:0}, gTelha);
+    var tFrente = mk('polygon', {points:'', stroke:'#C9A24A', 'stroke-width':1.2, 'stroke-linejoin':'round', opacity:0}, gTelha);
+    var telhas = []; for (var k = 0; k < 10; k++) telhas.push(mk('line', {stroke:'#6e2f19', 'stroke-width':1, opacity:0}, gTelha));
 
-    var passos = [].slice.call(document.querySelectorAll('#build-steps li')), faseAtual = -1, foto = document.getElementById('build-photo');
+    // colunas da varanda
+    var colX = [.5, 2.3, 4.1, 5.9], YC = D + .75;
+    var colSom = colX.map(function(){ return mk('line', {stroke:'#7a6a55', 'stroke-width':10, 'stroke-linecap':'round', opacity:0}, gCol); });
+    var colunas = colX.map(function(){ return mk('line', {stroke:'#efe5d3', 'stroke-width':6.5, 'stroke-linecap':'round', opacity:0}, gCol); });
+
+    // muro, grade e portão
+    var m1 = mk('polygon', {points:'', stroke:'#8d7556', 'stroke-width':1, opacity:0}, gCerca), m2 = mk('polygon', {points:'', stroke:'#8d7556', 'stroke-width':1, opacity:0}, gCerca);
+    var barras = []; for (var b = 0; b < 30; b++) barras.push(mk('line', {stroke:'#2a2118', 'stroke-width':1.8, opacity:0}, gCerca));
+    var trilhos = [mk('line', {stroke:'#2a2118', 'stroke-width':2, opacity:0}, gCerca), mk('line', {stroke:'#2a2118', 'stroke-width':2, opacity:0}, gCerca)];
+
+    // jardim
+    var tronco = mk('line', {stroke:'#5b4630', 'stroke-width':4.5, 'stroke-linecap':'round', opacity:0}, gJardim);
+    var folhas = [[-26,-6,26,16],[0,-26,30,20],[26,-4,24,15],[-8,6,24,14],[14,8,22,13],[-34,10,18,11]].map(function(f, i){ return mk('ellipse', {rx:f[2], ry:f[3], fill:i % 2 ? '#4a6a34' : '#5f7d3f', opacity:0}, gJardim); });
+    var cacto = mk('line', {stroke:'#4c7a3f', 'stroke-width':9, 'stroke-linecap':'round', opacity:0}, gJardim), braco1 = mk('path', {fill:'none', stroke:'#4c7a3f', 'stroke-width':6, 'stroke-linecap':'round', opacity:0}, gJardim), braco2 = mk('path', {fill:'none', stroke:'#4c7a3f', 'stroke-width':6, 'stroke-linecap':'round', opacity:0}, gJardim);
+    var arbustos = [[1.5, D + 1.1], [5.1, D + 1.1], [.2, D + 1.3]].map(function(a){ return mk('ellipse', {rx:16, ry:9, fill:'#4f6f3a', opacity:0}, gJardim); });
+
+    // chave
+    var chaveG = mk('g', {opacity:0}, gChave);
+    mk('circle', {cx:0, cy:0, r:18, fill:'#FFC96B', filter:'url(#brilho)', opacity:.55}, chaveG);
+    mk('circle', {cx:-16, cy:0, r:11, fill:'none', stroke:'#E0BE6A', 'stroke-width':4}, chaveG);
+    mk('path', {d:'M-5 0H28M20 0v10M28 0v8', fill:'none', stroke:'#E0BE6A', 'stroke-width':4, 'stroke-linecap':'round'}, chaveG);
+    var estrela = mk('path', {d:'M0 -14 L3 -3 L14 0 L3 3 L0 14 L-3 3 L-14 0 L-3 -3 Z', fill:'#fff6d6', opacity:0, transform:'translate(32,-16)'}, chaveG);
+
+    var passos = [].slice.call(document.querySelectorAll('#build-steps li')), faseAtual = -1;
     function render(p){
-      var planta = suave(0, .24, p), parede = suave(.26, .50, p), l1 = suave(.47, .57, p), alto = suave(.54, .65, p), l2 = suave(.63, .71, p), tinta = suave(.58, .78, p), jan = suave(.68, .76, p), luz = suave(.72, .84, p), rev = suave(.88, 1, p);
-      grade.forEach(function(g){ g.setAttribute('opacity', (suave(0, .12, p) * (1 - suave(.45, .8, p)) * .55).toFixed(3)); });
+      var planta = suave(0, .20, p), parede = suave(.22, .42, p), telhado = suave(.40, .54, p), colu = suave(.50, .58, p), tinta = suave(.50, .72, p),
+          jan = suave(.60, .70, p), cerca = suave(.66, .74, p), jardim = suave(.72, .82, p), ceu = suave(.72, .90, p), luz = suave(.76, .90, p), chave = suave(.88, 1, p);
+      grade.forEach(function(g){ g.setAttribute('opacity', (suave(0, .10, p) * (1 - suave(.38, .62, p)) * .55).toFixed(3)); });
       contorno.setAttribute('stroke-dashoffset', (1 - clamp(planta / .6, 0, 1)).toFixed(3));
       interior.forEach(function(l, i){ l.setAttribute('stroke-dashoffset', (1 - clamp((planta - .45 - i * .1) / .3, 0, 1)).toFixed(3)); });
-      var contornoOp = 1 - suave(.3, .44, p); contorno.setAttribute('opacity', contornoOp.toFixed(3)); interior.forEach(function(l){ l.setAttribute('opacity', contornoOp.toFixed(3)); });
-      gSombra.setAttribute('opacity', (suave(.36, .6, p) * .45).toFixed(3));
+      var cop = 1 - suave(.26, .40, p); contorno.setAttribute('opacity', cop.toFixed(3)); interior.forEach(function(l){ l.setAttribute('opacity', cop.toFixed(3)); });
+      gSombra.setAttribute('opacity', (suave(.30, .55, p) * .3).toFixed(3));
 
+      // céu
+      sol.setAttribute('opacity', ceu.toFixed(3)); solBrilho.setAttribute('opacity', (ceu * .8).toFixed(3));
+      var sy = 400 - 160 * ceu; sol.setAttribute('cy', sy); solBrilho.setAttribute('cy', sy);
+
+      // piso
+      var pisoT = suave(.62, .78, p), cPiso = cor('#10213a', '#a98d6a', pisoT), cCal = cor('#10213a', '#8d7a5e', pisoT);
+      P(pavimento, [iso(-.6,D,0), iso(W+.6,D,0), iso(W+.6,FY,0), iso(-.6,FY,0)], (pisoT * .95).toFixed(3), cPiso, '', 0);
+      P(calcada, [iso(-.6,FY,0), iso(W+.6,FY,0), iso(W+.6,FY+1.1,0), iso(-.6,FY+1.1,0)], (pisoT * .95).toFixed(3), cCal, '', 0);
+      pedras.forEach(function(l, i){ var u = -.6 + (W + 1.2) * (i + 1) / 10, a = iso(u, FY, 0), b2 = iso(u, FY + 1.1, 0); LN(l, a, b2, (pisoT * .5).toFixed(3)); });
+
+      // paredes
       var traco = cor('#E0BE6A', '#8c7a55', tinta), sw = 1.3 - .3 * tinta;
       var cp1 = cor('#17355f', '#d8ccb6', tinta), cp2 = cor('#1d4073', '#efe5d3', tinta), cpt = cor('#244b82', '#f6efe3', tinta);
       var zt = H * parede, on = parede > .01 ? 1 : 0;
-      set(f1, [iso(W,0,0), iso(W,D,0), iso(W,D,zt), iso(W,0,zt)], on, cp1, traco, sw);
-      set(f2, [iso(W,D,0), iso(0,D,0), iso(0,D,zt), iso(W,D,zt)], on, cp2, traco, sw);
-      set(ft, [iso(0,0,zt), iso(W,0,zt), iso(W,D,zt), iso(0,D,zt)], on, cpt, traco, sw);
+      P(f1, [iso(W,0,0), iso(W,D,0), iso(W,D,zt), iso(W,0,zt)], on, cp1, traco, sw);
+      P(f2, [iso(W,D,0), iso(0,D,0), iso(0,D,zt), iso(W,D,zt)], on, cp2, traco, sw);
+      P(ft, [iso(0,0,zt), iso(W,0,zt), iso(W,D,zt), iso(0,D,zt)], parede > .99 ? 0 : on, cpt, traco, sw);
+      P(empena, [iso(W,0,H), iso(W,D,H), iso(W,2,HR)], telhado > .02 ? telhado : 0, cp1, traco, sw);
 
-      var m1 = -70 * (1 - l1), o1 = l1 > .01 ? l1 : 0, x0 = -.35, x1 = W + .35, y0 = -.35, y1 = D + .35, za = H, zc = H + .2;
-      var w1 = cor('#23467a', '#6b4423', tinta), w2 = cor('#2a5189', '#8a5a2e', tinta), w3 = cor('#33609f', '#a06c3a', tinta);
-      set(l1a, desloca([iso(x1,y0,za), iso(x1,y1,za), iso(x1,y1,zc), iso(x1,y0,zc)], m1), o1, w1, traco, sw);
-      set(l1b, desloca([iso(x1,y1,za), iso(x0,y1,za), iso(x0,y1,zc), iso(x1,y1,zc)], m1), o1, w2, traco, sw);
-      set(l1t, desloca([iso(x0,y0,zc), iso(x1,y0,zc), iso(x1,y1,zc), iso(x0,y1,zc)], m1), o1, w3, traco, sw);
-
-      var ux0 = 1, ux1 = 4.4, uy0 = .8, uy1 = 3.2, zh = zb + hu * alto, oa = alto > .01 ? 1 : 0;
-      set(ua, [iso(ux1,uy0,zb), iso(ux1,uy1,zb), iso(ux1,uy1,zh), iso(ux1,uy0,zh)], oa, cp1, traco, sw);
-      set(ub, [iso(ux1,uy1,zb), iso(ux0,uy1,zb), iso(ux0,uy1,zh), iso(ux1,uy1,zh)], oa, cp2, traco, sw);
-      set(ut, [iso(ux0,uy0,zh), iso(ux1,uy0,zh), iso(ux1,uy1,zh), iso(ux0,uy1,zh)], oa, cpt, traco, sw);
-
-      var m2 = -70 * (1 - l2), o2 = l2 > .01 ? l2 : 0, rx0 = .65, rx1 = 4.75, ry0 = .45, ry1 = 3.55, zr0 = zb + hu, zr1 = zr0 + .18;
-      set(l2a, desloca([iso(rx1,ry0,zr0), iso(rx1,ry1,zr0), iso(rx1,ry1,zr1), iso(rx1,ry0,zr1)], m2), o2, w1, traco, sw);
-      set(l2b, desloca([iso(rx1,ry1,zr0), iso(rx0,ry1,zr0), iso(rx0,ry1,zr1), iso(rx1,ry1,zr1)], m2), o2, w2, traco, sw);
-      set(l2t, desloca([iso(rx0,ry0,zr1), iso(rx1,ry0,zr1), iso(rx1,ry1,zr1), iso(rx0,ry1,zr1)], m2), o2, w3, traco, sw);
-
+      // janelas / porta
       var vidro = cor('#27456f', '#ffd27a', luz);
       vidros.forEach(function(v){ v.setAttribute('opacity', jan.toFixed(3)); v.setAttribute('fill', vidro); });
-      brilhos.forEach(function(b){ b.setAttribute('opacity', (luz * .85).toFixed(3)); });
-      pt.setAttribute('opacity', jan.toFixed(3));
+      brilhos.forEach(function(g){ g.setAttribute('opacity', (luz * .85).toFixed(3)); });
+      pt.setAttribute('opacity', jan.toFixed(3)); ptRipas.forEach(function(l){ l.setAttribute('opacity', (jan * .9).toFixed(3)); });
+
+      // telhado: cai de cima
+      var dy = -110 * (1 - telhado), to = telhado > .01 ? telhado : 0, tracoT = cor('#E0BE6A', '#6e2f19', tinta);
+      var cF = cor('#2a5189', '#b5532f', tinta), cB = cor('#23467a', '#8c3f24', tinta);
+      P(tTras, desloca([iso(X0,YB,ZE), iso(X1,YB,ZE), iso(X1,2,HR), iso(X0,2,HR)], dy), to, cB, tracoT, 1.2);
+      P(tFrente, desloca([iso(X0,YE,ZE), iso(X1,YE,ZE), iso(X1,2,HR), iso(X0,2,HR)], dy), to, cF, tracoT, 1.2);
+      telhas.forEach(function(l, i){
+        var back = i < 4, t = back ? (i + 1) / 5 : (i - 4 + 1) / 7, yy = back ? YB + (2 - YB) * t : YE + (2 - YE) * t, zz = ZE + (HR - ZE) * t;
+        var a = iso(X0, yy, zz), b2 = iso(X1, yy, zz); a[1] += dy; b2[1] += dy; LN(l, a, b2, (to * .55 * tinta).toFixed(3));
+      });
+
+      // colunas
+      colX.forEach(function(x, i){
+        var topo = (H - .12) * colu, a = iso(x, YC, 0), b2 = iso(x, YC, topo), o = colu > .01 ? 1 : 0;
+        LN(colSom[i], [a[0] + 2, a[1]], [b2[0] + 2, b2[1]], (o * .6).toFixed(3)); LN(colunas[i], a, b2, o);
+      });
+
+      // muro e portão
+      var zm = .75 * cerca, cm = cor('#2a5189', '#cdb08a', tinta > .5 ? 1 : cerca);
+      P(m1, [iso(-.5,FY,0), iso(2.5,FY,0), iso(2.5,FY,zm), iso(-.5,FY,zm)], cerca > .01 ? 1 : 0, cm, '#8d7556', 1);
+      P(m2, [iso(3.5,FY,0), iso(W+.3,FY,0), iso(W+.3,FY,zm), iso(3.5,FY,zm)], cerca > .01 ? 1 : 0, cm, '#8d7556', 1);
+      var bx = []; for (var u = -.4; u < 2.5; u += .3) bx.push(u); for (var u2 = 2.6; u2 < 3.5; u2 += .22) bx.push(u2); for (var u3 = 3.6; u3 < W + .3; u3 += .3) bx.push(u3);
+      barras.forEach(function(l, i){
+        if (i >= bx.length) { l.setAttribute('opacity', 0); return; }
+        var x = bx[i], inGate = x > 2.5 && x < 3.5, z0 = inGate ? 0 : .75, z1 = inGate ? 1.3 : 1.3;
+        LN(l, iso(x, FY, z0 * cerca), iso(x, FY, z0 * cerca + (z1 - z0) * cerca), (suave(.70, .76, p)).toFixed(3));
+      });
+      LN(trilhos[0], iso(-.5, FY, 1.3 * cerca), iso(W + .3, FY, 1.3 * cerca), suave(.70, .76, p).toFixed(3));
+      LN(trilhos[1], iso(2.5, FY, .1), iso(3.5, FY, .1), suave(.70, .76, p).toFixed(3));
+
+      // jardim cresce
+      var tr = iso(W + .7, D + 1, 0), tp = iso(W + .7, D + 1, 1.9 * jardim);
+      LN(tronco, tr, tp, jardim > .01 ? 1 : 0);
+      var topoArv = iso(W + .7, D + 1, 1.9);
+      folhas.forEach(function(f, i){ var o = [[-26,-6],[0,-26],[26,-4],[-8,6],[14,8],[-34,10]][i]; f.setAttribute('cx', (topoArv[0] + o[0] * jardim).toFixed(1)); f.setAttribute('cy', (topoArv[1] + o[1] * jardim).toFixed(1)); f.setAttribute('opacity', (jardim * .92).toFixed(3)); f.setAttribute('transform', 'scale(1)'); });
+      var cb = iso(-.1, D + 1.4, 0), ct = iso(-.1, D + 1.4, 1.2 * jardim);
+      LN(cacto, cb, ct, jardim > .01 ? 1 : 0);
+      braco1.setAttribute('d', 'M' + (cb[0]) + ' ' + (cb[1] - 18 * jardim) + 'q-14 0 -14 -12'); braco1.setAttribute('opacity', (jardim * .95).toFixed(3));
+      braco2.setAttribute('d', 'M' + (cb[0]) + ' ' + (cb[1] - 30 * jardim) + 'q14 0 14 -12'); braco2.setAttribute('opacity', (jardim * .95).toFixed(3));
+      arbustos.forEach(function(a, i){ var q = iso([1.5,5.1,.2][i], D + [1.1,1.1,1.3][i], 0); a.setAttribute('cx', q[0].toFixed(1)); a.setAttribute('cy', (q[1] - 5).toFixed(1)); a.setAttribute('opacity', (jardim * .95).toFixed(3)); a.setAttribute('transform', 'translate(' + q[0].toFixed(1) + ' ' + (q[1] - 5).toFixed(1) + ') scale(' + (.4 + .6 * jardim).toFixed(2) + ') translate(' + (-q[0]).toFixed(1) + ' ' + (-(q[1] - 5)).toFixed(1) + ')'); });
+
+      // chave: surge flutuando perto do telhado
+      var flut = Math.sin(p * 38) * 3;
+      chaveG.setAttribute('transform', 'translate(' + (CX + 205) + ' ' + (CY - 60 + flut + 24 * (1 - chave)) + ') rotate(-28) scale(' + (.5 + .5 * chave).toFixed(2) + ')');
+      chaveG.setAttribute('opacity', chave.toFixed(3));
+      estrela.setAttribute('opacity', (chave * (.5 + .5 * Math.sin(p * 60))).toFixed(3));
 
       stage.style.setProperty('--bp', (1 - suave(.1, .6, p) * .7).toFixed(3));
-      stage.style.setProperty('--glow', suave(.7, .95, p).toFixed(3));
-      // no fim, a casa desenhada dá lugar à fachada ilustrada
-      var ins = 50 * (1 - rev);
-      foto.style.visibility = rev > .01 ? 'visible' : 'hidden';
-      foto.style.clipPath = 'inset(' + ins + '% ' + ins + '% ' + ins + '% ' + ins + '% round 24px)';
-      svg.style.opacity = (1 - suave(.93, 1, p)).toFixed(3);
-      var fase = p < .26 ? 0 : p < .52 ? 1 : p < .74 ? 2 : 3;
+      stage.style.setProperty('--glow', ceu.toFixed(3));
+      var fase = p < .22 ? 0 : p < .50 ? 1 : p < .76 ? 2 : 3;
       if (fase !== faseAtual) { faseAtual = fase; passos.forEach(function(li, i){ li.classList.toggle('on', i === fase); }); }
     }
 
     if (reduz) { secao.classList.add('static'); render(1); passos.forEach(function(li){ li.classList.add('on'); }); return; }
-    var it = { cur:0, tgt:0, vh:0, k:0 };
-    it.medir = function(){ it.vh = window.innerHeight; stage.style.height = it.vh + 'px'; track.style.height = (it.vh * 4.8) + 'px'; };
-    it.ler = function(){ var r = track.getBoundingClientRect(); return clamp(-r.top / (it.vh * 3.8), 0, 1); };
+    var it = { cur:0, tgt:0, vh:0 };
+    it.medir = function(){ it.vh = window.innerHeight; stage.style.height = it.vh + 'px'; track.style.height = (it.vh * 5) + 'px'; };
+    it.ler = function(){ var r = track.getBoundingClientRect(); return clamp(-r.top / (it.vh * 4), 0, 1); };
     it.aplicar = render; it.track = track;
     it.medir(); render(0);
     animadores.push(it);
