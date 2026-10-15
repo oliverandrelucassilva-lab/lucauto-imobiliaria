@@ -503,6 +503,20 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 .pillar .pic{stroke:var(--gold-light)}
 .footer{background:var(--charcoal)}
 .cta{background:linear-gradient(180deg,#0B1F3A,#12100E)}
+/* ---------- Capa com foto ---------- */
+.hero__media#capa-img{object-position:62% 50%}
+.hero.has-img .skyline{display:none}
+.hero.has-img #net{opacity:.35}
+.hero.has-img .hero__spot{background:radial-gradient(520px circle at var(--mx,70%) var(--my,40%),rgba(255,190,90,.12),transparent 62%)}
+.hero.has-img .accent{color:var(--gold-light)}
+.hero.has-img .eyebrow{color:var(--gold-light)}
+.hero.has-img .hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.93) 0%,rgba(10,9,8,.72) 42%,rgba(10,9,8,.08) 80%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
+.hero.has-img h1,.hero.has-img .sub{text-shadow:0 2px 24px rgba(0,0,0,.55)}
+.hero.has-img .eyebrow{text-shadow:0 1px 12px rgba(0,0,0,.6)}
+@media (max-width:767px){
+  .hero__media#capa-img{object-position:58% 50%}
+  .hero.has-img .hero__shade{background:linear-gradient(180deg,rgba(10,9,8,.7) 0%,rgba(10,9,8,.55) 45%,rgba(10,9,8,.78) 100%)}
+}
 </style>
 </head>
 <body>
@@ -533,7 +547,7 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   <section class="hero glow" id="inicio" aria-labelledby="h-hero">
     <div class="hero__bg" id="hero-bg" aria-hidden="true">
       <video class="hero__media" id="capa-video" muted loop playsinline preload="none" tabindex="-1"></video>
-      <img class="hero__media" id="capa-img" alt="" width="1920" height="1080" decoding="async">
+      <img class="hero__media" id="capa-img" src="{{b64:assets/img/capa.webp}}" alt="" width="1536" height="1024" decoding="async" fetchpriority="high">
       <div class="hero__shade"></div>
       <div class="grid-bg"></div>
       <div class="horizon"></div>
@@ -935,6 +949,11 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
     if (CONFIG.capaImagem) capaVid.poster = CONFIG.capaImagem;
     capaVid.addEventListener('canplay', function(){ capaVid.classList.add('on'); hero.classList.add('has-img'); capaVid.play().catch(function(){}); }, {once:true});
     capaVid.load();
+  }
+  // Imagem de capa embutida: ativa o modo com foto
+  function marcarImg(){ capaImg.classList.add('on'); hero.classList.add('has-img'); }
+  if (capaImg.getAttribute('src') && !CONFIG.capaImagem) {
+    if (capaImg.complete && capaImg.naturalWidth) marcarImg(); else capaImg.addEventListener('load', marcarImg);
   }
   // Foto do prédio (Localização)
   if (CONFIG.fotoPredio) {
