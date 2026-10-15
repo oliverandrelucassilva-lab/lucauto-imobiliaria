@@ -45,6 +45,31 @@ Gere a imagem, baixe e me mande aqui. Eu otimizo (WebP) e coloco na capa. Se pre
 
 ---
 
+# Galeria de fachadas (efeito de expandir ao rolar)
+
+A galeria usa uma imagem por bloco, que ocupa a tela inteira no fim da rolagem. Por isso:
+- Gere em **paisagem, de 2000 px de largura ou mais** (16:9 ou 3:2). Imagem pequena fica borrada em tela cheia.
+- Edite a lista `GALERIA` no topo do script do `fonte/lucauto-v2.template.html` (título, tipo, bairro e o caminho da imagem).
+- Salve as imagens em `assets/img/` (formato WebP, qualidade 85) e aponte em `imagem:`.
+
+## Prompt (ChatGPT), fachada no estilo do interior do Nordeste
+
+```
+Crie uma imagem fotorrealista em formato paisagem (proporção 16:9) da fachada de uma casa residencial típica do interior do Nordeste brasileiro, no sertão da Bahia, ao entardecer.
+
+Arquitetura: casa térrea com varanda coberta, telhado de cerâmica aparente ou platibanda, paredes em tons terrosos e pastel, portas e janelas de madeira ou ferro, calçada de pedra ou cimento, muro baixo com portão. Vegetação local, como árvores de pequeno porte e plantas resistentes à seca. Céu limpo em degradê de azul para laranja, luz quente de fim de tarde.
+
+Câmera: fotografia de arquitetura de revista, lente 24 mm, nível dos olhos, nitidez alta.
+
+Regras: sem pessoas, sem carros, sem placas, sem texto, sem logotipos, sem marca d'água.
+```
+
+Variações: peça "casa com garagem e fachada contemporânea simples", "sobrado com sacada", "casa de esquina com muro e jardim", "terreno plano com cerca e vegetação rasteira" (sempre com as mesmas regras).
+
+**Atenção:** são imagens **ilustrativas**. Não use como foto de um imóvel real anunciado e deixe a legenda "Imagem ilustrativa" ligada (campo `provisorio:true`). Confira se o estilo realmente parece com as casas da região.
+
+---
+
 # Tratar as fotos reais dos imóveis (ChatGPT)
 
 Use **só em fotos reais** do imóvel. O objetivo é limpar e melhorar a qualidade, sem mudar o imóvel.

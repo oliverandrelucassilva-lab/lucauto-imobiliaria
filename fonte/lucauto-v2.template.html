@@ -504,7 +504,7 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 .hero.has-img #net{opacity:.85}
 .hero.has-img .hero.has-img .accent{color:var(--gold-light)}
 .hero.has-img .eyebrow{color:var(--gold-light)}
-.hero.has-img .hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.7) 0%,rgba(10,9,8,.5) 42%,rgba(10,9,8,.05) 80%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
+.hero.has-img .hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.62) 0%,rgba(10,9,8,.42) 38%,rgba(10,9,8,.14) 62%,rgba(10,9,8,0) 82%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
 .hero.has-img h1,.hero.has-img .sub{text-shadow:0 2px 28px rgba(0,0,0,.7),0 1px 3px rgba(0,0,0,.45)}
 .hero.has-img .eyebrow{text-shadow:0 1px 12px rgba(0,0,0,.6)}
 @media (max-width:767px){
@@ -587,7 +587,6 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .prop__body{gap:8px}
 
 .sec--light .intro>div>div p{font-size:17px;line-height:1.7}
-.hero.has-img .hero__in::before{content:"";position:absolute;z-index:-1;inset:-48px -90px -48px -70px;pointer-events:none;background:radial-gradient(70% 72% at 42% 50%,rgba(10,9,8,.55),transparent 78%)}
 
 /* ---------- FoldText ---------- */
 @property --fold-crease{syntax:'<number>';inherits:false;initial-value:0}
@@ -601,6 +600,56 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .prop{box-shadow:0 14px 28px -14px rgba(11,31,58,.32),0 2px 6px rgba(11,31,58,.08);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .prop:hover{box-shadow:0 34px 52px -22px rgba(11,31,58,.5),0 10px 22px -10px rgba(201,162,74,.35),0 2px 6px rgba(11,31,58,.1)}
 .more{display:flex;justify-content:center}
+
+/* ---------- Galeria ScrollExpand ---------- */
+.gal-sec{background:var(--charcoal);padding-top:var(--sec)}
+.gal-sec__head{padding-bottom:var(--s5)}
+.gal-sec__head h2{color:var(--text)}
+.gal-sec__note{color:var(--text-muted);margin-top:var(--s2);font-size:15px}
+.se__track{position:relative}
+.se__stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--charcoal)}
+.se__frame{position:absolute;inset:0;overflow:hidden;will-change:clip-path}
+.se__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform;user-select:none}
+.se__scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,20,42,.2),rgba(7,20,42,.78));opacity:0;pointer-events:none}
+.se__title{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:0 var(--pad-x);pointer-events:none;z-index:2;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#fff;text-shadow:0 4px 40px rgba(0,0,0,.65);font-size:var(--se-title,48px);will-change:transform,opacity}
+.se__hint{position:absolute;left:0;right:0;bottom:28px;text-align:center;z-index:2;font-size:12px;letter-spacing:.2em;font-weight:600;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6);pointer-events:none}
+.se__overlay{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:0 var(--pad-x) calc(var(--s6) + 16px);opacity:0;visibility:hidden}
+.se__overlay-in{max-width:1120px;margin:0 auto}
+.se__overlay h3{font-size:clamp(26px,4vw,44px);line-height:1.1;margin:6px 0 10px;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.se__overlay p{color:#f1efe9}
+.se__overlay .eyebrow{color:var(--gold-light);margin-bottom:6px}
+.se__overlay .btn{margin-top:var(--s2)}
+.se.static .se__track{height:auto!important}
+.se.static .se__stage{position:relative;height:80vh!important}
+.se.static .se__frame{clip-path:none!important}
+.se.static .se__title,.se.static .se__hint{display:none}
+.se.static .se__overlay{opacity:1!important;visibility:visible!important}
+
+/* ---------- Da planta à chave na mão ---------- */
+.build{background:var(--navy-deep)}
+.build__track{position:relative}
+.build__stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;background:var(--navy-deep)}
+.build__bp{position:absolute;inset:0;opacity:var(--bp,1);background-image:linear-gradient(rgba(201,162,74,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,74,.09) 1px,transparent 1px);background-size:44px 44px}
+.build__sky{position:absolute;inset:0;opacity:var(--glow,0);background:radial-gradient(70% 60% at 62% 70%,rgba(240,170,70,.42),rgba(150,80,30,.18) 45%,transparent 75%),linear-gradient(180deg,rgba(7,20,42,0),rgba(90,52,28,.35))}
+.build__in{position:relative;z-index:2;display:grid;gap:var(--s3);align-items:center;grid-template-columns:1fr;padding-top:var(--header);max-width:1120px}
+.build__txt h2{font-size:28px;color:var(--text)}
+.build__steps{display:grid;gap:10px;margin-top:var(--s3)}
+.build__steps li{display:flex;flex-direction:column;padding-left:16px;border-left:2px solid rgba(255,255,255,.14);opacity:.45;transition:opacity .4s,border-color .4s,transform .4s var(--ease)}
+.build__steps li.on{opacity:1;border-left-color:var(--gold);transform:translateX(4px)}
+.build__steps b{font-size:17px}
+.build__steps span{font-size:14px;color:var(--text-muted)}
+#build-svg{width:100%;max-height:52vh;overflow:visible}
+@media (min-width:1024px){
+  .build__in{grid-template-columns:.8fr 1.2fr;gap:var(--s5)}
+  .build__txt h2{font-size:44px}
+  .build__steps b{font-size:19px}
+  .build__steps span{font-size:16px}
+  #build-svg{max-height:72vh}
+}
+.build.static .build__track{height:auto!important}
+.build.static .build__stage{position:relative;height:auto!important;padding:var(--sec) 0}
+.hero.has-img .accent{text-shadow:0 2px 20px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.7)}
+.hero.has-img .sub{text-shadow:0 2px 22px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.6)}
 </style>
 </head>
 <body>
@@ -631,7 +680,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   <section class="hero glow" id="inicio" aria-labelledby="h-hero">
     <div class="hero__bg" id="hero-bg" aria-hidden="true">
       <video class="hero__media" id="capa-video" muted loop playsinline preload="none" tabindex="-1"></video>
-      <img class="hero__media" id="capa-img" src="{{b64:assets/img/capa.webp}}" alt="" width="1536" height="1024" decoding="async" fetchpriority="high">
+      <img class="hero__media" id="capa-img" src="{{b64:assets/img/capa.webp}}" alt="" width="2304" height="1536" decoding="async" fetchpriority="high">
       <div class="hero__shade"></div>
       <div class="grid-bg"></div>
       <div class="horizon"></div>
@@ -748,6 +797,39 @@ h2 .accent,h1 .accent{margin-left:-.02em}
           <li><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7zM14 3v5h5M10 13h6M10 17h6"/></svg></span>Despachante imobiliário</li>
           <li><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.100 7-11.500a7 7 0 1 0-14 0C5 14.900 12 21 12 21Z"/><circle cx="12" cy="9.500" r="2.500"/></svg></span>Atendimento presencial no Centro</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIA DE FACHADAS (efeito ScrollExpand: a imagem se expande ao rolar) -->
+  <section class="gal-sec" id="galeria" aria-labelledby="h-galeria">
+    <div class="wrap gal-sec__head">
+      <p class="eyebrow rv">GALERIA</p>
+      <h2 id="h-galeria" class="rv">Galeria de <span class="accent">fachadas.</span></h2>
+      <p class="gal-sec__note rv">Imagens ilustrativas. Role a página para expandir cada imagem.</p>
+    </div>
+    <div id="galeria-lista"></div>
+  </section>
+
+  <!-- DA PLANTA À CHAVE NA MÃO (casa que se constrói ao rolar) -->
+  <section class="build" id="planta" aria-labelledby="h-planta">
+    <div class="build__track" id="build-track">
+      <div class="build__stage" id="build-stage">
+        <div class="build__bp" aria-hidden="true"></div>
+        <div class="build__sky" aria-hidden="true"></div>
+        <div class="wrap build__in">
+          <div class="build__txt">
+            <p class="eyebrow">DO PAPEL AO LAR</p>
+            <h2 id="h-planta">Da planta à <span class="accent">chave na mão.</span></h2>
+            <ol class="build__steps" id="build-steps">
+              <li class="on"><b>Planta</b><span>Tudo começa no papel.</span></li>
+              <li><b>Estrutura</b><span>A obra ganha forma.</span></li>
+              <li><b>Acabamento</b><span>Cada detalhe no lugar.</span></li>
+              <li><b>Chave na mão</b><span>Pronto para morar.</span></li>
+            </ol>
+          </div>
+          <svg id="build-svg" viewBox="0 0 800 560" role="img" aria-label="Animação de uma casa saindo da planta: o desenho no papel ganha paredes, telhado e acabamento até ficar pronta."></svg>
+        </div>
       </div>
     </div>
   </section>
@@ -1293,7 +1375,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   function animarTitulo(no, ritmo){ if (efeito === 'fold') foldText(no, {stagger: ritmo / 1000 * .7}); else blurText(no, {delay: ritmo}); }
   var h1 = document.getElementById('h-hero');
   if (h1) { animarTitulo(h1, 140); h1.classList.remove('rv'); }
-  ['h-intro','h-imoveis','h-procura','h-como','h-loc','h-cta'].forEach(function(id){
+  ['h-intro','h-imoveis','h-galeria','h-procura','h-como','h-planta','h-loc','h-cta'].forEach(function(id){
     var t = document.getElementById(id);
     if (t) { animarTitulo(t, 110); t.classList.add('blur-on'); }
   });
@@ -1344,6 +1426,202 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     }, {rootMargin:'-45% 0px -45% 0px'});
     passos.forEach(function(x){ po.observe(x); });
   }
+
+
+  /* ==========================================================
+     GALERIA DE FACHADAS (edite aqui). Efeito ScrollExpand:
+     a imagem começa pequena e se expande ao rolar a página.
+       titulo     nome que aparece grande no centro
+       tipo, bairro  aparecem pequenos quando a imagem abre
+       imagem     caminho da imagem (ex.: 'assets/img/fachada-1.webp'); vazio usa a provisória
+       alt        descrição da imagem
+       provisorio true mostra "Imagem ilustrativa"
+     Para ter menos imagens (rolagem mais curta), apague blocos.
+     ========================================================== */
+  var GALERIA = [
+    { titulo:'Casa em Euclides da Cunha',        tipo:'Casa',        bairro:'Euclides da Cunha', imagem:'', ref:1, alt:'Ilustração provisória de uma casa em linhas douradas sobre fundo azul marinho', provisorio:true },
+    { titulo:'Apartamento em Euclides da Cunha', tipo:'Apartamento', bairro:'Euclides da Cunha', imagem:'', ref:0, alt:'Ilustração provisória de edifícios em linhas douradas sobre fundo azul marinho', provisorio:true },
+    { titulo:'Terreno em Euclides da Cunha',     tipo:'Terreno',     bairro:'Euclides da Cunha', imagem:'', ref:2, alt:'Ilustração provisória de um terreno demarcado em linhas douradas sobre fundo azul marinho', provisorio:true }
+  ];
+
+  var clamp = function(v, a, b){ return v < a ? a : v > b ? b : v; };
+  var suave = function(a, b, x){ var t = clamp((x - a) / ((b - a) || 1e-6), 0, 1); return t * t * (3 - 2 * t); };
+  var animadores = [];   // itens que dependem da rolagem
+
+  // ---------- ScrollExpand em JS puro ----------
+  (function(){
+    var lista = document.getElementById('galeria-lista'); if (!lista) return;
+    var OPC = { raio:24, zoom:1.35, dist:.9, espera:.15, suav:.1, scrim:.45 };
+    GALERIA.forEach(function(g){
+      var raiz = el('div','se' + (reduz ? ' static' : ''));
+      var track = el('div','se__track'), stage = el('div','se__stage'), frame = el('div','se__frame');
+      var img = el('img','se__media'); img.src = g.imagem || PROV[g.ref || 0]; img.alt = g.alt || g.titulo; img.width = 960; img.height = 720; img.loading = 'lazy'; img.decoding = 'async'; img.draggable = false;
+      var scrim = el('div','se__scrim');
+      var ov = el('div','se__overlay'), ovin = el('div','se__overlay-in');
+      ovin.appendChild(el('p','eyebrow', (g.tipo + ' · ' + g.bairro).toUpperCase()));
+      ovin.appendChild(el('h3','', g.titulo));
+      if (g.provisorio) ovin.appendChild(el('p','', 'Imagem ilustrativa.'));
+      var bt = el('a','btn','Quero saber mais'); bt.href = wa('Olá! Tenho interesse no imóvel: ' + g.titulo + '. Pode me passar mais informações?'); bt.target = '_blank'; bt.rel = 'noopener';
+      ovin.appendChild(bt); ov.appendChild(ovin);
+      frame.appendChild(img); frame.appendChild(scrim); frame.appendChild(ov);
+      var titulo = el('div','se__title', g.titulo); titulo.setAttribute('aria-hidden','true');
+      var dica = el('div','se__hint','ROLE PARA EXPANDIR'); dica.setAttribute('aria-hidden','true');
+      stage.appendChild(frame); stage.appendChild(titulo); stage.appendChild(dica);
+      track.appendChild(stage); raiz.appendChild(track); lista.appendChild(raiz);
+      if (reduz) { return; }
+
+      var it = { cur:0, tgt:0, vh:0, sw:42, sh:58 };
+      function medir(){
+        it.vh = window.innerHeight;
+        stage.style.height = it.vh + 'px';
+        track.style.height = (it.vh * (1 + OPC.dist + OPC.espera)) + 'px';
+        var w = raiz.clientWidth || window.innerWidth;
+        stage.style.setProperty('--se-title', clamp(w * .075, 22, 84) + 'px');
+        it.sw = w < 768 ? 78 : 42; it.sh = w < 768 ? 46 : 58;
+      }
+      function ler(){
+        var r = track.getBoundingClientRect();
+        return clamp(-r.top / (it.vh * OPC.dist), 0, 1);
+      }
+      function aplicar(p){
+        var e = suave(0, 1, p), w = it.sw + (100 - it.sw) * e, h = it.sh + (100 - it.sh) * e;
+        var ix = Math.max(0, (100 - w) / 2), iy = Math.max(0, (100 - h) / 2), r = OPC.raio * (1 - e);
+        frame.style.clipPath = 'inset(' + iy + '% ' + ix + '% ' + iy + '% ' + ix + '% round ' + r + 'px)';
+        img.style.transform = 'scale(' + (OPC.zoom + (1 - OPC.zoom) * e) + ')';
+        scrim.style.opacity = OPC.scrim * e;
+        var sai = suave(.4, .88, p);
+        titulo.style.opacity = 1 - sai; titulo.style.transform = 'translate3d(0,' + (-28 * sai) + 'px,0) scale(' + (1 + .06 * sai) + ')';
+        var some = suave(0, .12, p); dica.style.opacity = 1 - some;
+        var entra = suave(.68, 1, p);
+        ov.style.opacity = entra; ov.style.transform = 'translate3d(0,' + (18 * (1 - entra)) + 'px,0)'; ov.style.visibility = entra < .05 ? 'hidden' : 'visible';
+      }
+      it.medir = medir; it.ler = ler; it.aplicar = aplicar; it.track = track;
+      medir(); aplicar(0);
+      animadores.push(it);
+    });
+  })();
+
+  // ---------- Casa que sai da planta (escala com a rolagem) ----------
+  (function(){
+    var secao = document.getElementById('planta'), track = document.getElementById('build-track'), stage = document.getElementById('build-stage'), svg = document.getElementById('build-svg');
+    if (!svg) return;
+    var NS = 'http://www.w3.org/2000/svg', S = 52, CX = 360, CY = 232, W = 6, D = 4, H = 2.4;
+    var iso = function(x, y, z){ return [CX + (x - y) * .866 * S, CY + (x + y) * .5 * S - z * S]; };
+    var mk = function(tag, at, pai){ var n = document.createElementNS(NS, tag); for (var k in at) n.setAttribute(k, at[k]); (pai || svg).appendChild(n); return n; };
+    var pts = function(a){ return a.map(function(q){ return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' '); };
+    var cor = function(a, b, t){ var pa = [1,3,5].map(function(i){ return parseInt(a.substr(i,2),16); }), pb = [1,3,5].map(function(i){ return parseInt(b.substr(i,2),16); });
+      return 'rgb(' + pa.map(function(v, i){ return Math.round(v + (pb[i] - v) * t); }).join(',') + ')'; };
+
+    var defs = mk('defs');
+    var fl = mk('filter', {id:'brilho', x:'-50%', y:'-50%', width:'200%', height:'200%'}, defs); mk('feGaussianBlur', {stdDeviation:7}, fl);
+    var gGrade = mk('g'), gChao = mk('g'), gSombra = mk('ellipse', {cx:CX + 45, cy:CY + 132, rx:260, ry:62, fill:'#000', opacity:0}), gParedes = mk('g'), gLaje1 = mk('g'), gAlto = mk('g'), gLaje2 = mk('g'), gJan = mk('g');
+
+    // grade e planta baixa (desenhadas à mão no papel)
+    var linhas = [];
+    for (var gx = -2; gx <= 8; gx++) linhas.push([iso(gx, -2, 0), iso(gx, 6, 0)]);
+    for (var gy = -2; gy <= 6; gy++) linhas.push([iso(-2, gy, 0), iso(8, gy, 0)]);
+    var grade = linhas.map(function(l){ return mk('path', {d:'M' + l[0].join(' ') + 'L' + l[1].join(' '), stroke:'#C9A24A', 'stroke-width':.6, opacity:0}, gGrade); });
+    var contorno = mk('path', {d:'M' + [iso(0,0,0), iso(W,0,0), iso(W,D,0), iso(0,D,0)].map(function(q){ return q.join(' '); }).join('L') + 'Z', fill:'none', stroke:'#E0BE6A', 'stroke-width':2, pathLength:1, 'stroke-dasharray':1, 'stroke-dashoffset':1, 'stroke-linejoin':'round'}, gChao);
+    var interior = [[iso(2.2,0,0), iso(2.2,D,0)], [iso(2.2,2.2,0), iso(W,2.2,0)], [iso(4,2.2,0), iso(4,D,0)], [iso(0,2,0), iso(2.2,2,0)]].map(function(l){
+      return mk('path', {d:'M' + l[0].join(' ') + 'L' + l[1].join(' '), fill:'none', stroke:'#C9A24A', 'stroke-width':1.4, pathLength:1, 'stroke-dasharray':1, 'stroke-dashoffset':1}, gChao); });
+
+    // faces: cada uma é um polígono atualizado a cada quadro
+    var face = function(g){ return mk('polygon', {points:'', stroke:'#C9A24A', 'stroke-width':1.3, 'stroke-linejoin':'round', opacity:0}, g); };
+    var f1 = face(gParedes), f2 = face(gParedes), ft = face(gParedes);
+    var l1a = face(gLaje1), l1b = face(gLaje1), l1t = face(gLaje1);
+    var ua = face(gAlto), ub = face(gAlto), ut = face(gAlto);
+    var l2a = face(gLaje2), l2b = face(gLaje2), l2t = face(gLaje2);
+
+    // janelas e porta (brilho + vidro)
+    var quadX = function(x, u0, u1, z0, z1){ return [iso(x,u0,z0), iso(x,u1,z0), iso(x,u1,z1), iso(x,u0,z1)]; };   // plano x = const
+    var quadY = function(y, u0, u1, z0, z1){ return [iso(u0,y,z0), iso(u1,y,z0), iso(u1,y,z1), iso(u0,y,z1)]; };   // plano y = const
+    var zb = H + .2, hu = 1.5;
+    var janelas = [
+      quadY(D, .7, 2.3, .7, 1.9), quadY(D, 2.9, 4.5, .7, 1.9), quadX(W, .8, 3.2, .7, 1.9),
+      quadY(3.2, 1.3, 4.1, zb + .3, zb + 1.2), quadX(4.4, 1.2, 2.8, zb + .3, zb + 1.2)
+    ];
+    var porta = quadY(D, 5, 5.65, 0, 1.7);
+    var brilhos = janelas.map(function(q){ return mk('polygon', {points:pts(q), fill:'#FFC96B', filter:'url(#brilho)', opacity:0}, gJan); });
+    var vidros = janelas.map(function(q){ return mk('polygon', {points:pts(q), fill:'#27456f', stroke:'#C9A24A', 'stroke-width':1, opacity:0}, gJan); });
+    var pt = mk('polygon', {points:pts(porta), fill:'#5b3a1e', stroke:'#C9A24A', 'stroke-width':1, opacity:0}, gJan);
+
+    var set = function(poly, a, op, fill, stroke, sw){ poly.setAttribute('points', pts(a)); poly.setAttribute('opacity', op); poly.setAttribute('fill', fill); poly.setAttribute('stroke', stroke); poly.setAttribute('stroke-width', sw); };
+    var desloca = function(a, dy){ return a.map(function(q){ return [q[0], q[1] + dy]; }); };
+
+    var passos = [].slice.call(document.querySelectorAll('#build-steps li')), faseAtual = -1;
+    function render(p){
+      var planta = suave(0, .28, p), parede = suave(.30, .60, p), l1 = suave(.56, .68, p), alto = suave(.64, .78, p), l2 = suave(.76, .85, p), tinta = suave(.70, .92, p), jan = suave(.80, .90, p), luz = suave(.86, .98, p);
+      grade.forEach(function(g){ g.setAttribute('opacity', (suave(0, .12, p) * (1 - suave(.55, .9, p)) * .55).toFixed(3)); });
+      contorno.setAttribute('stroke-dashoffset', (1 - clamp(planta / .6, 0, 1)).toFixed(3));
+      interior.forEach(function(l, i){ l.setAttribute('stroke-dashoffset', (1 - clamp((planta - .45 - i * .1) / .3, 0, 1)).toFixed(3)); });
+      var contornoOp = 1 - suave(.34, .5, p); contorno.setAttribute('opacity', contornoOp.toFixed(3)); interior.forEach(function(l){ l.setAttribute('opacity', contornoOp.toFixed(3)); });
+      gSombra.setAttribute('opacity', (suave(.4, .7, p) * .45).toFixed(3));
+
+      var traco = cor('#E0BE6A', '#8c7a55', tinta), sw = 1.3 - .3 * tinta;
+      var cp1 = cor('#17355f', '#d8ccb6', tinta), cp2 = cor('#1d4073', '#efe5d3', tinta), cpt = cor('#244b82', '#f6efe3', tinta);
+      var zt = H * parede, on = parede > .01 ? 1 : 0;
+      set(f1, [iso(W,0,0), iso(W,D,0), iso(W,D,zt), iso(W,0,zt)], on, cp1, traco, sw);
+      set(f2, [iso(W,D,0), iso(0,D,0), iso(0,D,zt), iso(W,D,zt)], on, cp2, traco, sw);
+      set(ft, [iso(0,0,zt), iso(W,0,zt), iso(W,D,zt), iso(0,D,zt)], on, cpt, traco, sw);
+
+      var m1 = -70 * (1 - l1), o1 = l1 > .01 ? l1 : 0, x0 = -.35, x1 = W + .35, y0 = -.35, y1 = D + .35, za = H, zc = H + .2;
+      var w1 = cor('#23467a', '#6b4423', tinta), w2 = cor('#2a5189', '#8a5a2e', tinta), w3 = cor('#33609f', '#a06c3a', tinta);
+      set(l1a, desloca([iso(x1,y0,za), iso(x1,y1,za), iso(x1,y1,zc), iso(x1,y0,zc)], m1), o1, w1, traco, sw);
+      set(l1b, desloca([iso(x1,y1,za), iso(x0,y1,za), iso(x0,y1,zc), iso(x1,y1,zc)], m1), o1, w2, traco, sw);
+      set(l1t, desloca([iso(x0,y0,zc), iso(x1,y0,zc), iso(x1,y1,zc), iso(x0,y1,zc)], m1), o1, w3, traco, sw);
+
+      var ux0 = 1, ux1 = 4.4, uy0 = .8, uy1 = 3.2, zh = zb + hu * alto, oa = alto > .01 ? 1 : 0;
+      set(ua, [iso(ux1,uy0,zb), iso(ux1,uy1,zb), iso(ux1,uy1,zh), iso(ux1,uy0,zh)], oa, cp1, traco, sw);
+      set(ub, [iso(ux1,uy1,zb), iso(ux0,uy1,zb), iso(ux0,uy1,zh), iso(ux1,uy1,zh)], oa, cp2, traco, sw);
+      set(ut, [iso(ux0,uy0,zh), iso(ux1,uy0,zh), iso(ux1,uy1,zh), iso(ux0,uy1,zh)], oa, cpt, traco, sw);
+
+      var m2 = -70 * (1 - l2), o2 = l2 > .01 ? l2 : 0, rx0 = .65, rx1 = 4.75, ry0 = .45, ry1 = 3.55, zr0 = zb + hu, zr1 = zr0 + .18;
+      set(l2a, desloca([iso(rx1,ry0,zr0), iso(rx1,ry1,zr0), iso(rx1,ry1,zr1), iso(rx1,ry0,zr1)], m2), o2, w1, traco, sw);
+      set(l2b, desloca([iso(rx1,ry1,zr0), iso(rx0,ry1,zr0), iso(rx0,ry1,zr1), iso(rx1,ry1,zr1)], m2), o2, w2, traco, sw);
+      set(l2t, desloca([iso(rx0,ry0,zr1), iso(rx1,ry0,zr1), iso(rx1,ry1,zr1), iso(rx0,ry1,zr1)], m2), o2, w3, traco, sw);
+
+      var vidro = cor('#27456f', '#ffd27a', luz);
+      vidros.forEach(function(v){ v.setAttribute('opacity', jan.toFixed(3)); v.setAttribute('fill', vidro); });
+      brilhos.forEach(function(b){ b.setAttribute('opacity', (luz * .85).toFixed(3)); });
+      pt.setAttribute('opacity', jan.toFixed(3));
+
+      stage.style.setProperty('--bp', (1 - suave(.1, .7, p) * .7).toFixed(3));
+      stage.style.setProperty('--glow', suave(.8, 1, p).toFixed(3));
+      var fase = p < .3 ? 0 : p < .62 ? 1 : p < .86 ? 2 : 3;
+      if (fase !== faseAtual) { faseAtual = fase; passos.forEach(function(li, i){ li.classList.toggle('on', i === fase); }); }
+    }
+
+    if (reduz) { secao.classList.add('static'); render(1); passos.forEach(function(li){ li.classList.add('on'); }); return; }
+    var it = { cur:0, tgt:0, vh:0, k:0 };
+    it.medir = function(){ it.vh = window.innerHeight; stage.style.height = it.vh + 'px'; track.style.height = (it.vh * 4.2) + 'px'; };
+    it.ler = function(){ var r = track.getBoundingClientRect(); return clamp(-r.top / (it.vh * 3.2), 0, 1); };
+    it.aplicar = render; it.track = track;
+    it.medir(); render(0);
+    animadores.push(it);
+  })();
+
+  // ---------- Um só laço de rolagem para os dois efeitos ----------
+  (function(){
+    if (!animadores.length) return;
+    var rodando = false, K = 1 - Math.exp(-1 / (60 * .1));
+    function quadro(){
+      var ativo = false;
+      animadores.forEach(function(it){
+        var r = it.track.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > window.innerHeight + 200) return;   // fora da tela
+        it.tgt = it.ler();
+        it.cur += (it.tgt - it.cur) * K;
+        if (Math.abs(it.tgt - it.cur) < .0004) it.cur = it.tgt; else ativo = true;
+        it.aplicar(it.cur);
+      });
+      rodando = ativo; if (ativo) requestAnimationFrame(quadro);
+    }
+    function chamar(){ if (!rodando) { rodando = true; requestAnimationFrame(quadro); } }
+    window.addEventListener('scroll', chamar, {passive:true});
+    window.addEventListener('resize', function(){ animadores.forEach(function(it){ it.medir(); it.cur = it.tgt = it.ler(); it.aplicar(it.cur); }); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ animadores.forEach(function(it){ it.medir(); it.cur = it.tgt = it.ler(); it.aplicar(it.cur); }); });
+    chamar();
+  })();
 
   // Faixa rolante em loop contínuo: repete o grupo até cobrir o dobro da largura da tela
   (function(){
