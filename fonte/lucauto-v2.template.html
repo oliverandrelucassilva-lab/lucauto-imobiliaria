@@ -517,6 +517,60 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .hero__media#capa-img{object-position:58% 50%}
   .hero.has-img .hero__shade{background:linear-gradient(180deg,rgba(10,9,8,.7) 0%,rgba(10,9,8,.55) 45%,rgba(10,9,8,.78) 100%)}
 }
+
+/* ---------- Galeria do imóvel ---------- */
+.prop{cursor:pointer}
+.prop__open{display:block;position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer;border-radius:inherit;overflow:hidden}
+.prop__open img{width:100%;height:100%;object-fit:cover}
+.prop__hint{position:absolute;z-index:1;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:var(--r-pill);background:rgba(7,20,42,.82);border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;transition:background .3s,color .3s}
+.prop__hint b{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--r-pill);background:var(--gold);color:var(--text-dark);font-size:12px}
+.prop:hover .prop__hint{background:var(--gold);color:var(--text-dark)}
+.prop:hover .prop__hint b{background:var(--text-dark);color:var(--gold)}
+.prop__open:focus-visible{outline:3px solid var(--gold-light);outline-offset:-3px}
+.pill{left:12px;bottom:12px}
+.pill--warn{top:12px;bottom:auto}
+.prop__media::after{pointer-events:none}
+.travado{overflow:hidden}
+dialog.gal{padding:0;border:0;background:transparent;width:100%;height:100%;max-width:none;max-height:none;overflow:auto;color:var(--text)}
+dialog.gal::backdrop{background:rgba(5,10,22,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+dialog.gal[open]::backdrop{animation:fadeb .45s var(--ease)}
+dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
+@keyframes fadeb{from{opacity:0}to{opacity:1}}
+.gal__panel{position:relative;width:min(1120px,calc(100% - 24px));margin:12px auto;display:grid;grid-template-columns:1fr;border-radius:24px;overflow:hidden;background:var(--navy-card);border:1px solid var(--border);box-shadow:0 40px 120px rgba(0,0,0,.6);transform-origin:center}
+.gal__close{position:absolute;z-index:6;right:12px;top:12px;width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:rgba(7,20,42,.78);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:background .25s,color .25s,transform .3s var(--ease)}
+.gal__close:hover{background:var(--gold);color:var(--text-dark);transform:rotate(90deg)}
+.gal__close svg,.gal__arrow svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.gal__view{position:relative;aspect-ratio:4/3;background:var(--navy-deep);overflow:hidden;touch-action:pan-y;user-select:none}
+.gal__view>img{width:100%;height:100%;object-fit:cover;display:block}
+.gal__arrow{position:absolute;z-index:3;top:50%;width:48px;height:48px;margin-top:-24px;border-radius:50%;border:1px solid var(--border);background:rgba(7,20,42,.72);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:background .25s,color .25s,opacity .25s}
+.gal__arrow--l{left:12px}.gal__arrow--r{right:12px}
+.gal__arrow:hover:not(:disabled){background:var(--gold);color:var(--text-dark)}
+.gal__arrow:disabled{opacity:.3;cursor:default}
+.gal__count{position:absolute;z-index:3;left:12px;top:12px;padding:6px 14px;border-radius:var(--r-pill);background:rgba(7,20,42,.78);border:1px solid var(--border);font-size:13px;font-weight:600}
+.gal__more{position:absolute;inset:0;z-index:2;display:grid;place-items:center;padding:var(--s2)}
+.gal__more>img{position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;filter:blur(18px) brightness(.55);transform:scale(1.04)}
+.gal__morecard{position:relative;max-width:420px;text-align:center;padding:var(--s4) var(--s3);border-radius:var(--r-xl);background:rgba(52,58,72,.62);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.22);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.gal__morecard-t{font-size:20px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.gal__morecard-s{color:#e8ecf3;margin-bottom:var(--s3)}
+.gal__thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:12px}
+.gal__thumb{position:relative;padding:0;border:2px solid transparent;border-radius:var(--r-md);overflow:hidden;cursor:pointer;aspect-ratio:4/3;background:var(--navy-deep);opacity:.65;transition:opacity .25s,border-color .25s,transform .3s var(--ease)}
+.gal__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.gal__thumb:hover{opacity:1;transform:translateY(-2px)}
+.gal__thumb[aria-current="true"]{opacity:1;border-color:var(--gold)}
+.gal__side{padding:var(--s3);display:flex;flex-direction:column;gap:8px}
+.gal__side h2{font-size:26px;max-width:none}
+.gal__meta{color:var(--text-muted)}
+.gal__price{font-size:22px;font-weight:700;color:var(--gold-light)}
+.gal__prov{font-size:13px;color:var(--text-muted)}
+.gal__side .btn{margin-top:var(--s2)}
+@media (min-width:1024px){
+  .gal__panel{grid-template-columns:1.7fr 1fr;margin:4vh auto;max-height:92vh}
+  .gal__main{display:flex;flex-direction:column;min-width:0}
+  .gal__view{aspect-ratio:auto;flex:1;min-height:420px}
+  .gal__side{padding:var(--s5) var(--s4) var(--s4);justify-content:flex-end}
+  .gal__side h2{font-size:34px}
+}
+@media (prefers-reduced-motion:reduce){dialog.gal[open]::backdrop{animation:none}}
 </style>
 </head>
 <body>
@@ -800,6 +854,38 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 
 <a class="fab" data-wa href="#" target="_blank" rel="noopener" aria-label="Falar com a Lucauto no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></a>
 
+
+<dialog class="gal" id="gal" aria-labelledby="gal-title">
+  <div class="gal__panel">
+    <button class="gal__close" id="gal-close" type="button" aria-label="Fechar galeria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="gal__main">
+      <div class="gal__view" id="gal-view">
+        <img id="gal-img" alt="" width="960" height="720" decoding="async" draggable="false">
+        <div class="gal__more" id="gal-more" hidden>
+          <img id="gal-blur" alt="" aria-hidden="true" draggable="false">
+          <div class="gal__morecard">
+            <p class="gal__morecard-t">Gostaria de ver mais imagens deste imóvel?</p>
+            <p class="gal__morecard-s">Clique aqui ou entre em contato.</p>
+            <a class="btn" id="gal-wa2" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Chamar no WhatsApp</a>
+          </div>
+        </div>
+        <button class="gal__arrow gal__arrow--l" id="gal-prev" type="button" aria-label="Foto anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="gal__arrow gal__arrow--r" id="gal-next" type="button" aria-label="Próxima foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <span class="gal__count" id="gal-count" aria-live="polite"></span>
+      </div>
+      <div class="gal__thumbs" id="gal-thumbs" role="group" aria-label="Fotos do imóvel"></div>
+    </div>
+    <div class="gal__side">
+      <p class="eyebrow" id="gal-eyebrow"></p>
+      <h2 id="gal-title"></h2>
+      <p class="gal__meta" id="gal-meta"></p>
+      <p class="gal__price" id="gal-price"></p>
+      <p class="gal__prov" id="gal-prov" hidden>Exemplo provisório. Imagens ilustrativas.</p>
+      <a class="btn" id="gal-wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Quero saber mais</a>
+    </div>
+  </div>
+</dialog>
+
 <dialog id="d-priv" aria-labelledby="d-priv-t"><h2 id="d-priv-t">Política de Privacidade</h2><p>Este documento será publicado em breve. Em caso de dúvidas, fale com a Lucauto pelo WhatsApp: (75) 99942-1482.</p><button class="btn btn--ghost" type="button" data-close>Fechar</button></dialog>
 <dialog id="d-termos" aria-labelledby="d-termos-t"><h2 id="d-termos-t">Termos de Uso</h2><p>Este documento será publicado em breve. Em caso de dúvidas, fale com a Lucauto pelo WhatsApp: (75) 99942-1482.</p><button class="btn btn--ghost" type="button" data-close>Fechar</button></dialog>
 
@@ -824,15 +910,29 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 
   /* ==========================================================
      IMÓVEIS EM DESTAQUE (edite aqui)
-     tipo, bairro, quartos, vagas, valor são opcionais exceto tipo e bairro.
-     valor vazio mostra "Consulte". foto vazia usa a imagem provisória.
+     Cada imóvel é um bloco { ... }. Campos:
+       tipo, bairro      obrigatórios (ex.: 'Casa', 'Centro')
+       quartos, vagas    opcionais (números)
+       valor             opcional. Vazio mostra "Consulte"
+       fotos             até 5 imagens (a 1ª é a capa do card). Caminhos como 'assets/img/imoveis/casa-1.webp'
+                         ou deixe [] para usar as imagens provisórias. Passou de 5, o site ignora as extras.
+       alt               descrição da imagem de capa (acessibilidade)
+       provisorio        true marca como "Exemplo provisório". Remova nos imóveis reais.
+     Ao clicar no card, abre a galeria. Depois da 5ª foto, aparece o convite para falar no WhatsApp.
+     Terrenos, casas e apartamentos seguem o mesmo formato.
      ========================================================== */
-  var FOTO_PROVISORIA = '{{b64:assets/img/imovel-provisorio.webp}}';
-  var IMOVEIS = [
-    { tipo:'Casa',        bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', foto:'', alt:'Imagem ilustrativa provisória de imóvel, silhuetas de prédios em linhas douradas sobre fundo azul marinho', provisorio:true },
-    { tipo:'Apartamento', bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', foto:'', alt:'Imagem ilustrativa provisória de imóvel, silhuetas de prédios em linhas douradas sobre fundo azul marinho', provisorio:true },
-    { tipo:'Terreno',     bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', foto:'', alt:'Imagem ilustrativa provisória de imóvel, silhuetas de prédios em linhas douradas sobre fundo azul marinho', provisorio:true }
+  var MAX_FOTOS = 5;
+  var PROV = [
+    '{{b64:assets/v2/prov-1.webp}}', '{{b64:assets/v2/prov-2.webp}}', '{{b64:assets/v2/prov-3.webp}}',
+    '{{b64:assets/v2/prov-4.webp}}', '{{b64:assets/v2/prov-5.webp}}'
   ];
+  var ALT_PROV = 'Imagem ilustrativa provisória, desenho em linhas douradas sobre fundo azul marinho';
+  var IMOVEIS = [
+    { tipo:'Casa',        bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', fotos:[PROV[1],PROV[3],PROV[0],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
+    { tipo:'Apartamento', bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', fotos:[PROV[0],PROV[3],PROV[1],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
+    { tipo:'Terreno',     bairro:'Euclides da Cunha', quartos:null, vagas:null, valor:'', fotos:[PROV[2],PROV[4],PROV[0],PROV[1],PROV[3]], alt:ALT_PROV, provisorio:true }
+  ];
+  function fotosDe(i){ var f = (i.fotos && i.fotos.length ? i.fotos : [PROV[0]]).slice(0, MAX_FOTOS); return f; }
 
   var doc = document.documentElement;
   var reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -851,12 +951,19 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   function el(t, c, txt){ var e=document.createElement(t); if(c) e.className=c; if(txt) e.textContent=txt; return e; }
   var track = document.getElementById('track');
   IMOVEIS.forEach(function(i){
-    var titulo = i.tipo + ' em ' + i.bairro;
+    var titulo = i.tipo + ' em ' + i.bairro, fotos = fotosDe(i);
     var card = el('article','prop');
     var media = el('div','prop__media');
-    var img = el('img'); img.src = i.foto || FOTO_PROVISORIA; img.alt = i.alt || titulo;
+    var open = el('button','prop__open'); open.type = 'button';
+    open.setAttribute('aria-label','Ver fotos de ' + titulo);
+    var img = el('img'); img.src = fotos[0]; img.alt = i.alt || titulo;
     img.width = 960; img.height = 720; img.loading = 'lazy'; img.decoding = 'async';
-    media.appendChild(img);
+    open.appendChild(img);
+    var hint = el('span','prop__hint'); hint.setAttribute('aria-hidden','true');
+    hint.appendChild(document.createTextNode('Ver fotos'));
+    hint.appendChild(el('b','',String(fotos.length)));
+    open.appendChild(hint);
+    media.appendChild(open);
     media.appendChild(el('span','pill', i.tipo + ' · ' + i.bairro));
     if (i.provisorio) media.appendChild(el('span','pill pill--warn','Exemplo provisório'));
     var body = el('div','prop__body');
@@ -873,7 +980,109 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
     body.appendChild(b);
     card.appendChild(media); card.appendChild(body);
     track.appendChild(card);
+    // clique no card (fora do botão de WhatsApp) abre a galeria
+    card.addEventListener('click', function(e){ if (e.target.closest('a')) return; abrirGaleria(i, open); });
   });
+
+  // ---------- Galeria do imóvel (card que "vem para a tela") ----------
+  var gal = document.getElementById('gal'), painel = gal.querySelector('.gal__panel');
+  var gImg = document.getElementById('gal-img'), gMore = document.getElementById('gal-more');
+  var gBlur = document.getElementById('gal-blur'), gCount = document.getElementById('gal-count');
+  var gPrev = document.getElementById('gal-prev'), gNext = document.getElementById('gal-next');
+  var gThumbs = document.getElementById('gal-thumbs');
+  var G = { item:null, fotos:[], idx:0, origem:null, fechando:false };
+  var EASE = 'cubic-bezier(.2,.8,.2,1)';
+
+  function mostrar(idx, dir){
+    var total = G.fotos.length + 1;               // fotos + convite final
+    idx = Math.max(0, Math.min(total - 1, idx));
+    var fim = idx === G.fotos.length;
+    G.idx = idx;
+    gMore.hidden = !fim;
+    gImg.hidden = fim;
+    if (fim) { gBlur.src = G.fotos[G.fotos.length - 1]; gCount.textContent = 'Mais fotos'; }
+    else {
+      gImg.src = G.fotos[idx];
+      gImg.alt = (G.item.tipo + ' em ' + G.item.bairro) + ', foto ' + (idx + 1) + ' de ' + G.fotos.length;
+      gCount.textContent = (idx + 1) + ' / ' + G.fotos.length;
+      if (!reduz && dir) gImg.animate([{opacity:0, transform:'translateX(' + (dir * 36) + 'px) scale(1.02)'}, {opacity:1, transform:'none'}], {duration:380, easing:EASE});
+    }
+    if (fim && !reduz && dir) gMore.animate([{opacity:0}, {opacity:1}], {duration:420, easing:EASE});
+    [].forEach.call(gThumbs.children, function(t, k){ t.setAttribute('aria-current', k === idx ? 'true' : 'false'); });
+    gPrev.disabled = idx === 0;
+    gNext.disabled = idx === total - 1;
+  }
+
+  function abrirGaleria(item, origem){
+    G.item = item; G.fotos = fotosDe(item); G.origem = origem; G.fechando = false;
+    var titulo = item.tipo + ' em ' + item.bairro;
+    document.getElementById('gal-eyebrow').textContent = (item.tipo + ' · ' + item.bairro).toUpperCase();
+    document.getElementById('gal-title').textContent = titulo;
+    var meta = [];
+    if (item.quartos) meta.push(item.quartos + (item.quartos > 1 ? ' quartos' : ' quarto'));
+    if (item.vagas) meta.push(item.vagas + (item.vagas > 1 ? ' vagas' : ' vaga'));
+    var gm = document.getElementById('gal-meta'); gm.textContent = meta.join(' / '); gm.hidden = !meta.length;
+    document.getElementById('gal-price').textContent = item.valor || 'Consulte';
+    document.getElementById('gal-prov').hidden = !item.provisorio;
+    var msgBase = 'Olá! Tenho interesse no imóvel: ' + titulo + '.';
+    document.getElementById('gal-wa').href = wa(msgBase + ' Pode me passar mais informações?');
+    document.getElementById('gal-wa2').href = wa(msgBase + ' Gostaria de ver mais imagens.');
+    gThumbs.textContent = '';
+    G.fotos.forEach(function(f, k){
+      var t = el('button','gal__thumb'); t.type = 'button'; t.setAttribute('aria-label','Ver foto ' + (k + 1));
+      var im = el('img'); im.src = f; im.alt = ''; im.width = 160; im.height = 120; im.decoding = 'async';
+      t.appendChild(im); t.addEventListener('click', function(){ mostrar(k, k > G.idx ? 1 : -1); });
+      gThumbs.appendChild(t);
+    });
+    mostrar(0, 0);
+    document.documentElement.classList.add('travado');
+    gal.showModal();
+    if (!reduz && origem) {
+      var a = (origem.closest('.prop') || origem.closest('a') || origem).getBoundingClientRect(), b = painel.getBoundingClientRect();
+      var dx = (a.left + a.width / 2) - (b.left + b.width / 2), dy = (a.top + a.height / 2) - (b.top + b.height / 2);
+      var sx = Math.max(.15, a.width / b.width), sy = Math.max(.15, a.height / b.height);
+      painel.animate([
+        {transform:'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')', opacity:.15, borderRadius:'16px'},
+        {transform:'none', opacity:1, borderRadius:'24px'}
+      ], {duration:620, easing:EASE});
+    }
+  }
+
+  function fecharGaleria(){
+    if (G.fechando || !gal.open) return;
+    G.fechando = true;
+    var fim = function(){ gal.close(); document.documentElement.classList.remove('travado'); G.fechando = false; if (G.origem) G.origem.focus({preventScroll:true}); };
+    if (reduz || !G.origem) { fim(); return; }
+    var card = G.origem.closest('.prop') || G.origem.closest('a') || G.origem, a = card.getBoundingClientRect(), b = painel.getBoundingClientRect();
+    var dx = (a.left + a.width / 2) - (b.left + b.width / 2), dy = (a.top + a.height / 2) - (b.top + b.height / 2);
+    var sx = Math.max(.15, a.width / b.width), sy = Math.max(.15, a.height / b.height);
+    gal.classList.add('saindo');
+    var an = painel.animate([
+      {transform:'none', opacity:1},
+      {transform:'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')', opacity:0}
+    ], {duration:440, easing:'cubic-bezier(.6,0,.4,1)', fill:'forwards'});
+    an.onfinish = function(){ gal.classList.remove('saindo'); fim(); an.cancel(); };
+  }
+
+  gPrev.addEventListener('click', function(){ mostrar(G.idx - 1, -1); });
+  gNext.addEventListener('click', function(){ mostrar(G.idx + 1, 1); });
+  document.getElementById('gal-close').addEventListener('click', fecharGaleria);
+  gal.addEventListener('cancel', function(e){ e.preventDefault(); fecharGaleria(); });
+  gal.addEventListener('click', function(e){ if (e.target === gal) fecharGaleria(); });
+  gal.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight') { e.preventDefault(); mostrar(G.idx + 1, 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); mostrar(G.idx - 1, -1); }
+  });
+  // arrastar com o dedo / mouse
+  (function(){
+    var vw = document.getElementById('gal-view'), x0 = null;
+    vw.addEventListener('pointerdown', function(e){ x0 = e.clientX; });
+    vw.addEventListener('pointerup', function(e){
+      if (x0 === null) return; var d = e.clientX - x0; x0 = null;
+      if (Math.abs(d) > 50) mostrar(G.idx + (d < 0 ? 1 : -1), d < 0 ? 1 : -1);
+    });
+    vw.addEventListener('pointercancel', function(){ x0 = null; });
+  })();
 
   // Carrossel
   var prev = document.getElementById('prev'), next = document.getElementById('next');
@@ -991,16 +1200,16 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   });
 
 
-  // Cartão em destaque na capa (primeiro imóvel da lista)
+  // Cartão em destaque na capa (primeiro imóvel da lista) abre a galeria
   var hc = document.getElementById('hero-card'), p0 = IMOVEIS[0];
   if (hc && p0) {
     var t0 = p0.tipo + ' em ' + p0.bairro;
-    hc.href = wa('Olá! Tenho interesse no imóvel: ' + t0 + '. Pode me passar mais informações?');
-    hc.setAttribute('aria-label', 'Imóvel em destaque: ' + t0 + '. Quero saber mais');
-    var hi = el('img'); hi.src = p0.foto || FOTO_PROVISORIA; hi.alt = ''; hi.width = 112; hi.height = 84; hi.decoding = 'async';
+    hc.setAttribute('aria-label', 'Imóvel em destaque: ' + t0 + '. Ver fotos');
+    var hi = el('img'); hi.src = fotosDe(p0)[0]; hi.alt = ''; hi.width = 112; hi.height = 84; hi.decoding = 'async';
     var ht = el('div'); ht.appendChild(el('small','','EM DESTAQUE')); ht.appendChild(el('b','',t0)); ht.appendChild(el('em','',p0.valor || 'Consulte'));
     hc.appendChild(hi); hc.appendChild(ht); hc.appendChild(el('span','go','→')).setAttribute('aria-hidden','true');
     hc.hidden = false;
+    hc.addEventListener('click', function(e){ e.preventDefault(); abrirGaleria(p0, hc.querySelector('img')); });
   }
 
   // Seletor "O que você procura?" e imagens opcionais

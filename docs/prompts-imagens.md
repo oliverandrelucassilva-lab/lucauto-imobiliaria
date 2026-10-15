@@ -45,6 +45,29 @@ Gere a imagem, baixe e me mande aqui. Eu otimizo (WebP) e coloco na capa. Se pre
 
 ---
 
+# Tratar as fotos reais dos imóveis (ChatGPT)
+
+Use **só em fotos reais** do imóvel. O objetivo é limpar e melhorar a qualidade, sem mudar o imóvel.
+
+```
+Esta é uma foto real de um imóvel que será anunciado. Faça apenas retoques de limpeza e qualidade:
+- Remova pessoas, reflexos de pessoas em espelhos e vidros, carros, motos e objetos soltos que distraem na frente do imóvel.
+- Melhore nitidez, exposição e cores, com aparência natural e profissional, em alta resolução.
+- NÃO altere a arquitetura, o tamanho, as cores das paredes, os acabamentos, o piso, as janelas, o terreno, a vegetação, o entorno nem o estado de conservação do imóvel.
+- NÃO adicione móveis, piscina, jardim, decoração ou qualquer elemento que não exista na foto.
+- Mantenha o enquadramento original.
+```
+
+Confira a imagem final lado a lado com a original. Se algo do imóvel mudou, descarte e peça de novo.
+
+## O que NÃO fazer
+
+- **Não gere com IA imagens de um imóvel ou terreno real e apresente como se fossem dele.** Isso engana quem procura e pode ser propaganda enganosa (Código de Defesa do Consumidor). Em terreno, por exemplo, mostrar casas ou construções que não existem é perigoso.
+- Se quiser mostrar uma ideia do que pode ser construído, use imagem claramente identificada como **"Projeto ilustrativo / imagem meramente ilustrativa"**, separada das fotos reais do terreno.
+- Para a galeria, use no máximo 5 fotos reais por imóvel. As extras são ignoradas.
+
+---
+
 # Outros prompts (Higgsfield ou outros geradores)
 
 Use em qualquer gerador (Higgsfield, Midjourney, Flux, GPT Image etc.). Os prompts estão em inglês porque os modelos costumam acertar mais, com a explicação em português.
