@@ -663,12 +663,27 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .gal__morecard-s{font-size:14px;margin-bottom:var(--s2)}
 }
 /* imagem dentro do passo (celular e tablet) */
-.step__img{display:block;width:calc(100% + 2 * var(--s3));max-width:none;margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) var(--s2);aspect-ratio:16/10;object-fit:cover;border-radius:var(--r-lg) var(--r-lg) 0 0}
-.step__img+.step__n{margin-top:0}
+.step__fig{position:relative;width:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) var(--s2);aspect-ratio:16/10;overflow:hidden;border-radius:var(--r-lg) var(--r-lg) 0 0}
+.step__fig::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,20,42,.6),transparent 40%,rgba(7,20,42,.82));pointer-events:none}
+.step__img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 55%}
+.step__fign{position:absolute;z-index:1;left:14px;top:8px;font-family:var(--font-accent);font-style:italic;font-weight:500;font-size:54px;line-height:1;color:var(--gold-light);text-shadow:0 2px 6px rgba(0,0,0,.85),0 0 22px rgba(0,0,0,.8)}
+.step__figc{position:absolute;z-index:1;left:14px;right:14px;bottom:12px;font-weight:600;font-size:15px;line-height:1.25;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.8)}
+/* painel do computador: número e legenda sobre a foto */
+.cv__shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,20,42,.45),transparent 30%,transparent 50%,rgba(7,20,42,.88));pointer-events:none}
+.cv__n{z-index:1;font-size:92px;bottom:64px;color:var(--gold-light)}
+.cv__cap{position:absolute;z-index:1;left:var(--s3);right:var(--s3);bottom:var(--s3);font-weight:600;font-size:20px;line-height:1.25;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.8);transition:opacity .3s,transform .5s var(--ease)}
+.cv__cap.swap{opacity:0;transform:translateY(10px)}
 .cv__n[hidden]{display:none}
 .cv__label{z-index:1;text-shadow:0 1px 10px rgba(0,0,0,.7)}
-@media (min-width:1024px){.step__img{display:none}}
-.step__img{object-position:50% 55%}
+@media (min-width:1024px){.step__fig{display:none}}
+/* no celular, o número e o título já estão sobre a foto: esconde o círculo e deixa o título só para leitores de tela */
+@media (max-width:1023px){
+  .step.com-foto .step__n{display:none}
+  .step.com-foto p{text-align:left;hyphens:none}
+  .step.com-foto h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .step.com-foto{padding-top:var(--s4)}
+  .step.com-foto .step__fig{margin-bottom:var(--s2)}
+}
 </style>
 </head>
 <body>
@@ -826,7 +841,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       <p class="eyebrow rv">PASSO A PASSO</p>
       <h2 id="h-como" class="rv" style="--d:.05s">Simples do começo ao <span class="accent">fim.</span></h2>
       <div class="chapters">
-      <div class="chapters__visual" aria-hidden="true"><div class="cv"><img id="cv-img" alt="" hidden width="900" height="1100" loading="lazy" decoding="async"><span class="cv__label">PASSO</span><span class="cv__n" id="cv-n">1</span></div></div>
+      <div class="chapters__visual" aria-hidden="true"><div class="cv"><img id="cv-img" alt="" hidden width="900" height="1100" loading="lazy" decoding="async"><span class="cv__shade"></span><span class="cv__label">PASSO</span><span class="cv__n" id="cv-n">1</span><span class="cv__cap" id="cv-cap"></span></div></div>
       <ol class="steps">
         <li class="step rv"><span class="step__n" aria-hidden="true">1</span><h3>Você chama no WhatsApp.</h3><p>Conte o que procura: tipo de imóvel, bairro e faixa de valor.</p></li>
         <li class="step rv" style="--d:.08s"><span class="step__n" aria-hidden="true">2</span><h3>Você escolhe e visita.</h3><p>Mostramos as opções e agendamos a visita no melhor horário para você.</p></li>
@@ -1405,16 +1420,22 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   (CONFIG.fotos && CONFIG.fotos.etapas || []).forEach(function(src, i){
     var st = document.querySelectorAll('.chapters .step')[i]; if (!src || !st) return;
     var im = el('img','step__img'); im.src = src; im.alt = (CONFIG.fotosAlt && CONFIG.fotosAlt[i]) || ''; im.width = 900; im.height = 560; im.loading = 'lazy'; im.decoding = 'async';
-    st.insertBefore(im, st.firstChild);
+    var fig = el('div','step__fig'); fig.appendChild(im);
+    fig.appendChild(el('span','step__fign', String(i + 1)));
+    var tt = st.querySelector('h3'); if (tt) fig.appendChild(el('span','step__figc', tt.textContent));
+    st.insertBefore(fig, st.firstChild);
+    st.classList.add('com-foto');
   });
-  var cvN = document.getElementById('cv-n'), cvImg = document.getElementById('cv-img');
+  var cvN = document.getElementById('cv-n'), cvImg = document.getElementById('cv-img'), cvCap = document.getElementById('cv-cap');
   var passos = [].slice.call(document.querySelectorAll('.chapters .step'));
+  if (passos[0]) cvCap.textContent = (passos[0].querySelector('h3') || {}).textContent || '';
   function irPasso(i){
-    if (cvN.textContent === String(i + 1)) return;
-    cvN.classList.add('swap');
-    setTimeout(function(){ cvN.textContent = String(i + 1); cvN.classList.remove('swap'); }, 220);
+    var titulo = (passos[i].querySelector('h3') || {}).textContent || '';
+    if (cvN.textContent === String(i + 1) && cvCap.textContent === titulo) return;
+    cvN.classList.add('swap'); cvCap.classList.add('swap');
+    setTimeout(function(){ cvN.textContent = String(i + 1); cvCap.textContent = titulo; cvN.classList.remove('swap'); cvCap.classList.remove('swap'); }, 220);
     var f = (CONFIG.fotos && CONFIG.fotos.etapas || [])[i];
-    if (f) { cvImg.src = f; cvImg.alt = (CONFIG.fotosAlt && CONFIG.fotosAlt[i]) || ''; cvImg.hidden = false; cvN.hidden = true; } else { cvImg.hidden = true; cvN.hidden = false; }
+    if (f) { cvImg.src = f; cvImg.alt = (CONFIG.fotosAlt && CONFIG.fotosAlt[i]) || ''; cvImg.hidden = false; } else { cvImg.hidden = true; }
     passos.forEach(function(x, j){ x.classList.toggle('active', j === i); });
   }
   if ('IntersectionObserver' in window && passos.length) {
