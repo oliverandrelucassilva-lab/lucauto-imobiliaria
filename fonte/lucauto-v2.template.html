@@ -472,7 +472,8 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 .hero{background:linear-gradient(180deg,#07142A 0%,#0B1F3A 38%,#2a2a3e 66%,#6b4a30 88%,#a86a2c 100%)}
 .horizon{height:70%;background:radial-gradient(65% 75% at 70% 100%,rgba(240,170,70,.7),rgba(201,130,50,.3) 42%,transparent 74%)}
 .hero.has-img{background:var(--charcoal)}
-.hero.has-img .horizon,.hero.has-img .grid-bg,.hero.has-img .orb{display:none}
+.hero.has-img .horizon,.hero.has-img .orb{display:none}
+.hero.has-img .grid-bg{display:block;opacity:.6}
 .hero__media.on{opacity:1}
 .hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.88) 0%,rgba(10,9,8,.55) 42%,rgba(10,9,8,.05) 78%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
 .marquee{background:var(--gold);border-color:var(--gold-dark)}
@@ -499,8 +500,8 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 .cta{background:linear-gradient(180deg,#0B1F3A,#12100E)}
 /* ---------- Capa com foto ---------- */
 .hero__media#capa-img{object-position:62% 50%}
-.hero.has-img .skyline{display:none}
-.hero.has-img #net{display:none}
+.hero.has-img .skyline{display:block;opacity:.32;mix-blend-mode:screen}
+.hero.has-img #net{opacity:.85}
 .hero.has-img .hero.has-img .accent{color:var(--gold-light)}
 .hero.has-img .eyebrow{color:var(--gold-light)}
 .hero.has-img .hero__shade{background:linear-gradient(90deg,rgba(10,9,8,.7) 0%,rgba(10,9,8,.5) 42%,rgba(10,9,8,.05) 80%),linear-gradient(180deg,rgba(10,9,8,.5) 0%,transparent 22%,transparent 62%,rgba(10,9,8,.82) 100%)}
@@ -1405,7 +1406,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 
   // Rede de pontos (canvas), pausa fora da tela
   var cv = document.getElementById('net');
-  if (cv.getContext && !reduz && !capaImg.getAttribute('src')) {
+  if (cv.getContext && !reduz) {
     var cx = cv.getContext('2d'), W = 0, H = 0, pts = [], vis = true, raf = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
     var medir = function(){
       var r = hero.getBoundingClientRect(); W = r.width; H = r.height;
@@ -1418,7 +1419,6 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       for (var i = 0; i < pts.length; i++) {
         var a = pts[i]; a.x += a.vx; a.y += a.vy;
         if (a.x < 0 || a.x > W) a.vx *= -1; if (a.y < 0 || a.y > H) a.vy *= -1;
-        if (pos.on) { var mx = pos.x-a.x, my = pos.y-a.y; if (mx*mx+my*my < 22000) { a.x += mx*.004; a.y += my*.004; } }
         cx.fillStyle = 'rgba(224,190,106,.7)'; cx.beginPath(); cx.arc(a.x,a.y,a.r,0,6.2832); cx.fill();
         for (var j = i+1; j < pts.length; j++) {
           var b = pts[j], dx = a.x-b.x, dy = a.y-b.y, d2 = dx*dx+dy*dy;
