@@ -4,7 +4,9 @@ Site estático (HTML, CSS e JS puros), sem etapa de build. Deploy na Vercel.
 
 ## Estrutura
 
-- `index.html`: página única (início, serviços, imóveis, sobre, contato).
+- `index.html`: **página principal (v2)**, arquivo único gerado. Não edite direto: edite `fonte/lucauto-v2.template.html` e rode `node scripts/montar-v2.mjs`.
+- `index-v1.html`: primeiro protótipo, guardado para comparação (acessível em /index-v1).
+- `fonte/`, `scripts/`, `docs/`: modelo do site, scripts de montagem e prompts de imagem.
 - `dados/imoveis.js`: **lista de imóveis**. É o único arquivo a editar para trocar imóveis, fotos e preços. As instruções estão no topo dele.
 - `assets/img/`: logo (recortada da arte oficial, sem alterações), favicons e imagens. Fotos de imóveis vão em `assets/img/imoveis/` (formato `.webp`, até 1200 px de largura).
 - `dados/capa.js`: vídeo ou imagem opcional para o fundo da capa (por exemplo gerado no Higgsfield). Vazio, a capa usa a animação própria.
