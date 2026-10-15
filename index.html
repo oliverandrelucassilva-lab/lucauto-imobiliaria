@@ -588,6 +588,13 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 
 .sec--light .intro>div>div p{font-size:17px;line-height:1.7}
 .hero.has-img .hero__in::before{content:"";position:absolute;z-index:-1;inset:-48px -90px -48px -70px;pointer-events:none;background:radial-gradient(70% 72% at 42% 50%,rgba(10,9,8,.55),transparent 78%)}
+
+/* ---------- FoldText ---------- */
+@property --fold-crease{syntax:'<number>';inherits:false;initial-value:0}
+.fd{display:inline-block}
+.fp{display:inline-block;opacity:0;backface-visibility:hidden;filter:brightness(calc(1 - var(--fold-crease) * .6));will-change:transform,opacity}
+.fp.pronto{will-change:auto;filter:none}
+@media (prefers-reduced-motion:reduce){.fp{opacity:1}}
 </style>
 </head>
 <body>
@@ -909,6 +916,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     mensagem: 'Olá! Vim pelo site da Lucauto e gostaria de saber mais sobre imóveis.',
     capaImagem: '',   // Ex.: 'assets/img/capa.webp' (imagem de fundo da capa; vazio mantém a animação)
     capaVideo: '',    // Ex.: 'assets/video/capa.mp4' (vídeo curto, sem áudio; opcional)
+    efeitoTitulos: 'blur',   // animação dos títulos: 'blur' (desfoque) ou 'fold' (dobra 3D). Para testar: adicione ?efeito=fold no endereço
     fotoPredio: '',
     fotos: { alugar:'', comprar:'', vender:'', avaliar:'', etapas:['','',''] },   // imagens opcionais do seletor e dos passos   // Ex.: 'assets/img/predio.webp' (foto real da fachada, aparece em Localização)
     horario: ''   // Ex.: 'segunda a sexta, das 8h às 18h'. Vazio: o microtexto e a pergunta de horário ficam ocultos.
@@ -1232,11 +1240,56 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       io2.observe(no);
     } else { rodar(); }
   }
+  // Efeito FoldText (recriado em JS puro, inspirado no componente do React Bits):
+  // cada palavra desdobra em 3D a partir de uma dobradiça, com sombra na dobra.
+  var HINGE = {
+    top:{origin:'50% 0%', rx:-92, ry:0}, bottom:{origin:'50% 100%', rx:92, ry:0},
+    left:{origin:'0% 50%', rx:0, ry:92}, right:{origin:'100% 50%', rx:0, ry:-92}
+  };
+  function foldText(no, o){
+    o = o || {};
+    var h = HINGE[o.hinge] || HINGE.top, dur = o.duration || .65, stagger = o.stagger || .08, crease = o.crease != null ? o.crease : .55, persp = o.perspective || 700;
+    if (reduz || !no.animate) return;
+    no.setAttribute('aria-label', no.textContent.replace(/\s+/g, ' ').trim());
+    var pecas = [];
+    (function dividir(el){
+      [].slice.call(el.childNodes).forEach(function(c){
+        if (c.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function(t){
+            if (!t) return;
+            if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var seg = document.createElement('span'); seg.className = 'fd'; seg.setAttribute('aria-hidden','true'); seg.style.perspective = persp + 'px';
+            var pc = document.createElement('span'); pc.className = 'fp'; pc.style.transformOrigin = h.origin; pc.textContent = t;
+            seg.appendChild(pc); pecas.push(pc); frag.appendChild(seg);
+          });
+          el.replaceChild(frag, c);
+        } else if (c.nodeType === 1) { dividir(c); }
+      });
+    })(no);
+    function rodar(){
+      pecas.forEach(function(pc, i){
+        var an = pc.animate([
+          {opacity:0, transform:'rotateX('+h.rx+'deg) rotateY('+h.ry+'deg)', '--fold-crease':crease},
+          {opacity:1, transform:'rotateX(0deg) rotateY(0deg)', '--fold-crease':0}
+        ], {duration:dur * 1000, delay:i * stagger * 1000, easing:'cubic-bezier(.215,.61,.355,1)', fill:'both'});
+        an.onfinish = function(){ pc.classList.add('pronto'); };
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      var io3 = new IntersectionObserver(function(es){ if (es[0].isIntersecting) { io3.disconnect(); rodar(); } }, {threshold:0, rootMargin:'0px 0px -18% 0px'});
+      io3.observe(no);
+    } else { rodar(); }
+  }
+
+  // Escolha do efeito dos títulos ('blur' ou 'fold'); ?efeito=fold no endereço serve para testar
+  var efeito = (new URLSearchParams(location.search)).get('efeito') || CONFIG.efeitoTitulos || 'blur';
+  function animarTitulo(no, ritmo){ if (efeito === 'fold') foldText(no, {stagger: ritmo / 1000 * .7}); else blurText(no, {delay: ritmo}); }
   var h1 = document.getElementById('h-hero');
-  if (h1) { blurText(h1, {delay:140}); h1.classList.remove('rv'); }
+  if (h1) { animarTitulo(h1, 140); h1.classList.remove('rv'); }
   ['h-intro','h-imoveis','h-procura','h-como','h-loc','h-cta'].forEach(function(id){
     var t = document.getElementById(id);
-    if (t) { blurText(t, {delay:110}); t.classList.add('blur-on'); }
+    if (t) { animarTitulo(t, 110); t.classList.add('blur-on'); }
   });
 
   // Linha dourada sob os títulos de seção
