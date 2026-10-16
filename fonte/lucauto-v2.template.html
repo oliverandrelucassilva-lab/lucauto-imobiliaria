@@ -62,6 +62,7 @@
   --pad-x:16px; --sec:64px; --header:68px;
   --ease:cubic-bezier(.2,.7,.2,1);
   --soft:cubic-bezier(.65,0,.25,1);
+  --hw:100vw;
 }
 
 /* ---------- Base ---------- */
@@ -114,7 +115,7 @@ h3{font-size:20px;line-height:1.3;font-weight:600}
 /* ---------- Cabeçalho ---------- */
 .header{position:fixed;top:0;left:50%;right:auto;width:100%;transform:translateX(-50%);height:var(--header);z-index:100;background:rgba(7,20,42,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .5s,background .5s,box-shadow .5s,left .8s var(--soft),top .8s var(--soft),width .8s var(--soft),height .8s var(--soft),border-radius .8s var(--soft)}
 .header.stuck{border-bottom-color:var(--border);background:rgba(7,20,42,.96)}
-.header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s2);filter:blur(0)}
+.header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
 .brand{display:flex;align-items:center;min-height:48px}
 .brand img{height:34px;width:auto}
 .burger{width:48px;height:48px;margin-right:-8px;background:none;border:0;border-radius:var(--r-sm);cursor:pointer;position:relative;color:var(--gold)}
@@ -291,7 +292,7 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
 
 /* ---------- Desktop (1024px ou mais) ---------- */
 @media (min-width:1024px){
-  :root{--pad-x:32px;--sec:120px;--header:80px}
+  :root{--hw:min(1120px,calc(100vw - 48px));--pad-x:32px;--sec:120px;--header:80px}
   body{font-size:18px}
   h1{font-size:60px}
   h2{font-size:44px}
@@ -684,19 +685,35 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .step.com-foto{padding-top:var(--s4)}
   .step.com-foto .step__fig{margin-bottom:var(--s2)}
 }
-/* barra que encolhe ao descer e volta ao clicar (transição em etapas, suave) */
-.mini-btn{display:flex;position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:none;border-radius:50%;cursor:pointer;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transform:scale(.4) rotate(-25deg);filter:blur(8px);transition:opacity .25s,transform .3s,filter .25s,visibility 0s .3s}
-.mini-btn img{width:36px;height:36px;border-radius:50%;transition:transform .3s var(--ease)}
-.mini-btn:hover img{transform:scale(1.1) rotate(-6deg)}
-/* conteúdo da barra: ao abrir, aparece depois que a barra já cresceu */
-.header .wrap{transition:opacity .5s .5s,filter .5s .5s,visibility 0s .5s}
-/* estado encolhido */
+/* barra que encolhe ao descer e volta ao clicar: os itens saem um a um enquanto ela fecha */
+.header.mini,.header.anim{overflow:hidden}
+.header.mini .wrap,.header.anim .wrap{position:absolute;top:0;right:0;width:var(--hw);max-width:none;margin:0;box-sizing:border-box}
+.header .wrap{visibility:visible;transition:visibility 0s}
+.header.mini .wrap{visibility:hidden;pointer-events:none;transition:visibility 0s 1.2s}
+/* itens da barra: ordem de saída (esquerda para direita) e de entrada (direita para esquerda) */
+.header .brand,.header .burger,.header .nav>a{transition:opacity .35s,transform .5s var(--ease),filter .35s}
+.header .nav>a:not(.btn){transition:color .2s,opacity .35s,transform .5s var(--ease),filter .35s}
+.header .nav>a.btn{transition:opacity .35s,filter .35s,transform .5s var(--ease),background .25s,box-shadow .25s,color .25s,border-color .25s}
+.header .brand{--o:0s;--i:.78s}
+.header .nav>a:nth-child(1){--o:.07s;--i:.7s}
+.header .nav>a:nth-child(2){--o:.14s;--i:.62s}
+.header .nav>a:nth-child(3){--o:.21s;--i:.54s}
+.header .nav>a:nth-child(4){--o:.28s;--i:.46s}
+.header .nav>a:nth-child(5){--o:.35s;--i:.38s}
+.header .nav>a:nth-child(6){--o:.42s;--i:.3s}
+.header .nav>a:nth-child(7){--o:.49s;--i:.22s}
+.header .burger{--o:.1s;--i:.3s}
+.header.anim.mini .brand,.header.anim.mini .burger,.header.anim.mini .nav>a{transition-delay:var(--o)}
+.header.anim:not(.mini) .brand,.header.anim:not(.mini) .burger,.header.anim:not(.mini) .nav>a{transition-delay:var(--i)}
+.header.mini .brand,.header.mini .burger,.header.mini .nav>a{opacity:0;transform:translateX(22px) scale(.88);filter:blur(5px)}
+/* estado encolhido (círculo) */
 .header.mini,.header.stuck.mini{top:12px;left:calc(100% - 44px);width:56px;height:56px;border:1px solid rgba(201,162,74,.6);border-radius:50%;background:rgba(7,20,42,.94);box-shadow:0 10px 28px rgba(0,0,0,.45);
-  /* ao encolher: espera o conteúdo sumir (0,3 s) e então fecha devagar */
-  transition:border-color .5s,background .5s,box-shadow .5s,left .9s var(--soft) .3s,top .9s var(--soft) .3s,width .9s var(--soft) .3s,height .9s var(--soft) .3s,border-radius .9s var(--soft) .3s}
-.header.mini .wrap{opacity:0;filter:blur(8px);visibility:hidden;pointer-events:none;transition:opacity .3s,filter .3s,visibility 0s .3s}
+  transition:border-color .5s,background .5s,box-shadow .5s,left .95s var(--soft),top .95s var(--soft),width .95s var(--soft),height .95s var(--soft),border-radius .95s var(--soft)}
+.mini-btn{display:flex;position:absolute;inset:0;width:100%;height:100%;align-items:center;justify-content:center;border:0;border-radius:50%;background:transparent;cursor:pointer;padding:0;opacity:0;visibility:hidden;pointer-events:none;transform:scale(.4) rotate(-25deg);filter:blur(8px);transition:opacity .25s,transform .3s,filter .25s,visibility 0s .3s}
+.mini-btn img{display:block;border-radius:50%;transition:transform .3s var(--ease)}
+.mini-btn:hover img{transform:scale(1.08)}
 /* a logo aparece com zoom no fim do encolhimento */
-.header.mini .mini-btn{opacity:1;visibility:visible;pointer-events:auto;transform:none;filter:none;transition:opacity .5s 1s,transform .8s var(--ease) 1s,filter .5s 1s,visibility 0s 1s}
+.header.mini .mini-btn{opacity:1;visibility:visible;pointer-events:auto;transform:none;filter:none;transition:opacity .5s .85s,transform .8s var(--ease) .85s,filter .5s .85s,visibility 0s .85s}
 </style>
 </head>
 <body>
@@ -1261,11 +1278,13 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   // Cabeçalho e menu
   var header = document.querySelector('.header');
   var miniBtn = document.getElementById('mini-btn');
-  var peek = false, peekY = 0, lastY = window.scrollY;
+  var peek = false, peekY = 0, lastY = window.scrollY, animT = 0;
   function setMini(v){
     if (header.classList.contains('mini') === v) return;
+    header.classList.add('anim');
     header.classList.toggle('mini', v);
     miniBtn.tabIndex = v ? 0 : -1;
+    clearTimeout(animT); animT = setTimeout(function(){ header.classList.remove('anim'); }, 1500);
   }
   window.addEventListener('scroll', function(){
     var y = window.scrollY, aberto = document.getElementById('burger').getAttribute('aria-expanded') === 'true';
