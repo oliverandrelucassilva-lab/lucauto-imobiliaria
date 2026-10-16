@@ -461,10 +461,6 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .header.stuck{top:12px;width:min(1120px,calc(100% - 48px));height:64px;border:1px solid var(--border);border-radius:var(--r-pill);background:rgba(7,20,42,.82);box-shadow:0 12px 32px rgba(0,0,0,.3)}
   .header.stuck .wrap{padding-inline:24px}
   .header.stuck .brand img{height:32px}
-  .chapters{display:grid;grid-template-columns:.85fr 1.15fr;gap:var(--s7);align-items:start;margin-top:var(--s5)}
-  .chapters__visual{display:block;position:sticky;top:calc(var(--header) + 48px)}
-  .chapters .steps{grid-template-columns:1fr;gap:var(--s3);margin-top:0}
-  .chapters .step{padding:var(--s4);min-height:170px;display:flex;flex-direction:column;justify-content:center}
   .hero__bottom{bottom:calc(var(--s6) + 44px)}
 }
 @media (prefers-reduced-motion:reduce){.scroll-cue .ring{animation:none}}
@@ -667,6 +663,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .step__fig{position:relative;width:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) var(--s2);aspect-ratio:16/10;overflow:hidden;border-radius:var(--r-lg) var(--r-lg) 0 0}
 .step__fig::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,20,42,.6),transparent 40%,rgba(7,20,42,.82));pointer-events:none}
 .step__img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 55%}
+.step.com-foto{overflow:hidden;padding-bottom:var(--s4)}
 .step__fign{position:absolute;z-index:1;left:14px;top:8px;font-family:var(--font-accent);font-style:italic;font-weight:500;font-size:54px;line-height:1;color:var(--gold-light);text-shadow:0 2px 6px rgba(0,0,0,.85),0 0 22px rgba(0,0,0,.8)}
 .step__figc{position:absolute;z-index:1;left:14px;right:14px;bottom:12px;font-weight:600;font-size:15px;line-height:1.25;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.8)}
 /* painel do computador: número e legenda sobre a foto */
@@ -676,9 +673,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .cv__cap.swap{opacity:0;transform:translateY(10px)}
 .cv__n[hidden]{display:none}
 .cv__label{z-index:1;text-shadow:0 1px 10px rgba(0,0,0,.7)}
-@media (min-width:1024px){.step__fig{display:none}}
 /* no celular, o número e o título já estão sobre a foto: esconde o círculo e deixa o título só para leitores de tela */
-@media (max-width:1023px){
+@media (min-width:0){
   .step.com-foto .step__n{display:none}
   .step.com-foto p{text-align:left;hyphens:none}
   .step.com-foto h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -872,7 +868,6 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       <p class="eyebrow rv">PASSO A PASSO</p>
       <h2 id="h-como" class="rv" style="--d:.05s">Simples do começo ao <span class="accent">fim.</span></h2>
       <div class="chapters">
-      <div class="chapters__visual" aria-hidden="true"><div class="cv" id="cv"><span class="cv__label">PASSO</span></div></div>
       <ol class="steps">
         <li class="step rv"><span class="step__n" aria-hidden="true">1</span><h3>Você chama no WhatsApp.</h3><p>Conte o que procura: tipo de imóvel, bairro e faixa de valor.</p></li>
         <li class="step rv" style="--d:.08s"><span class="step__n" aria-hidden="true">2</span><h3>Você escolhe e visita.</h3><p>Mostramos as opções e agendamos a visita no melhor horário para você.</p></li>
@@ -1475,33 +1470,6 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     st.classList.add('com-foto');
   });
   var passos = [].slice.call(document.querySelectorAll('.chapters .step'));
-  // painel grande: uma camada por passo, todas já carregadas e sobrepostas; só muda a opacidade (sem esperar imagem)
-  var cvEl = document.getElementById('cv'), camadas = [];
-  passos.forEach(function(st, i){
-    var src = (CONFIG.fotos && CONFIG.fotos.etapas || [])[i];
-    var cam = el('div','cv__layer');
-    if (src) { var im = el('img'); im.src = src; im.alt = ''; im.width = 900; im.height = 1100; im.decoding = 'async'; cam.appendChild(im); }
-    cam.appendChild(el('span','cv__shade'));
-    cam.appendChild(el('span','cv__n', String(i + 1)));
-    cam.appendChild(el('span','cv__cap', (st.querySelector('h3') || {}).textContent || ''));
-    cvEl.appendChild(cam); camadas.push(cam);
-  });
-  var ativo = -1, marcando = false;
-  function marcar(){
-    marcando = false;
-    if (!passos.length) return;
-    var alvo = window.innerHeight * .5, melhor = 0, dist = 1e9;
-    passos.forEach(function(st, i){ var r = st.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - alvo); if (d < dist) { dist = d; melhor = i; } });
-    if (melhor === ativo) return;
-    ativo = melhor;
-    camadas.forEach(function(c, j){ c.classList.toggle('on', j === melhor); });
-    passos.forEach(function(x, j){ x.classList.toggle('active', j === melhor); });
-  }
-  function pedirMarcar(){ if (!marcando) { marcando = true; requestAnimationFrame(marcar); } }
-  window.addEventListener('scroll', pedirMarcar, {passive:true});
-  window.addEventListener('resize', pedirMarcar);
-  marcar();
-
   var clamp = function(v, a, b){ return v < a ? a : v > b ? b : v; };
   var suave = function(a, b, x){ var t = clamp((x - a) / ((b - a) || 1e-6), 0, 1); return t * t * (3 - 2 * t); };
   var animadores = [];   // itens que dependem da rolagem
