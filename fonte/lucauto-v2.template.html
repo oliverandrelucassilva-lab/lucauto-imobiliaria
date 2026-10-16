@@ -111,7 +111,7 @@ h3{font-size:20px;line-height:1.3;font-weight:600}
 .glow>*{position:relative}
 
 /* ---------- Cabeçalho ---------- */
-.header{position:fixed;inset:0 0 auto 0;height:var(--header);z-index:100;background:rgba(7,20,42,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.header{position:fixed;top:0;left:50%;right:auto;width:100%;transform:translateX(-50%);height:var(--header);z-index:100;background:rgba(7,20,42,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s,left .4s var(--ease),top .4s var(--ease),width .4s var(--ease),height .4s var(--ease),border-radius .4s var(--ease)}
 .header.stuck{border-bottom-color:var(--border);background:rgba(7,20,42,.96)}
 .header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
 .brand{display:flex;align-items:center;min-height:48px}
@@ -456,14 +456,13 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .scroll-cue{bottom:12px}
 }
 @media (min-width:1024px){
-  .header{transition:top .35s var(--ease),width .35s var(--ease),border-radius .35s var(--ease),background .3s,border-color .3s,height .3s}
-  .header.stuck{top:12px;left:50%;right:auto;inset-inline-end:auto;width:min(1120px,calc(100% - 48px));height:64px;transform:translateX(-50%);border:1px solid var(--border);border-radius:var(--r-pill);background:rgba(7,20,42,.82);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+  .header.stuck{top:12px;width:min(1120px,calc(100% - 48px));height:64px;border:1px solid var(--border);border-radius:var(--r-pill);background:rgba(7,20,42,.82);box-shadow:0 12px 32px rgba(0,0,0,.3)}
   .header.stuck .wrap{padding-inline:24px}
   .header.stuck .brand img{height:32px}
   .chapters{display:grid;grid-template-columns:.85fr 1.15fr;gap:var(--s7);align-items:start;margin-top:var(--s5)}
-  .chapters__visual{display:block;position:sticky;top:120px}
+  .chapters__visual{display:block;position:sticky;top:calc(var(--header) + 48px)}
   .chapters .steps{grid-template-columns:1fr;gap:var(--s3);margin-top:0}
-  .chapters .step{padding:var(--s5) var(--s4);min-height:220px}
+  .chapters .step{padding:var(--s4);min-height:170px;display:flex;flex-direction:column;justify-content:center}
   .hero__bottom{bottom:calc(var(--s6) + 44px)}
 }
 @media (prefers-reduced-motion:reduce){.scroll-cue .ring{animation:none}}
@@ -684,6 +683,22 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .step.com-foto{padding-top:var(--s4)}
   .step.com-foto .step__fig{margin-bottom:var(--s2)}
 }
+/* barra que encolhe ao descer e volta ao clicar */
+.mini-btn{display:none;position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:none;border-radius:50%;cursor:pointer;align-items:center;justify-content:center}
+.mini-btn img{width:36px;height:36px;border-radius:50%;transition:transform .3s var(--ease)}
+.mini-btn:hover img{transform:scale(1.1) rotate(-6deg)}
+.header .wrap{transition:opacity .25s,visibility .25s}
+.header.mini,.header.stuck.mini{top:12px;left:calc(100% - 44px);width:56px;height:56px;border:1px solid rgba(201,162,74,.6);border-radius:50%;background:rgba(7,20,42,.94);box-shadow:0 10px 28px rgba(0,0,0,.45)}
+.header.mini .wrap{opacity:0;visibility:hidden;pointer-events:none}
+.header.mini .mini-btn{display:flex}
+/* camadas do painel */
+.cv__layer{position:absolute;inset:0;opacity:0;transition:opacity .5s var(--ease)}
+.cv__layer.on{opacity:1}
+.cv__layer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 1.4s var(--ease)}
+.cv__layer.on img{transform:none}
+.cv__layer .cv__n,.cv__layer .cv__cap{opacity:0;transform:translateY(14px);transition:opacity .45s .12s,transform .6s var(--ease) .12s}
+.cv__layer.on .cv__n,.cv__layer.on .cv__cap{opacity:1;transform:none}
+.cv__label{z-index:2}
 </style>
 </head>
 <body>
@@ -706,6 +721,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       <a class="btn" data-wa href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
     </nav>
   </div>
+  <button class="mini-btn" id="mini-btn" type="button" aria-label="Abrir menu de navegação" tabindex="-1"><img src="{{b64:assets/img/favicon-64.png}}" width="36" height="36" alt=""></button>
 </header>
 
 <main id="conteudo">
@@ -841,7 +857,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       <p class="eyebrow rv">PASSO A PASSO</p>
       <h2 id="h-como" class="rv" style="--d:.05s">Simples do começo ao <span class="accent">fim.</span></h2>
       <div class="chapters">
-      <div class="chapters__visual" aria-hidden="true"><div class="cv"><img id="cv-img" alt="" hidden width="900" height="1100" loading="lazy" decoding="async"><span class="cv__shade"></span><span class="cv__label">PASSO</span><span class="cv__n" id="cv-n">1</span><span class="cv__cap" id="cv-cap"></span></div></div>
+      <div class="chapters__visual" aria-hidden="true"><div class="cv" id="cv"><span class="cv__label">PASSO</span></div></div>
       <ol class="steps">
         <li class="step rv"><span class="step__n" aria-hidden="true">1</span><h3>Você chama no WhatsApp.</h3><p>Conte o que procura: tipo de imóvel, bairro e faixa de valor.</p></li>
         <li class="step rv" style="--d:.08s"><span class="step__n" aria-hidden="true">2</span><h3>Você escolhe e visita.</h3><p>Mostramos as opções e agendamos a visita no melhor horário para você.</p></li>
@@ -1246,7 +1262,22 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 
   // Cabeçalho e menu
   var header = document.querySelector('.header');
-  window.addEventListener('scroll', function(){ header.classList.toggle('stuck', window.scrollY > 8); }, {passive:true});
+  var miniBtn = document.getElementById('mini-btn');
+  var peek = false, peekY = 0, lastY = window.scrollY;
+  function setMini(v){
+    if (header.classList.contains('mini') === v) return;
+    header.classList.toggle('mini', v);
+    miniBtn.tabIndex = v ? 0 : -1;
+  }
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY, aberto = document.getElementById('burger').getAttribute('aria-expanded') === 'true';
+    header.classList.toggle('stuck', y > 8);
+    if (y < 160 || aberto) { setMini(false); peek = false; }               // no topo: barra completa
+    else if (peek) { if (Math.abs(y - peekY) > 160) { peek = false; setMini(true); } }   // abriu pelo clique: volta a encolher depois de rolar
+    else if (y > lastY + 6) setMini(true);                                 // descendo: encolhe
+    lastY = y;
+  }, {passive:true});
+  miniBtn.addEventListener('click', function(){ peek = true; peekY = window.scrollY; setMini(false); });
   var burger = document.getElementById('burger'), menu = document.getElementById('menu');
   function menuAbrir(v){ menu.classList.toggle('open', v); burger.setAttribute('aria-expanded', String(v)); burger.setAttribute('aria-label', v ? 'Fechar menu' : 'Abrir menu'); }
   burger.addEventListener('click', function(){ menuAbrir(burger.getAttribute('aria-expanded') !== 'true'); });
@@ -1426,25 +1457,33 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     st.insertBefore(fig, st.firstChild);
     st.classList.add('com-foto');
   });
-  var cvN = document.getElementById('cv-n'), cvImg = document.getElementById('cv-img'), cvCap = document.getElementById('cv-cap');
   var passos = [].slice.call(document.querySelectorAll('.chapters .step'));
-  if (passos[0]) cvCap.textContent = (passos[0].querySelector('h3') || {}).textContent || '';
-  function irPasso(i){
-    var titulo = (passos[i].querySelector('h3') || {}).textContent || '';
-    if (cvN.textContent === String(i + 1) && cvCap.textContent === titulo) return;
-    cvN.classList.add('swap'); cvCap.classList.add('swap');
-    setTimeout(function(){ cvN.textContent = String(i + 1); cvCap.textContent = titulo; cvN.classList.remove('swap'); cvCap.classList.remove('swap'); }, 220);
-    var f = (CONFIG.fotos && CONFIG.fotos.etapas || [])[i];
-    if (f) { cvImg.src = f; cvImg.alt = (CONFIG.fotosAlt && CONFIG.fotosAlt[i]) || ''; cvImg.hidden = false; } else { cvImg.hidden = true; }
-    passos.forEach(function(x, j){ x.classList.toggle('active', j === i); });
+  // painel grande: uma camada por passo, todas já carregadas e sobrepostas; só muda a opacidade (sem esperar imagem)
+  var cvEl = document.getElementById('cv'), camadas = [];
+  passos.forEach(function(st, i){
+    var src = (CONFIG.fotos && CONFIG.fotos.etapas || [])[i];
+    var cam = el('div','cv__layer');
+    if (src) { var im = el('img'); im.src = src; im.alt = ''; im.width = 900; im.height = 1100; im.decoding = 'async'; cam.appendChild(im); }
+    cam.appendChild(el('span','cv__shade'));
+    cam.appendChild(el('span','cv__n', String(i + 1)));
+    cam.appendChild(el('span','cv__cap', (st.querySelector('h3') || {}).textContent || ''));
+    cvEl.appendChild(cam); camadas.push(cam);
+  });
+  var ativo = -1, marcando = false;
+  function marcar(){
+    marcando = false;
+    if (!passos.length) return;
+    var alvo = window.innerHeight * .5, melhor = 0, dist = 1e9;
+    passos.forEach(function(st, i){ var r = st.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - alvo); if (d < dist) { dist = d; melhor = i; } });
+    if (melhor === ativo) return;
+    ativo = melhor;
+    camadas.forEach(function(c, j){ c.classList.toggle('on', j === melhor); });
+    passos.forEach(function(x, j){ x.classList.toggle('active', j === melhor); });
   }
-  if ('IntersectionObserver' in window && passos.length) {
-    var po = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if (e.isIntersecting) irPasso(passos.indexOf(e.target)); });
-    }, {rootMargin:'-45% 0px -45% 0px'});
-    passos.forEach(function(x){ po.observe(x); });
-  }
-
+  function pedirMarcar(){ if (!marcando) { marcando = true; requestAnimationFrame(marcar); } }
+  window.addEventListener('scroll', pedirMarcar, {passive:true});
+  window.addEventListener('resize', pedirMarcar);
+  marcar();
 
   var clamp = function(v, a, b){ return v < a ? a : v > b ? b : v; };
   var suave = function(a, b, x){ var t = clamp((x - a) / ((b - a) || 1e-6), 0, 1); return t * t * (3 - 2 * t); };

@@ -22,7 +22,7 @@ Quero melhorar a PARTE VISUAL do site do Odontomed. Não mude os textos, os dado
 ## 3. Capa (hero)
 - Foto grande em tela cheia, ao entardecer ou com luz quente e acolhedora, com o lado esquerdo mais escuro e limpo para o título. Foto nítida (no mínimo 2000 px de largura), com degradê suave só o necessário para o texto ficar legível. Sem retângulo de sombra visível atrás do texto.
 - Título grande, com UMA palavra em itálico na cor de destaque. Subtítulo curto, um botão principal e um microtexto ("Atendimento sem compromisso").
-- Menu fixo que vira uma "pílula" flutuante ao rolar, no computador. No celular, menu hambúrguer.
+- Menu fixo que vira uma "pílula" flutuante ao rolar, no computador. No celular, menu hambúrguer. Ao DESCER a página, a barra encolhe para um botão redondo pequeno no canto (só o ícone da logo) para não tapar títulos e informações. Ao clicar nele, a barra completa volta, e encolhe de novo depois de rolar mais um pouco. No topo da página ela fica sempre completa.
 - Embaixo da capa: ícones dos serviços, um cartão pequeno "Em destaque" e a indicação "Role para descobrir".
 - Animação da capa: uma rede de pontos de luz bem discreta ligados por linhas finas, que se aproximam do ponteiro do mouse. NÃO usar bolhas brilhantes, nem brilho que segue o mouse, nem desenho em linhas por cima da foto.
 - Logo oficial usada como está, sem redesenhar.
@@ -34,7 +34,7 @@ Quero melhorar a PARTE VISUAL do site do Odontomed. Não mude os textos, os dado
 - Seção "O que você procura?" com 4 cartões grandes que abrem o WhatsApp já com a mensagem pronta para aquele interesse.
 - Cartões de profissionais ou tratamentos em carrossel: foto, nome, uma linha de descrição, botão. Tópicos pequenos com ícone. Sombra suave e inteira (sem ser cortada pelo carrossel) que cresce no hover.
 - Ao clicar num cartão, ele "voa" do lugar até o centro da tela e abre uma janela de galeria com até 5 fotos (miniaturas, setas, teclado e arrastar com o dedo). Depois da 5ª foto, mostra a última foto borrada com um cartão cinza translúcido convidando a falar no WhatsApp. A janela tem SEMPRE o mesmo tamanho em todas as telas e, no celular, fica pequena e centralizada, com margem e fundo escurecido, nunca cobrindo a tela inteira.
-- "Passo a passo" em 3 etapas: no computador, um painel grande fixo à esquerda troca de imagem conforme a rolagem, com o número grande e uma legenda curta sobre a foto. No celular, cada etapa tem a foto no topo com número e legenda sobre ela.
+- "Passo a passo" em 3 etapas: no computador, um painel grande fixo à esquerda troca de imagem conforme a rolagem, com o número grande e uma legenda curta sobre a foto. Para a troca ser instantânea, deixe as 3 imagens carregadas e sobrepostas e troque só a opacidade (cross-fade), escolhendo o passo mais perto do centro da tela. Não troque o `src` da imagem a cada passo. No celular, cada etapa tem a foto no topo com número e legenda sobre ela.
 - Localização com mapa e botão "Como chegar". Perguntas frequentes em sanfona (um item aberto por vez, o aberto vira cartão claro). Chamada final para o WhatsApp. Rodapé com registro profissional, endereço e links.
 - Botão flutuante do WhatsApp (só um botão fixo, não dois).
 
