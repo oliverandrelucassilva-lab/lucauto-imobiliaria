@@ -722,23 +722,33 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 /* a logo aparece com zoom no fim do encolhimento */
 .header.mini .mini-btn{opacity:1;visibility:visible;pointer-events:auto;transform:none;filter:none;transition:opacity .5s .85s,transform .8s var(--ease) .85s,filter .5s .85s,visibility 0s .85s}
 
-/* filtros da lista de imóveis */
+/* filtros da lista de imóveis: um único cartão dourado que desliza */
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.filtros{display:flex;gap:8px;overflow-x:auto;margin:var(--s3) calc(var(--pad-x) * -1) var(--s1);padding:4px var(--pad-x);scrollbar-width:none;position:relative;z-index:2}
-.filtros::-webkit-scrollbar{display:none}
-.filtro{flex:none;min-height:44px;padding:0 20px;border-radius:var(--r-pill);border:1.5px solid rgba(11,31,58,.22);background:transparent;color:var(--navy);font:600 15px/1 var(--font-head);cursor:pointer;transition:background .25s,color .25s,border-color .25s,transform .25s}
-.filtro:hover{border-color:var(--navy);transform:translateY(-2px)}
-.filtro[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--gold-light)}
-.filtro:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
+.filtros{--n:4;--i:0;position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);margin:var(--s3) 0 var(--s2);padding:4px;max-width:460px;border-radius:var(--r-pill);background:rgba(11,31,58,.06);border:1px solid rgba(11,31,58,.14)}
+.filtros__thumb{position:absolute;z-index:0;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / var(--n));border-radius:var(--r-pill);background:linear-gradient(135deg,var(--gold-light),var(--gold));box-shadow:0 6px 16px rgba(164,127,56,.4);transform:translateX(calc(var(--i) * 100%));transition:transform .5s var(--soft)}
+.filtro{position:relative;z-index:1;min-height:44px;padding:0 6px;border:0;border-radius:var(--r-pill);background:transparent;color:var(--text-dark-muted);font:600 15px/1 var(--font-head);cursor:pointer;transition:color .3s}
+.filtro:hover{color:var(--navy)}
+.filtro[aria-pressed="true"]{color:var(--navy)}
+.filtro:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
 .prop[hidden]{display:none}
 .prop.f-in{animation:fIn .5s var(--ease) both;animation-delay:calc(var(--k,0) * 70ms)}
-@keyframes fIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes fIn{from{opacity:0;transform:translateX(var(--dx,0px)) scale(.97)}to{opacity:1;transform:none}}
 .filtro-vazio{text-align:center;padding:var(--s5) var(--s3);margin-top:var(--s2);border:1.5px dashed rgba(11,31,58,.22);border-radius:var(--r-lg);color:var(--text-dark-muted)}
 .filtro-vazio p{margin-bottom:var(--s2);font-weight:600;color:var(--text-dark)}
 .filtro-vazio .btn{display:inline-flex;color:var(--navy);border-color:var(--navy);background:transparent}
 .filtro-vazio .btn:hover{background:var(--navy);color:var(--gold-light)}
-@media (min-width:768px){.filtros{margin-inline:0;padding-inline:0}}
-@media (prefers-reduced-motion:reduce){.prop.f-in{animation:none}}
+@media (max-width:767px){
+  .prop{flex-basis:74%}
+  .prop__media{aspect-ratio:16/10;margin:6px 6px 0}
+  .prop__body{padding:12px 14px 14px;gap:4px}
+  .prop__body h3{font-size:17px;line-height:1.25}
+  .prop__price{font-size:15px;margin-bottom:2px}
+  .prop__price--sob{font-size:13px}
+  .prop__desc{font-size:12.5px;margin:0 0 4px}
+  .prop .topicos li{font-size:12px}
+  .prop__body .btn{min-height:44px;font-size:14px;margin-top:8px}
+}
+@media (prefers-reduced-motion:reduce){.prop.f-in{animation:none}.filtros__thumb{transition:none}}
 </style>
 </head>
 <body>
@@ -874,10 +884,10 @@ h2 .accent,h1 .accent{margin-left:-.02em}
         </div>
       </div>
       <div class="filtros rv" id="filtros" role="group" aria-label="Filtrar imóveis">
+        <span class="filtros__thumb" aria-hidden="true"></span>
         <button type="button" class="filtro" data-f="todos" aria-pressed="true">Todos</button>
-        <button type="button" class="filtro" data-f="compra" aria-pressed="false">Compra</button>
-        <button type="button" class="filtro" data-f="aluguel" aria-pressed="false">Aluguel</button>
         <button type="button" class="filtro" data-f="casas" aria-pressed="false">Casas</button>
+        <button type="button" class="filtro" data-f="aluguel" aria-pressed="false">Aluguel</button>
         <button type="button" class="filtro" data-f="terrenos" aria-pressed="false">Terrenos</button>
       </div>
       <p class="sr-only" id="filtro-status" aria-live="polite"></p>
@@ -1304,16 +1314,17 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   (function(){
     var FILTROS = {
       todos:    function(){ return true; },
-      compra:   function(i){ return i.finalidade === 'compra'; },
       aluguel:  function(i){ return i.finalidade === 'aluguel'; },
       casas:    function(i){ return /^casa/i.test(i.tipo); },
       terrenos: function(i){ return /^terreno/i.test(i.tipo); }
     };
-    var NOME = { todos:'todos os imóveis', compra:'imóveis à venda', aluguel:'imóveis para alugar', casas:'casas', terrenos:'terrenos' };
+    var ORDEM = ['todos','casas','aluguel','terrenos'], atual = 0, cx = document.getElementById('filtros');
+    var NOME = { todos:'todos os imóveis', aluguel:'imóveis para alugar', casas:'casas', terrenos:'terrenos' };
     var botoes = [].slice.call(document.querySelectorAll('#filtros .filtro'));
     var vazio = document.getElementById('filtro-vazio'), status = document.getElementById('filtro-status'), caro = document.querySelector('.carousel');
     function aplicar(k, animar){
-      var n = 0;
+      var n = 0, novo = ORDEM.indexOf(k);
+      track.style.setProperty('--dx', (novo >= atual ? 56 : -56) + 'px'); atual = novo; cx.style.setProperty('--i', novo);
       cards.forEach(function(c){
         var ok = FILTROS[k](c.i);
         c.card.hidden = !ok; c.card.classList.remove('f-in');
@@ -1326,7 +1337,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       track.scrollTo({ left:0, behavior:'instant' });
       atualizar();
     }
-    botoes.forEach(function(b){ b.addEventListener('click', function(){ aplicar(b.dataset.f, true); b.scrollIntoView({ inline:'center', block:'nearest', behavior:'smooth' }); }); });
+    botoes.forEach(function(b){ b.addEventListener('click', function(){ aplicar(b.dataset.f, true); }); });
     aplicar('todos', false);
   })();
 
