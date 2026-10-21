@@ -549,12 +549,12 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
 .gal__thumb:hover{opacity:1;transform:translateY(-2px)}
 .gal__thumb[aria-current="true"]{opacity:1;border-color:var(--gold)}
 .gal__side{padding:var(--s3);display:flex;flex-direction:column;gap:8px}
-.gal__side h2{font-size:26px;max-width:none}
+.gal__side h2{font-size:32px;line-height:1.12;max-width:none;margin:0 0 4px}
+.gal__meta{margin-top:4px!important}
 .gal__meta{color:var(--text-muted)}
 .gal__side p{margin:0}
 .gal__desc{font-size:14px;line-height:1.45;color:var(--text-muted);margin-bottom:4px!important}
-.gal__price{position:relative;margin-top:6px;padding:26px 16px 12px;border-radius:14px;border:1px solid rgba(201,162,74,.55);background:linear-gradient(135deg,rgba(201,162,74,.22),rgba(201,162,74,.06));font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-.01em;color:var(--gold-light)}
-.gal__price::before{content:"VALOR";position:absolute;left:16px;top:9px;font-size:10px;letter-spacing:.22em;font-weight:600;color:var(--text-muted)}
+.gal__price{margin:0 0 6px;font-size:24px;line-height:1.15;font-weight:700;letter-spacing:-.01em;color:var(--gold-light)}
 .gal__price--sob{font-size:17px;font-weight:600;letter-spacing:0}
 .gal__prov{font-size:13px;color:var(--text-muted)}
 .gal__side .btn{margin-top:var(--s2)}
@@ -562,7 +562,9 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
   .gal__panel{grid-template-columns:1.7fr 1fr;margin:4vh auto;max-height:92vh}
   .gal__main{display:flex;flex-direction:column;min-width:0}
   .gal__side{padding:var(--s5) var(--s4) var(--s4);justify-content:flex-end}
-  .gal__side h2{font-size:34px}
+  .gal__side h2{font-size:42px}
+  .gal__price{font-size:28px}
+  .gal__price--sob{font-size:19px}
 }
 @media (prefers-reduced-motion:reduce){dialog.gal[open]::backdrop{animation:none}}
 
@@ -657,10 +659,9 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .gal__thumb{border-radius:8px}
   .gal__side{padding:2px 14px 14px;gap:3px}
   .gal__side .eyebrow{display:none}
-  .gal__side h2{font-size:18px;line-height:1.2}
+  .gal__side h2{font-size:24px;line-height:1.15}
   .gal__meta .topicos li{font-size:12.5px;padding:3px 9px}
-  .gal__price{font-size:24px;padding:22px 14px 10px;margin-top:4px}
-  .gal__price::before{left:14px;top:7px;font-size:9px}
+  .gal__price{font-size:21px;margin-bottom:4px}
   .gal__price--sob{font-size:15px}
   .gal__desc{font-size:13px;line-height:1.4}
   .gal__prov{font-size:12px}
@@ -1016,9 +1017,9 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     <div class="gal__side">
       <p class="eyebrow" id="gal-eyebrow"></p>
       <h2 id="gal-title"></h2>
+      <p class="gal__price" id="gal-price"></p>
       <p class="gal__meta" id="gal-meta"></p>
       <p class="gal__desc" id="gal-desc" hidden></p>
-      <p class="gal__price" id="gal-price"></p>
       <p class="gal__prov" id="gal-prov" hidden>Exemplo provisório. Imagens ilustrativas.</p>
       <a class="btn" id="gal-wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Quero saber mais</a>
     </div>
