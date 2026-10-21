@@ -551,7 +551,11 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
 .gal__side{padding:var(--s3);display:flex;flex-direction:column;gap:8px}
 .gal__side h2{font-size:26px;max-width:none}
 .gal__meta{color:var(--text-muted)}
-.gal__price{font-size:22px;font-weight:700;color:var(--gold-light)}
+.gal__side p{margin:0}
+.gal__desc{font-size:14px;line-height:1.45;color:var(--text-muted);margin-bottom:4px!important}
+.gal__price{position:relative;margin-top:6px;padding:26px 16px 12px;border-radius:14px;border:1px solid rgba(201,162,74,.55);background:linear-gradient(135deg,rgba(201,162,74,.22),rgba(201,162,74,.06));font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-.01em;color:var(--gold-light)}
+.gal__price::before{content:"VALOR";position:absolute;left:16px;top:9px;font-size:10px;letter-spacing:.22em;font-weight:600;color:var(--text-muted)}
+.gal__price--sob{font-size:17px;font-weight:600;letter-spacing:0}
 .gal__prov{font-size:13px;color:var(--text-muted)}
 .gal__side .btn{margin-top:var(--s2)}
 @media (min-width:1024px){
@@ -578,7 +582,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .topicos li{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:1.3;color:var(--text-dark-muted)}
 .topicos svg{width:16px;height:16px;flex:none;fill:none;stroke:var(--gold-dark);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .gal__meta .topicos{margin:0}
-.gal__meta .topicos li{color:var(--text-muted);font-size:14px}
+.gal__meta .topicos{gap:6px}
+.gal__meta .topicos li{color:var(--text);font-size:14px;padding:4px 10px;border-radius:var(--r-pill);background:rgba(255,255,255,.07);border:1px solid var(--border)}
 .gal__meta .topicos svg{stroke:var(--gold)}
 .prop__price{margin-bottom:0;color:var(--gold-dark)}
 .prop__price--sob{font-size:14px;font-weight:600;letter-spacing:.01em}
@@ -653,8 +658,11 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .gal__side{padding:2px 14px 14px;gap:3px}
   .gal__side .eyebrow{display:none}
   .gal__side h2{font-size:18px;line-height:1.2}
-  .gal__meta .topicos li{font-size:13px}
-  .gal__price{font-size:16px}
+  .gal__meta .topicos li{font-size:12.5px;padding:3px 9px}
+  .gal__price{font-size:24px;padding:22px 14px 10px;margin-top:4px}
+  .gal__price::before{left:14px;top:7px;font-size:9px}
+  .gal__price--sob{font-size:15px}
+  .gal__desc{font-size:13px;line-height:1.4}
   .gal__prov{font-size:12px}
   .gal__side .btn{min-height:44px;margin-top:6px;font-size:14px}
   .gal__morecard{padding:var(--s3) var(--s2);max-width:300px}
@@ -1009,6 +1017,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       <p class="eyebrow" id="gal-eyebrow"></p>
       <h2 id="gal-title"></h2>
       <p class="gal__meta" id="gal-meta"></p>
+      <p class="gal__desc" id="gal-desc" hidden></p>
       <p class="gal__price" id="gal-price"></p>
       <p class="gal__prov" id="gal-prov" hidden>Exemplo provisório. Imagens ilustrativas.</p>
       <a class="btn" id="gal-wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Quero saber mais</a>
@@ -1177,7 +1186,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     document.getElementById('gal-eyebrow').textContent = (item.tipo + ' · ' + item.bairro).toUpperCase();
     document.getElementById('gal-title').textContent = titulo;
     var gm = document.getElementById('gal-meta'); gm.textContent = ''; var gt = topicos(item); if (gt) gm.appendChild(gt); gm.hidden = !gt;
-    document.getElementById('gal-price').textContent = item.valor || 'Valor sob consulta';
+    var gp = document.getElementById('gal-price'); gp.textContent = item.valor || 'Valor sob consulta'; gp.classList.toggle('gal__price--sob', !item.valor);
+    var gd = document.getElementById('gal-desc'); gd.textContent = item.desc || ''; gd.hidden = !item.desc;
     document.getElementById('gal-prov').hidden = !item.provisorio;
     var msgBase = 'Olá! Tenho interesse no imóvel: ' + titulo + '.';
     document.getElementById('gal-wa').href = wa(msgBase + ' Pode me passar mais informações?');
