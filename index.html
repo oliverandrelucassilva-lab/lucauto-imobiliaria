@@ -1046,7 +1046,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
      IMÓVEIS EM DESTAQUE (edite aqui)
      Cada imóvel é um bloco { ... }. Campos:
        tipo, bairro      obrigatórios (ex.: 'Casa', 'Centro')
-       quartos, banheiros, vagas, area   opcionais (números; area em m²). Aparecem como tópicos pequenos
+       quartos, banheiros, vagas, area   opcionais (números; area em m²). areaTxt: área em texto, ex.: 'Quase 2 tarefas'. Aparecem como tópicos pequenos
        valor             opcional. Vazio mostra "Consulte"
        fotos             até 5 imagens (a 1ª é a capa do card). Caminhos como 'assets/img/imoveis/casa-1.webp'
                          ou deixe [] para usar as imagens provisórias. Passou de 5, o site ignora as extras.
@@ -1062,9 +1062,9 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   ];
   var ALT_PROV = 'Imagem ilustrativa provisória, desenho em linhas douradas sobre fundo azul marinho';
   var IMOVEIS = [
+    { tipo:'Terreno',     bairro:'Queimada do Raso',  quartos:null, banheiros:null, vagas:null, area:null, areaTxt:'Quase 2 tarefas', valor:'', fotos:['assets/img/imoveis/terreno-queimada-1.webp','assets/img/imoveis/terreno-queimada-2.webp'], alt:'Vista aérea de um terreno em Queimada do Raso, com o contorno do lote destacado em linha branca' },
     { tipo:'Casa',        bairro:'Euclides da Cunha', quartos:3, banheiros:2, vagas:1, area:null, valor:'', fotos:[PROV[1],PROV[3],PROV[0],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
-    { tipo:'Apartamento', bairro:'Euclides da Cunha', quartos:2, banheiros:1, vagas:1, area:null, valor:'', fotos:[PROV[0],PROV[3],PROV[1],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true },
-    { tipo:'Terreno',     bairro:'Euclides da Cunha', quartos:null, banheiros:null, vagas:null, area:300, valor:'', fotos:[PROV[2],PROV[4],PROV[0],PROV[1],PROV[3]], alt:ALT_PROV, provisorio:true }
+    { tipo:'Apartamento', bairro:'Euclides da Cunha', quartos:2, banheiros:1, vagas:1, area:null, valor:'', fotos:[PROV[0],PROV[3],PROV[1],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true }
   ];
   function fotosDe(i){ var f = (i.fotos && i.fotos.length ? i.fotos : [PROV[0]]).slice(0, MAX_FOTOS); return f; }
 
@@ -1094,6 +1094,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     if (i.banheiros) itens.push(['banheiros', i.banheiros + (i.banheiros > 1 ? ' banheiros' : ' banheiro')]);
     if (i.vagas) itens.push(['vagas', i.vagas + (i.vagas > 1 ? ' vagas' : ' vaga')]);
     if (i.area) itens.push(['area', i.area + ' m²']);
+    else if (i.areaTxt) itens.push(['area', i.areaTxt]);
     if (!itens.length) return null;
     var ul = el('ul','topicos');
     itens.forEach(function(t){
