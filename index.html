@@ -581,6 +581,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .gal__meta .topicos li{color:var(--text-muted);font-size:14px}
 .gal__meta .topicos svg{stroke:var(--gold)}
 .prop__price{margin-bottom:0}
+.prop__desc{font-size:13px;line-height:1.4;color:var(--text-dark-muted);margin:2px 0 6px}
 .prop__body{gap:8px}
 
 .sec--light .intro>div>div p{font-size:17px;line-height:1.7}
@@ -1046,7 +1047,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
      IMÓVEIS EM DESTAQUE (edite aqui)
      Cada imóvel é um bloco { ... }. Campos:
        tipo, bairro      obrigatórios (ex.: 'Casa', 'Centro')
-       quartos, banheiros, vagas, area   opcionais (números; area em m²). areaTxt: área em texto, ex.: 'Quase 2 tarefas'. Aparecem como tópicos pequenos
+       quartos, banheiros, vagas, area   opcionais (números; area em m²). areaTxt: área em texto, ex.: 'Quase 2 tarefas'. desc: frase curta abaixo dos tópicos (opcional). Aparecem como tópicos pequenos
        valor             opcional. Vazio mostra "Consulte"
        fotos             até 5 imagens (a 1ª é a capa do card). Caminhos como 'assets/img/imoveis/casa-1.webp'
                          ou deixe [] para usar as imagens provisórias. Passou de 5, o site ignora as extras.
@@ -1062,8 +1063,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   ];
   var ALT_PROV = 'Imagem ilustrativa provisória, desenho em linhas douradas sobre fundo azul marinho';
   var IMOVEIS = [
-    { tipo:'Terreno',     bairro:'Queimada do Raso',  quartos:null, banheiros:null, vagas:null, area:null, areaTxt:'Quase 2 tarefas', valor:'', fotos:['assets/img/imoveis/terreno-queimada-1.webp','assets/img/imoveis/terreno-queimada-2.webp'], alt:'Vista aérea de um terreno em Queimada do Raso, com o contorno do lote destacado em linha branca' },
-    { tipo:'Casa',        bairro:'Monte Santo',       quartos:4, banheiros:3, vagas:null, area:null, areaTxt:'Terreno 11,5 x 26,9 m', valor:'', fotos:['assets/img/imoveis/casa-monte-santo-1.webp','assets/img/imoveis/casa-monte-santo-2.webp','assets/img/imoveis/casa-monte-santo-3.webp','assets/img/imoveis/casa-monte-santo-4.webp','assets/img/imoveis/casa-monte-santo-5.webp'], alt:'Fachada de casa com telhado de cerâmica e garagem coberta em Monte Santo' },
+    { tipo:'Terreno',     bairro:'Queimada do Raso',  quartos:null, banheiros:null, vagas:null, area:null, areaTxt:'Quase 2 tarefas', desc:'Ideal para construir ou investir.', valor:'', fotos:['assets/img/imoveis/terreno-queimada-1.webp','assets/img/imoveis/terreno-queimada-2.webp'], alt:'Vista aérea de um terreno em Queimada do Raso, com o contorno do lote destacado em linha branca' },
+    { tipo:'Casa',        bairro:'Monte Santo',       quartos:4, banheiros:3, vagas:null, area:null, areaTxt:'Terreno 11,5 x 26,9 m', desc:'1 suíte, área gourmet e cisterna de 18 mil litros.', valor:'', fotos:['assets/img/imoveis/casa-monte-santo-1.webp','assets/img/imoveis/casa-monte-santo-2.webp','assets/img/imoveis/casa-monte-santo-3.webp','assets/img/imoveis/casa-monte-santo-4.webp','assets/img/imoveis/casa-monte-santo-5.webp'], alt:'Fachada de casa com telhado de cerâmica e garagem coberta em Monte Santo' },
     { tipo:'Apartamento', bairro:'Euclides da Cunha', quartos:2, banheiros:1, vagas:1, area:null, valor:'', fotos:[PROV[0],PROV[3],PROV[1],PROV[4],PROV[2]], alt:ALT_PROV, provisorio:true }
   ];
   function fotosDe(i){ var f = (i.fotos && i.fotos.length ? i.fotos : [PROV[0]]).slice(0, MAX_FOTOS); return f; }
@@ -1126,6 +1127,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     body.appendChild(el('h3','',titulo));
     body.appendChild(el('p','prop__price', i.valor || 'Consulte'));
     var tops = topicos(i); if (tops) body.appendChild(tops);
+    if (i.desc) body.appendChild(el('p','prop__desc', i.desc));
     var b = el('a','btn','Quero saber mais');
     b.href = wa('Olá! Tenho interesse no imóvel: ' + titulo + '. Pode me passar mais informações?');
     b.target = '_blank'; b.rel = 'noopener';
