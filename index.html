@@ -721,6 +721,24 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .mini-btn:hover img{transform:scale(1.08)}
 /* a logo aparece com zoom no fim do encolhimento */
 .header.mini .mini-btn{opacity:1;visibility:visible;pointer-events:auto;transform:none;filter:none;transition:opacity .5s .85s,transform .8s var(--ease) .85s,filter .5s .85s,visibility 0s .85s}
+
+/* filtros da lista de imóveis */
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.filtros{display:flex;gap:8px;overflow-x:auto;margin:var(--s3) calc(var(--pad-x) * -1) var(--s1);padding:4px var(--pad-x);scrollbar-width:none;position:relative;z-index:2}
+.filtros::-webkit-scrollbar{display:none}
+.filtro{flex:none;min-height:44px;padding:0 20px;border-radius:var(--r-pill);border:1.5px solid rgba(11,31,58,.22);background:transparent;color:var(--navy);font:600 15px/1 var(--font-head);cursor:pointer;transition:background .25s,color .25s,border-color .25s,transform .25s}
+.filtro:hover{border-color:var(--navy);transform:translateY(-2px)}
+.filtro[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--gold-light)}
+.filtro:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
+.prop[hidden]{display:none}
+.prop.f-in{animation:fIn .5s var(--ease) both;animation-delay:calc(var(--k,0) * 70ms)}
+@keyframes fIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.filtro-vazio{text-align:center;padding:var(--s5) var(--s3);margin-top:var(--s2);border:1.5px dashed rgba(11,31,58,.22);border-radius:var(--r-lg);color:var(--text-dark-muted)}
+.filtro-vazio p{margin-bottom:var(--s2);font-weight:600;color:var(--text-dark)}
+.filtro-vazio .btn{display:inline-flex;color:var(--navy);border-color:var(--navy);background:transparent}
+.filtro-vazio .btn:hover{background:var(--navy);color:var(--gold-light)}
+@media (min-width:768px){.filtros{margin-inline:0;padding-inline:0}}
+@media (prefers-reduced-motion:reduce){.prop.f-in{animation:none}}
 </style>
 </head>
 <body>
@@ -855,8 +873,20 @@ h2 .accent,h1 .accent{margin-left:-.02em}
           <button class="car-btn" id="next" type="button" aria-label="Próximo imóvel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
       </div>
+      <div class="filtros rv" id="filtros" role="group" aria-label="Filtrar imóveis">
+        <button type="button" class="filtro" data-f="todos" aria-pressed="true">Todos</button>
+        <button type="button" class="filtro" data-f="compra" aria-pressed="false">Compra</button>
+        <button type="button" class="filtro" data-f="aluguel" aria-pressed="false">Aluguel</button>
+        <button type="button" class="filtro" data-f="casas" aria-pressed="false">Casas</button>
+        <button type="button" class="filtro" data-f="terrenos" aria-pressed="false">Terrenos</button>
+      </div>
+      <p class="sr-only" id="filtro-status" aria-live="polite"></p>
       <div class="carousel" role="region" aria-roledescription="carrossel" aria-label="Imóveis em destaque">
         <div class="track" id="track" tabindex="0"></div>
+      </div>
+      <div class="filtro-vazio" id="filtro-vazio" hidden>
+        <p>Nenhum imóvel nesta categoria no momento.</p>
+        <a class="btn btn--ghost" id="filtro-wa" href="#" target="_blank" rel="noopener">Perguntar no WhatsApp</a>
       </div>
       <div class="more"><a class="btn" data-wa href="#" target="_blank" rel="noopener">Ver mais imóveis no WhatsApp</a></div>
 
@@ -1063,6 +1093,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
        fotos             até 5 imagens (a 1ª é a capa do card). Caminhos como 'assets/img/imoveis/casa-1.webp'
                          ou deixe [] para usar as imagens provisórias. Passou de 5, o site ignora as extras.
        alt               descrição da imagem de capa (acessibilidade)
+       finalidade        'compra' ou 'aluguel' (usado nos filtros da lista). Vazio: aparece só em "Todos".
        provisorio        true marca como "Exemplo provisório". Remova nos imóveis reais.
      Ao clicar no card, abre a galeria. Depois da 5ª foto, aparece o convite para falar no WhatsApp.
      Terrenos, casas e apartamentos seguem o mesmo formato.
@@ -1074,11 +1105,11 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   ];
   var ALT_PROV = 'Imagem ilustrativa provisória, desenho em linhas douradas sobre fundo azul marinho';
   var IMOVEIS = [
-    { tipo:'Terreno',     bairro:'Queimada do Raso',  quartos:null, banheiros:null, vagas:null, area:null, areaTxt:'Quase 2 tarefas', desc:'Ideal para construir ou investir.', valor:'', fotos:['assets/img/imoveis/terreno-queimada-1.webp','assets/img/imoveis/terreno-queimada-2.webp'], alt:'Vista aérea de um terreno em Queimada do Raso, com o contorno do lote destacado em linha branca' },
-    { tipo:'Casa',        bairro:'Monte Santo',       quartos:4, banheiros:3, vagas:null, area:null, areaTxt:'Terreno 11,5 x 26,9 m', desc:'1 suíte, área gourmet e cisterna de 18 mil litros.', valor:'', fotos:['assets/img/imoveis/casa-monte-santo-1.webp','assets/img/imoveis/casa-monte-santo-2.webp','assets/img/imoveis/casa-monte-santo-3.webp','assets/img/imoveis/casa-monte-santo-4.webp','assets/img/imoveis/casa-monte-santo-5.webp'], alt:'Fachada de casa com telhado de cerâmica e garagem coberta em Monte Santo' },
-    { tipo:'Imóvel comercial', bairro:'Euclides da Cunha', quartos:null, banheiros:null, vagas:null, area:null, desc:'Amplo espaço interno, acesso por escadas e ótimo potencial de aproveitamento.', valor:'', fotos:['assets/img/imoveis/comercial-ec-1.webp','assets/img/imoveis/comercial-ec-2.webp','assets/img/imoveis/comercial-ec-3.webp','assets/img/imoveis/comercial-ec-4.webp'], alt:'Salão amplo e vazio de imóvel comercial em Euclides da Cunha, com piso claro e janelas ao fundo' },
-    { tipo:'Casa',        bairro:'Euclides da Cunha', quartos:2, banheiros:1, vagas:1, area:null, areaTxt:'Medidas 10,85 x 11,52 m', desc:'Casa nova, com sala e cozinha conjugadas e área de serviço. Próxima ao Condomínio Eco Ville.', valor:'', fotos:['assets/img/imoveis/casa-camerino-1.webp','assets/img/imoveis/casa-camerino-2.webp','assets/img/imoveis/casa-camerino-3.webp','assets/img/imoveis/casa-camerino-4.webp','assets/img/imoveis/casa-camerino-5.webp'], alt:'Fachada de casa nova com muro bege, gradil branco e porta de madeira' },
-    { tipo:'Chácara',     bairro:'Rio Grande, Quijingue', quartos:3, banheiros:1, vagas:null, area:627, valor:'R$ 110.000', desc:'A 20 km de Euclides da Cunha, com varanda ampla. Aceita troca em veículo.', fotos:['assets/img/imoveis/chacara-rio-grande-1.webp','assets/img/imoveis/chacara-rio-grande-2.webp','assets/img/imoveis/chacara-rio-grande-3.webp','assets/img/imoveis/chacara-rio-grande-4.webp','assets/img/imoveis/chacara-rio-grande-5.webp'], alt:'Chácara com casa de telhado de cerâmica, varanda ampla e terreno murado no povoado Rio Grande, em Quijingue' }
+    { tipo:'Terreno',     bairro:'Queimada do Raso',  finalidade:'compra', quartos:null, banheiros:null, vagas:null, area:null, areaTxt:'Quase 2 tarefas', desc:'Ideal para construir ou investir.', valor:'', fotos:['assets/img/imoveis/terreno-queimada-1.webp','assets/img/imoveis/terreno-queimada-2.webp'], alt:'Vista aérea de um terreno em Queimada do Raso, com o contorno do lote destacado em linha branca' },
+    { tipo:'Casa',        bairro:'Monte Santo',       finalidade:'compra', quartos:4, banheiros:3, vagas:null, area:null, areaTxt:'Terreno 11,5 x 26,9 m', desc:'1 suíte, área gourmet e cisterna de 18 mil litros.', valor:'', fotos:['assets/img/imoveis/casa-monte-santo-1.webp','assets/img/imoveis/casa-monte-santo-2.webp','assets/img/imoveis/casa-monte-santo-3.webp','assets/img/imoveis/casa-monte-santo-4.webp','assets/img/imoveis/casa-monte-santo-5.webp'], alt:'Fachada de casa com telhado de cerâmica e garagem coberta em Monte Santo' },
+    { tipo:'Imóvel comercial', bairro:'Euclides da Cunha', finalidade:'', quartos:null, banheiros:null, vagas:null, area:null, desc:'Amplo espaço interno, acesso por escadas e ótimo potencial de aproveitamento.', valor:'', fotos:['assets/img/imoveis/comercial-ec-1.webp','assets/img/imoveis/comercial-ec-2.webp','assets/img/imoveis/comercial-ec-3.webp','assets/img/imoveis/comercial-ec-4.webp'], alt:'Salão amplo e vazio de imóvel comercial em Euclides da Cunha, com piso claro e janelas ao fundo' },
+    { tipo:'Casa',        bairro:'Euclides da Cunha', finalidade:'compra', quartos:2, banheiros:1, vagas:1, area:null, areaTxt:'Medidas 10,85 x 11,52 m', desc:'Casa nova, com sala e cozinha conjugadas e área de serviço. Próxima ao Condomínio Eco Ville.', valor:'', fotos:['assets/img/imoveis/casa-camerino-1.webp','assets/img/imoveis/casa-camerino-2.webp','assets/img/imoveis/casa-camerino-3.webp','assets/img/imoveis/casa-camerino-4.webp','assets/img/imoveis/casa-camerino-5.webp'], alt:'Fachada de casa nova com muro bege, gradil branco e porta de madeira' },
+    { tipo:'Chácara',     bairro:'Rio Grande, Quijingue', finalidade:'compra', quartos:3, banheiros:1, vagas:null, area:627, valor:'R$ 110.000', desc:'A 20 km de Euclides da Cunha, com varanda ampla. Aceita troca em veículo.', fotos:['assets/img/imoveis/chacara-rio-grande-1.webp','assets/img/imoveis/chacara-rio-grande-2.webp','assets/img/imoveis/chacara-rio-grande-3.webp','assets/img/imoveis/chacara-rio-grande-4.webp','assets/img/imoveis/chacara-rio-grande-5.webp'], alt:'Chácara com casa de telhado de cerâmica, varanda ampla e terreno murado no povoado Rio Grande, em Quijingue' }
   ];
   function fotosDe(i){ var f = (i.fotos && i.fotos.length ? i.fotos : [PROV[0]]).slice(0, MAX_FOTOS); return f; }
 
@@ -1120,10 +1151,10 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 
   // Cards de imóveis
   function el(t, c, txt){ var e=document.createElement(t); if(c) e.className=c; if(txt) e.textContent=txt; return e; }
-  var track = document.getElementById('track');
+  var track = document.getElementById('track'), cards = [];
   IMOVEIS.forEach(function(i){
     var titulo = i.tipo + ' em ' + i.bairro, fotos = fotosDe(i);
-    var card = el('article','prop');
+    var card = el('article','prop'); cards.push({ i:i, card:card });
     var media = el('div','prop__media');
     var open = el('button','prop__open'); open.type = 'button';
     open.setAttribute('aria-label','Ver fotos de ' + titulo);
@@ -1268,6 +1299,36 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     if (e.key === 'ArrowLeft') { e.preventDefault(); track.scrollBy({left:-passo()}); }
   });
   atualizar();
+
+  // Filtros da lista (Todos, Compra, Aluguel, Casas, Terrenos)
+  (function(){
+    var FILTROS = {
+      todos:    function(){ return true; },
+      compra:   function(i){ return i.finalidade === 'compra'; },
+      aluguel:  function(i){ return i.finalidade === 'aluguel'; },
+      casas:    function(i){ return /^casa/i.test(i.tipo); },
+      terrenos: function(i){ return /^terreno/i.test(i.tipo); }
+    };
+    var NOME = { todos:'todos os imóveis', compra:'imóveis à venda', aluguel:'imóveis para alugar', casas:'casas', terrenos:'terrenos' };
+    var botoes = [].slice.call(document.querySelectorAll('#filtros .filtro'));
+    var vazio = document.getElementById('filtro-vazio'), status = document.getElementById('filtro-status'), caro = document.querySelector('.carousel');
+    function aplicar(k, animar){
+      var n = 0;
+      cards.forEach(function(c){
+        var ok = FILTROS[k](c.i);
+        c.card.hidden = !ok; c.card.classList.remove('f-in');
+        if (ok) { c.card.style.setProperty('--k', n); if (animar && !reduz) { void c.card.offsetWidth; c.card.classList.add('f-in'); } n++; }
+      });
+      botoes.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.f === k ? 'true' : 'false'); });
+      caro.hidden = n === 0; vazio.hidden = n !== 0;
+      document.getElementById('filtro-wa').href = wa('Olá! Estou procurando ' + NOME[k] + '. Pode me ajudar?');
+      status.textContent = n ? n + (n > 1 ? ' imóveis encontrados' : ' imóvel encontrado') : 'Nenhum imóvel nesta categoria';
+      track.scrollTo({ left:0, behavior:'instant' });
+      atualizar();
+    }
+    botoes.forEach(function(b){ b.addEventListener('click', function(){ aplicar(b.dataset.f, true); b.scrollIntoView({ inline:'center', block:'nearest', behavior:'smooth' }); }); });
+    aplicar('todos', false);
+  })();
 
   // FAQ: um item aberto por vez
   var itens = document.querySelectorAll('#faq-list details');
