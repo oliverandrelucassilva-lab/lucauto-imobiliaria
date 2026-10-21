@@ -550,12 +550,12 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
 .gal__thumb[aria-current="true"]{opacity:1;border-color:var(--gold)}
 .gal__side{padding:var(--s3);display:flex;flex-direction:column;gap:8px}
 .gal__side h2{font-size:32px;line-height:1.12;max-width:none;margin:0 0 4px}
-.gal__meta{margin-top:4px!important}
+.gal__meta{margin-top:0!important}
 .gal__meta{color:var(--text-muted)}
 .gal__side p{margin:0}
 .gal__desc{font-size:14px;line-height:1.45;color:var(--text-muted);margin-bottom:4px!important}
-.gal__price{margin:0 0 6px;font-size:24px;line-height:1.15;font-weight:700;letter-spacing:-.01em;color:var(--gold-light)}
-.gal__price--sob{font-size:17px;font-weight:600;letter-spacing:0}
+.gal__price{margin:14px 0!important;font-family:var(--font-accent);font-style:italic;font-weight:600;font-size:44px;line-height:1;letter-spacing:-.01em;color:var(--gold-light)}
+.gal__price--sob{font-size:28px;font-weight:500}
 .gal__prov{font-size:13px;color:var(--text-muted)}
 .gal__side .btn{margin-top:var(--s2)}
 @media (min-width:1024px){
@@ -563,8 +563,8 @@ dialog.gal.saindo::backdrop{opacity:0;transition:opacity .4s}
   .gal__main{display:flex;flex-direction:column;min-width:0}
   .gal__side{padding:var(--s5) var(--s4) var(--s4);justify-content:flex-end}
   .gal__side h2{font-size:42px}
-  .gal__price{font-size:28px}
-  .gal__price--sob{font-size:19px}
+  .gal__price{font-size:54px;margin:18px 0!important}
+  .gal__price--sob{font-size:34px}
 }
 @media (prefers-reduced-motion:reduce){dialog.gal[open]::backdrop{animation:none}}
 
@@ -661,8 +661,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .gal__side .eyebrow{display:none}
   .gal__side h2{font-size:24px;line-height:1.15}
   .gal__meta .topicos li{font-size:12.5px;padding:3px 9px}
-  .gal__price{font-size:21px;margin-bottom:4px}
-  .gal__price--sob{font-size:15px}
+  .gal__price{font-size:40px;margin:10px 0!important}
+  .gal__price--sob{font-size:26px}
   .gal__desc{font-size:13px;line-height:1.4}
   .gal__prov{font-size:12px}
   .gal__side .btn{min-height:44px;margin-top:6px;font-size:14px}
