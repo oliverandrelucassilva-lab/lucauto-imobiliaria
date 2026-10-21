@@ -580,7 +580,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .gal__meta .topicos{margin:0}
 .gal__meta .topicos li{color:var(--text-muted);font-size:14px}
 .gal__meta .topicos svg{stroke:var(--gold)}
-.prop__price{margin-bottom:0}
+.prop__price{margin-bottom:0;color:var(--gold-dark)}
+.prop__price--sob{font-size:14px;font-weight:600;letter-spacing:.01em}
 .prop__desc{font-size:13px;line-height:1.4;color:var(--text-dark-muted);margin:2px 0 6px}
 .prop__body{gap:8px}
 
@@ -1125,7 +1126,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     if (i.provisorio) media.appendChild(el('span','pill pill--warn','Exemplo provisório'));
     var body = el('div','prop__body');
     body.appendChild(el('h3','',titulo));
-    body.appendChild(el('p','prop__price', i.valor || 'Consulte'));
+    body.appendChild(el('p','prop__price' + (i.valor ? '' : ' prop__price--sob'), i.valor || 'Valor sob consulta'));
     var tops = topicos(i); if (tops) body.appendChild(tops);
     if (i.desc) body.appendChild(el('p','prop__desc', i.desc));
     var b = el('a','btn','Quero saber mais');
@@ -1174,7 +1175,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     document.getElementById('gal-eyebrow').textContent = (item.tipo + ' · ' + item.bairro).toUpperCase();
     document.getElementById('gal-title').textContent = titulo;
     var gm = document.getElementById('gal-meta'); gm.textContent = ''; var gt = topicos(item); if (gt) gm.appendChild(gt); gm.hidden = !gt;
-    document.getElementById('gal-price').textContent = item.valor || 'Consulte';
+    document.getElementById('gal-price').textContent = item.valor || 'Valor sob consulta';
     document.getElementById('gal-prov').hidden = !item.provisorio;
     var msgBase = 'Olá! Tenho interesse no imóvel: ' + titulo + '.';
     document.getElementById('gal-wa').href = wa(msgBase + ' Pode me passar mais informações?');
@@ -1446,7 +1447,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
     var t0 = p0.tipo + ' em ' + p0.bairro;
     hc.setAttribute('aria-label', 'Imóvel em destaque: ' + t0 + '. Ver fotos');
     var hi = el('img'); hi.src = fotosDe(p0)[0]; hi.alt = ''; hi.width = 112; hi.height = 84; hi.decoding = 'async';
-    var ht = el('div'); ht.appendChild(el('small','','EM DESTAQUE')); ht.appendChild(el('b','',t0)); ht.appendChild(el('em','',p0.valor || 'Consulte'));
+    var ht = el('div'); ht.appendChild(el('small','','EM DESTAQUE')); ht.appendChild(el('b','',t0)); ht.appendChild(el('em','',p0.valor || 'Valor sob consulta'));
     hc.appendChild(hi); hc.appendChild(ht); hc.appendChild(el('span','go','→')).setAttribute('aria-hidden','true');
     hc.hidden = false;
     hc.addEventListener('click', function(e){ e.preventDefault(); abrirGaleria(p0, hc.querySelector('img')); });
