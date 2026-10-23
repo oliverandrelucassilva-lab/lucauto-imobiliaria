@@ -588,8 +588,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
 .gal__meta .topicos{gap:6px}
 .gal__meta .topicos li{color:var(--text);font-size:14px;padding:4px 10px;border-radius:var(--r-pill);background:rgba(255,255,255,.07);border:1px solid var(--border)}
 .gal__meta .topicos svg{stroke:var(--gold)}
-.prop__price{margin-bottom:0;color:var(--gold-dark)}
-.prop__price--sob{font-size:14px;font-weight:600;letter-spacing:.01em}
+.prop__price{margin:2px 0 4px;color:var(--gold-dark);font-size:28px;line-height:1.1;font-weight:800;letter-spacing:-.01em}
+.prop__price--sob{font-size:16px;font-weight:700;letter-spacing:0}
 .prop__desc{font-size:13px;line-height:1.4;color:var(--text-dark-muted);margin:2px 0 6px}
 .prop__body{gap:8px}
 
@@ -743,8 +743,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .prop__media{aspect-ratio:16/10;margin:6px 6px 0}
   .prop__body{padding:12px 14px 14px;gap:4px}
   .prop__body h3{font-size:17px;line-height:1.25}
-  .prop__price{font-size:15px;margin-bottom:2px}
-  .prop__price--sob{font-size:13px}
+  .prop__price{font-size:26px;margin:2px 0 4px}
+  .prop__price--sob{font-size:15px}
   .prop__desc{font-size:12.5px;margin:0 0 4px}
   .prop .topicos li{font-size:12px}
   .prop__body .btn{min-height:44px;font-size:14px;margin-top:auto}
@@ -1341,7 +1341,8 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       caro.hidden = n === 0; vazio.hidden = n !== 0;
       document.getElementById('filtro-wa').href = wa('Olá! Estou procurando ' + NOME[k] + '. Pode me ajudar?');
       status.textContent = n ? n + (n > 1 ? ' imóveis encontrados' : ' imóvel encontrado') : 'Nenhum imóvel nesta categoria';
-      track.scrollTo({ left:0, behavior:'instant' });
+      track.style.scrollBehavior = 'auto'; track.style.scrollSnapType = 'none'; track.scrollLeft = 0;
+      clearTimeout(aplicar.t); aplicar.t = setTimeout(function(){ track.scrollLeft = 0; track.style.scrollBehavior = ''; track.style.scrollSnapType = ''; }, 700);
       atualizar();
     }
     botoes.forEach(function(b){ b.addEventListener('click', function(){ aplicar(b.dataset.f, true); }); });
