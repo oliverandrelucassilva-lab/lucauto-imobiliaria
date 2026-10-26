@@ -283,9 +283,13 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .prop{flex-basis:calc(50% - 8px)}
   .why ul{grid-template-columns:repeat(3,1fr)}
   .steps{grid-template-columns:repeat(3,1fr)}
-  .car-nav{display:flex;gap:var(--s1);justify-content:flex-end;margin-bottom:var(--s2)}
+  .car-nav{display:block;position:absolute;inset:0;pointer-events:none;z-index:3}
+  .car-nav[hidden]{display:none}
+  .car-nav .car-btn{position:absolute;top:130px;pointer-events:auto;background:var(--navy);border-color:var(--navy);color:var(--gold-light);box-shadow:0 8px 22px rgba(7,20,42,.35)}
+  .car-nav .car-btn:hover:not(:disabled){background:var(--gold);border-color:var(--gold);color:var(--navy)}
+  .car-nav .car-btn:disabled{opacity:0;pointer-events:none}
+  #prev{left:4px}#next{right:4px}
   .sec-head--row{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s3)}
-  .sec-head--row .car-nav{margin:0}
   .footer__grid{grid-template-columns:1.4fr 1fr 1fr}
   .legal{grid-template-columns:1fr auto;align-items:center}
   .cta h2{font-size:40px}
@@ -751,6 +755,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .prop__body>:nth-last-child(2){margin-bottom:10px}
 }
 @media (prefers-reduced-motion:reduce){.prop.f-in{animation:none}.filtros__thumb{transition:none}}
+@media (min-width:1240px){#prev{left:-26px}#next{right:-26px}}
 </style>
 </head>
 <body>
@@ -880,10 +885,6 @@ h2 .accent,h1 .accent{margin-left:-.02em}
           <p class="eyebrow">SELECIONADOS PARA VOCÊ</p>
           <h2 id="h-imoveis">Imóveis em <span class="accent">destaque.</span></h2>
         </div>
-        <div class="car-nav">
-          <button class="car-btn" id="prev" type="button" aria-label="Imóvel anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-          <button class="car-btn" id="next" type="button" aria-label="Próximo imóvel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        </div>
       </div>
       <div class="filtros rv" id="filtros" role="group" aria-label="Filtrar imóveis">
         <span class="filtros__thumb" aria-hidden="true"></span>
@@ -895,6 +896,10 @@ h2 .accent,h1 .accent{margin-left:-.02em}
       <p class="sr-only" id="filtro-status" aria-live="polite"></p>
       <div class="carousel" role="region" aria-roledescription="carrossel" aria-label="Imóveis em destaque">
         <div class="track" id="track" tabindex="0"></div>
+        <div class="car-nav">
+          <button class="car-btn" id="prev" type="button" aria-label="Imóvel anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="car-btn" id="next" type="button" aria-label="Próximo imóvel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
       </div>
       <div class="filtro-vazio" id="filtro-vazio" hidden>
         <p>Nenhum imóvel nesta categoria no momento.</p>
