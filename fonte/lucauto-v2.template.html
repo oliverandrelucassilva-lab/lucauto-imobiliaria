@@ -285,7 +285,9 @@ dialog p{color:var(--text-muted);margin-bottom:var(--s3)}
   .steps{grid-template-columns:repeat(3,1fr)}
   .car-nav{display:block;position:absolute;inset:0;pointer-events:none;z-index:3}
   .car-nav[hidden]{display:none}
-  .car-nav .car-btn{position:absolute;top:130px;pointer-events:auto;background:var(--navy);border-color:var(--navy);color:var(--gold-light);box-shadow:0 8px 22px rgba(7,20,42,.35)}
+  .carousel{padding-inline:64px}
+  .carousel .track{margin-inline:0;padding-inline:2px}
+  .car-nav .car-btn{position:absolute;top:45%;margin-top:-24px;pointer-events:auto;background:var(--navy);border-color:var(--navy);color:var(--gold-light);box-shadow:0 8px 22px rgba(7,20,42,.35)}
   .car-nav .car-btn:hover:not(:disabled){background:var(--gold);border-color:var(--gold);color:var(--navy)}
   .car-nav .car-btn:disabled{opacity:0;pointer-events:none}
   #prev{left:4px}#next{right:4px}
@@ -755,7 +757,7 @@ h2 .accent,h1 .accent{margin-left:-.02em}
   .prop__body>:nth-last-child(2){margin-bottom:10px}
 }
 @media (prefers-reduced-motion:reduce){.prop.f-in{animation:none}.filtros__thumb{transition:none}}
-@media (min-width:1240px){#prev{left:-26px}#next{right:-26px}}
+@media (min-width:1200px){.carousel{margin-inline:-64px}}
 </style>
 </head>
 <body>
